@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, TextInput, Text, View, Image, Button, KeyboardAvoidingView, TouchableOpacity } from "react-native";
+import { StyleSheet, TextInput, Text, View, KeyboardAvoidingView, TouchableOpacity } from "react-native";
 import { auth } from "../firebase";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigation } from "@react-navigation/core";
@@ -19,33 +19,33 @@ const LoginScreen = () => {
         return unsibscribe;
     }, []);
 
-    const handleSignUp = () => {
-        createUserWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                const user = userCredential.user;
-                console.log("Registered with:", user.email);
-            })
-            .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                console.log("Error Code: ", errorCode);
-                console.log("Error Message: ", errorMessage);
-            });
-      }
-
-      const handleLogin = () => {
-        signInWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                const user = userCredential.user;
-                console.log("Logged in with:", user.email);
-            })
-            .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                console.log("Error Code: ", errorCode);
-                console.log("Error Message: ", errorMessage);
-            });
+    const handleSignUp = async () => {
+        try {
+            const userCredentials = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredentials.user;
+            console.log("Registered with:", user.email);
         }
+        catch (error) {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log("Error Code: ", errorCode);
+            console.log("Error Message: ", errorMessage);
+        }     
+    }
+
+    const handleLogin = async () => {
+        try {
+            const userCredentials = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredentials.user;
+            console.log("Logged in with:", user.email);
+        }
+        catch (error) {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log("Error Code: ", errorCode);
+            console.log("Error Message: ", errorMessage);
+        }
+    }
 
     return (
         <KeyboardAvoidingView 
