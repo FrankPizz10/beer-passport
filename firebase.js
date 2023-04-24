@@ -25,7 +25,7 @@ const firebaseConfig = {
   measurementId: MEASUREMENT_ID
 };
 
-// Initialize Firebase
+// Initialize Firebase and FIrestorm
 const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth(app);
