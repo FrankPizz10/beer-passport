@@ -10,11 +10,12 @@ import { auth } from "../Models/firebase";
 import { useNavigation } from "@react-navigation/core";
 import { HomeProps } from "../types";
 import { User } from "../Models/Collections";
-import axios from "axios";
 import { API_URL } from "@env";
+import { Beer } from "../Models/BeerData";
 
 const HomeScreen = (props: HomeProps) => {
   const [users, setUsers] = useState([] as User[]);
+  const [beers, setBeers] = useState([] as Beer[]);
 
   const navigation = useNavigation<(typeof props)["navigation"]>();
 
@@ -33,21 +34,35 @@ const HomeScreen = (props: HomeProps) => {
     const fetchUsers = async () => {
       try {
         const url = API_URL + "/api/users";
-        console.log(url);
+        // console.log(url);
         // const { data: users } = await axios.get<User[]>(url);
-        async function fetchUsers(): Promise<User[]> {
+        async function fetchUsersHelper(): Promise<User[]> {
           const response = await fetch(url);
           const users = await response.json();
           return users;
         }
-        const users = await fetchUsers();
-        console.log(users);
+        const users = await fetchUsersHelper();
         setUsers(users);
       } catch (error) {
         console.log(error);
       }
     };
-    fetchUsers();
+    // fetchUsers();
+    const fetchBeers = async () => {
+      try {
+        const url = API_URL + "/api/beers";
+        async function fetchBeersHelper(): Promise<Beer[]> {
+          const response = await fetch(url);
+          const beers = await response.json();
+          return beers;
+        }
+        const beers = await fetchBeersHelper();
+        setBeers(beers);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchBeers();
   }, []);
 
   return (
@@ -58,11 +73,18 @@ const HomeScreen = (props: HomeProps) => {
         <Text style={styles.buttonText}>Sign out</Text>
       </TouchableOpacity> */}
       <ScrollView>
-        {users.map((user) => (
+        {/* {users.map((user) => (
           <View key={user.id}>
             <Text>Name: {user.name}</Text>
             <Text>Email: {user.email}</Text>
             <Text>Age: {user.age}</Text>
+          </View>
+        ))} */}
+        {beers.map((beer) => (
+          <View key={beer.id}>
+            <Text>Name: {beer.name}</Text>
+            <Text>ABV: {beer.abv}</Text>
+            <Text>Description: {beer.descript}</Text>
           </View>
         ))}
       </ScrollView>
