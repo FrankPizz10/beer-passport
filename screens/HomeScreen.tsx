@@ -9,8 +9,9 @@ import {
 import { auth } from "../Models/firebase";
 import { useNavigation } from "@react-navigation/core";
 import { HomeProps } from "../types";
-import { getAllUsers } from "../Models/Collections";
 import { User } from "../Models/Collections";
+import axios from "axios";
+import { API_URL } from "@env";
 
 const HomeScreen = (props: HomeProps) => {
   const [users, setUsers] = useState([] as User[]);
@@ -30,8 +31,21 @@ const HomeScreen = (props: HomeProps) => {
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const users = await getAllUsers();
-      setUsers(users);
+      try {
+        const url = API_URL + "/api/users";
+        console.log(url);
+        // const { data: users } = await axios.get<User[]>(url);
+        async function fetchUsers(): Promise<User[]> {
+          const response = await fetch(url);
+          const users = await response.json();
+          return users;
+        }
+        const users = await fetchUsers();
+        console.log(users);
+        setUsers(users);
+      } catch (error) {
+        console.log(error);
+      }
     };
     fetchUsers();
   }, []);
