@@ -7,7 +7,7 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
 } from "react-native";
-import { auth } from "../firebase";
+import { auth } from "../Models/firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
