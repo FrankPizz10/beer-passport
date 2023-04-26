@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  Touchable,
+  TouchableOpacity,
+} from "react-native";
 import { CategoryProps } from "../types";
 import { useNavigation } from "@react-navigation/core";
 import { SelectList } from "react-native-dropdown-select-list";
@@ -45,6 +52,10 @@ const CategoryScreen = (props: CategoryProps) => {
     setSelected(cat!);
   };
 
+  const handleBeerPress = (beerId: number) => {
+    navigation.navigate("Beer", { id: beerId });
+  };
+
   return (
     <View>
       <SelectList
@@ -56,7 +67,9 @@ const CategoryScreen = (props: CategoryProps) => {
         {beersByCategory?.map((beer) => {
           return (
             <View key={beer.id} style={styles.beerCard}>
-              <Text>{beer.name}</Text>
+              <TouchableOpacity onPress={() => handleBeerPress(beer.id)}>
+                <Text>{beer.name}</Text>
+              </TouchableOpacity>
             </View>
           );
         })}
