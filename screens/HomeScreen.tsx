@@ -72,9 +72,12 @@ const HomeScreen = (props: HomeProps) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Beer List</Text>
-      <Text>WELCOME {auth.currentUser?.email}</Text>
-      <TouchableOpacity onPress={handleCategoryPage}>
-        <Text>Beers By Category</Text>
+      <Text style={styles.welcome}>Welcome {auth.currentUser?.email}</Text>
+      <TouchableOpacity onPress={handleCategoryPage} style={styles.button}>
+        <Text style={styles.buttonText}>Find Beer By Category</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button}>
+        <Text style={styles.buttonText}>Your Beers</Text>
       </TouchableOpacity>
       {/* <TouchableOpacity onPress={handleLogout} style={styles.button}>
         <Text style={styles.buttonText}>Sign out</Text>
@@ -110,6 +113,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 50,
     fontWeight: "bold",
+  },
+  welcome: {
+    fontSize: 20,
+    fontWeight: "bold",
+    margin: 10,
   },
   button: {
     backgroundColor: "blue",
