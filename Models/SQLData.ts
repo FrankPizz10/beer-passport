@@ -13,3 +13,9 @@ export interface Beer {
   add_user: number;
   last_mod: number;
 }
+
+export interface Category {
+  id: number;
+  cat_name: string;
+  last_mod: number;
+}

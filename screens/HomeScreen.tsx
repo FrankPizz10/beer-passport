@@ -11,7 +11,7 @@ import { useNavigation } from "@react-navigation/core";
 import { HomeProps } from "../types";
 import { User } from "../Models/Collections";
 import { API_URL } from "@env";
-import { Beer } from "../Models/BeerData";
+import { Beer } from "../Models/SQLData";
 
 const HomeScreen = (props: HomeProps) => {
   const [users, setUsers] = useState([] as User[]);
@@ -28,6 +28,10 @@ const HomeScreen = (props: HomeProps) => {
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  const handleCategoryPage = () => {
+    navigation.navigate("Category");
   };
 
   useEffect(() => {
@@ -67,27 +71,30 @@ const HomeScreen = (props: HomeProps) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Home Screen</Text>
-      {/* <Text>Email: {auth.currentUser?.email}</Text>
-      <TouchableOpacity onPress={handleLogout} style={styles.button}>
+      <Text style={styles.title}>Beer List</Text>
+      <Text>WELCOME {auth.currentUser?.email}</Text>
+      <TouchableOpacity onPress={handleCategoryPage}>
+        <Text>Beers By Category</Text>
+      </TouchableOpacity>
+      {/* <TouchableOpacity onPress={handleLogout} style={styles.button}>
         <Text style={styles.buttonText}>Sign out</Text>
       </TouchableOpacity> */}
-      <ScrollView>
-        {/* {users.map((user) => (
+      {/* <ScrollView> */}
+      {/* {users.map((user) => (
           <View key={user.id}>
             <Text>Name: {user.name}</Text>
             <Text>Email: {user.email}</Text>
             <Text>Age: {user.age}</Text>
           </View>
         ))} */}
-        {beers.map((beer) => (
-          <View key={beer.id}>
+      {/* {beers.map((beer) => (
+          <View key={beer.id} style={styles.beerCard}>
             <Text>Name: {beer.name}</Text>
             <Text>ABV: {beer.abv}</Text>
             <Text>Description: {beer.descript}</Text>
           </View>
-        ))}
-      </ScrollView>
+        ))} */}
+      {/* </ScrollView> */}
     </View>
   );
 };
@@ -117,5 +124,18 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 20,
     fontWeight: "bold",
+  },
+  beerCard: {
+    backgroundColor: "white",
+    padding: 10,
+    margin: 10,
+    borderRadius: 5,
+    shadowColor: "black",
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    shadowOffset: {
+      width: 1,
+      height: 1,
+    },
   },
 });
