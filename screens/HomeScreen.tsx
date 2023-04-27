@@ -8,15 +8,12 @@ import {
 } from "react-native";
 import { auth } from "../Models/firebase";
 import { useNavigation } from "@react-navigation/core";
-import { HomeProps } from "../types";
+import { HomeProps } from "../props";
 import { User } from "../Models/Collections";
 import { API_URL } from "@env";
-import { Beer } from "../Models/SQLData";
 
 const HomeScreen = (props: HomeProps) => {
-  const [users, setUsers] = useState([] as User[]);
-  const [beers, setBeers] = useState([] as Beer[]);
-
+  const [user, setUser] = useState({} as User);
   const navigation = useNavigation<(typeof props)["navigation"]>();
 
   const handleLogout = () => {
@@ -35,53 +32,38 @@ const HomeScreen = (props: HomeProps) => {
   };
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    const getUser = async () => {
       try {
-        const url = API_URL + "/api/users";
-        // console.log(url);
-        // const { data: users } = await axios.get<User[]>(url);
-        async function fetchUsersHelper(): Promise<User[]> {
+        const uid = auth.currentUser?.uid;
+        const url = `${API_URL}/api/users/${uid}`;
+        console.log(url);
+        async function getUserHelper(): Promise<User> {
           const response = await fetch(url);
-          const users = await response.json();
-          return users;
+          const cur_user = await response.json();
+          return cur_user;
         }
-        const users = await fetchUsersHelper();
-        setUsers(users);
+        const cur_user = await getUserHelper();
+        setUser(cur_user);
       } catch (error) {
         console.log(error);
       }
     };
-    // fetchUsers();
-    const fetchBeers = async () => {
-      try {
-        const url = API_URL + "/api/beers";
-        async function fetchBeersHelper(): Promise<Beer[]> {
-          const response = await fetch(url);
-          const beers = await response.json();
-          return beers;
-        }
-        const beers = await fetchBeersHelper();
-        setBeers(beers);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchBeers();
+    getUser();
   }, []);
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Beer List</Text>
-      <Text style={styles.welcome}>Welcome {auth.currentUser?.email}</Text>
+      <Text style={styles.welcome}>Welcome {user.username}</Text>
       <TouchableOpacity onPress={handleCategoryPage} style={styles.button}>
         <Text style={styles.buttonText}>Find Beer By Category</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.button}>
         <Text style={styles.buttonText}>Your Beers</Text>
       </TouchableOpacity>
-      {/* <TouchableOpacity onPress={handleLogout} style={styles.button}>
+      <TouchableOpacity onPress={handleLogout} style={styles.button}>
         <Text style={styles.buttonText}>Sign out</Text>
-      </TouchableOpacity> */}
+      </TouchableOpacity>
       {/* <ScrollView> */}
       {/* {users.map((user) => (
           <View key={user.id}>

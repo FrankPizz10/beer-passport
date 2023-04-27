@@ -7,7 +7,7 @@ import {
   Touchable,
   TouchableOpacity,
 } from "react-native";
-import { CategoryProps } from "../types";
+import { CategoryProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
 import { SelectList } from "react-native-dropdown-select-list";
 import { Category } from "../Models/SQLData";
@@ -29,7 +29,7 @@ const CategoryScreen = (props: CategoryProps) => {
   useEffect(() => {
     const fetchCatgeories = async () => {
       try {
-        const url = API_URL + "/api/categories";
+        const url = `${API_URL}/api/categories`;
         async function fetchCategoriesHelper(): Promise<CategoryMap[]> {
           const response = await fetch(url);
           const data = await response.json();

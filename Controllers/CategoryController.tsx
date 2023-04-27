@@ -7,7 +7,7 @@ export const useCategory = (cat: string) => {
   useEffect(() => {
     const fetchBeersByCat = async () => {
       try {
-        const url = API_URL + "/api/beers/cat";
+        const url = `${API_URL}/api/beers/cat`;
         async function fetchBeersHelper(): Promise<Beer[]> {
           console.log(cat);
           const response = await fetch(url, {

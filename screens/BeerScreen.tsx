@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { API_URL } from "@env";
 import { Beer } from "../Models/SQLData";
-import { BeerProps } from "../types";
+import { BeerProps } from "../props";
 
 const BeerScreen = (props: BeerProps) => {
   const [beer, setBeer] = useState({} as Beer);
@@ -16,7 +16,7 @@ const BeerScreen = (props: BeerProps) => {
   useEffect(() => {
     const fetchBeer = async () => {
       try {
-        const url = API_URL + "/api/beers/" + props.route.params.id;
+        const url = `${API_URL}/api/beers/${props.route.params.id}}`;
         async function fetchBeerHelper(): Promise<Beer> {
           const response = await fetch(url);
           const beer = await response.json();

@@ -1,10 +1,12 @@
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { Auth } from "firebase/auth";
 
 export type RootStackParamList = {
   Home: undefined;
   Login: undefined;
   Category: undefined;
   Beer: { id: number };
+  CreateNewAccount: undefined;
 };
 
 export type LoginProps = NativeStackScreenProps<RootStackParamList, "Login">;
@@ -14,3 +16,7 @@ export type CategoryProps = NativeStackScreenProps<
   "Category"
 >;
 export type BeerProps = NativeStackScreenProps<RootStackParamList, "Beer">;
+export type CreateAccountProps = NativeStackScreenProps<
+  RootStackParamList,
+  "CreateNewAccount"
+>;
