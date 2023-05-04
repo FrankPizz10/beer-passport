@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  ScrollView,
-} from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { API_URL } from "@env";
 import { Beer } from "../Models/SQLData";
 import { BeerProps } from "../props";

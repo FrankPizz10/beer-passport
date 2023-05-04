@@ -4,7 +4,6 @@ import {
   Text,
   View,
   ScrollView,
-  Touchable,
   TouchableOpacity,
 } from "react-native";
 import { CategoryProps } from "../props";

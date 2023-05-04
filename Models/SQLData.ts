@@ -46,3 +46,7 @@ export interface Style {
   style_name: string;
   last_mod: number;
 }
+
+export interface BeerId {
+  id: number;
+}

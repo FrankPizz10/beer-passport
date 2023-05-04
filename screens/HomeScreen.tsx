@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  ScrollView,
-} from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { auth } from "../Models/firebase";
 import { useNavigation } from "@react-navigation/core";
 import { HomeProps } from "../props";
@@ -27,8 +21,12 @@ const HomeScreen = (props: HomeProps) => {
       });
   };
 
-  const handleCategoryPage = () => {
+  const handleCategoryScreen = () => {
     navigation.navigate("Category");
+  };
+
+  const handleYourBeersScreen = () => {
+    navigation.navigate("YourBeers", { userId: user.id });
   };
 
   useEffect(() => {
@@ -55,10 +53,10 @@ const HomeScreen = (props: HomeProps) => {
     <View style={styles.container}>
       <Text style={styles.title}>Beer List</Text>
       <Text style={styles.welcome}>Welcome {user.username}</Text>
-      <TouchableOpacity onPress={handleCategoryPage} style={styles.button}>
+      <TouchableOpacity onPress={handleCategoryScreen} style={styles.button}>
         <Text style={styles.buttonText}>Find Beer By Category</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity onPress={handleYourBeersScreen} style={styles.button}>
         <Text style={styles.buttonText}>Your Beers</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={handleLogout} style={styles.button}>
