@@ -50,3 +50,19 @@ export interface Style {
 export interface BeerId {
   id: number;
 }
+
+export interface User {
+  id: number;
+  uid: string;
+  email: string;
+  age: number;
+  user_name: string;
+}
+
+export interface UserBeer {
+  id: number;
+  user_id: number;
+  beer_id: number;
+  tried: boolean;
+  liked: boolean;
+}

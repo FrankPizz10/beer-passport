@@ -1,43 +1,52 @@
 import { useEffect, useState } from "react";
-import { Beer, BeerId } from "../Models/SQLData";
+import { Beer, BeerId, UserBeer } from "../Models/SQLData";
 import { API_URL } from "@env";
 
-export const useYourBeers = (userId: string) => {
-  const [beers, setBeers] = useState([] as Beer[]);
-  useEffect(() => {
-    const fetchTriedBeers = async () => {
-      try {
-        const url = `${API_URL}/api/users/tried/${userId}`;
-        async function fetchBeersHelper(): Promise<BeerId[]> {
+export const useYourBeers = (userId: number) => {
+  const [triedBeers, setTriedBeers] = useState([] as Beer[]);
+  const [likedBeers, setLikedBeers] = useState([] as Beer[]);
+
+  const fetchBeers = async (userBeers: UserBeer[], tried: boolean) => {
+    try {
+      userBeers.forEach(async (userBeer) => {
+        const url = `${API_URL}/api/beers/${userBeer.beer_id}`;
+        async function fetchBeerHelper(): Promise<Beer> {
           const response = await fetch(url);
-          const triedBeers = await response.json();
-          console.log("triedbeersids: " + triedBeers);
-          return triedBeers;
+          const beer = await response.json();
+          return beer;
         }
-        const triedBeersIds = await fetchBeersHelper();
-        fetchBeers(triedBeersIds);
-      } catch (error) {
-        console.log(error);
+        const beer = await fetchBeerHelper();
+        if (tried) {
+          setTriedBeers((beers) => [...beers, beer]);
+        } else {
+          setLikedBeers((beers) => [...beers, beer]);
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchBeersHelper = async (url: string, tried: boolean) => {
+    try {
+      async function fetchTriedUserBeers(): Promise<UserBeer[]> {
+        const response = await fetch(url);
+        const triedBeers = await response.json();
+        return triedBeers;
       }
-    };
-    const fetchBeers = async (triedBeersIds: BeerId[]) => {
-      try {
-        triedBeersIds.forEach(async (beerId) => {
-          const url = `${API_URL}/api/beers/${beerId.id}`;
-          async function fetchBeerHelper(): Promise<Beer> {
-            const response = await fetch(url);
-            const beer = await response.json();
-            return beer;
-          }
-          const beer = await fetchBeerHelper();
-          setBeers((beers) => [...beers, beer]);
-          console.log("triedbeers: " + beers);
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchTriedBeers();
+      const userBeers = await fetchTriedUserBeers();
+      fetchBeers(userBeers, tried);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    const triedUrl = `${API_URL}/api/triedbeers/${userId}`;
+    const likedUrl = `${API_URL}/api/likedbeers/${userId}`;
+    fetchBeersHelper(triedUrl, true);
+    fetchBeersHelper(likedUrl, false);
   }, [userId]);
-  return beers;
+
+  return { triedBeers, likedBeers };
 };

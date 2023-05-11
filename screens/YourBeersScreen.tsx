@@ -15,25 +15,59 @@ const YourBeersScreen = (props: YourBeersProps) => {
   const [tried, setTried] = useState(true);
   const [liked, setLiked] = useState(false);
 
-  const triedBeers = useYourBeers(props.route.params.userId);
+  const { triedBeers, likedBeers } = useYourBeers(props.route.params.user_id);
 
   const handleBeerPress = (beerId: number) => {
-    navigation.navigate("Beer", { id: beerId });
+    navigation.navigate("Beer", {
+      user_id: props.route.params.user_id,
+      beer_id: beerId,
+    });
+  };
+
+  const handleTriedPress = () => {
+    setTried(true);
+    setLiked(false);
+  };
+
+  const handleLikedPress = () => {
+    setTried(false);
+    setLiked(true);
   };
 
   return (
     <View>
-      <Text> Your Beers Screen </Text>
+      <View style={styles.titleContainer}>
+        <Text style={styles.title}> Your Beers Screen </Text>
+      </View>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.button} onPress={handleTriedPress}>
+          <Text> Tried </Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={handleLikedPress}>
+          <Text> Liked </Text>
+        </TouchableOpacity>
+      </View>
       <ScrollView>
-        {triedBeers?.map((beer) => {
-          return (
-            <View key={beer.id} style={styles.beerCard}>
-              <TouchableOpacity onPress={() => handleBeerPress(beer.id)}>
-                <Text>{beer.name}</Text>
-              </TouchableOpacity>
-            </View>
-          );
-        })}
+        {tried &&
+          triedBeers?.map((beer) => {
+            return (
+              <View key={beer.id} style={styles.beerCard}>
+                <TouchableOpacity onPress={() => handleBeerPress(beer.id)}>
+                  <Text>{beer.name}</Text>
+                </TouchableOpacity>
+              </View>
+            );
+          })}
+        {liked &&
+          likedBeers?.map((beer) => {
+            return (
+              <View key={beer.id} style={styles.beerCard}>
+                <TouchableOpacity onPress={() => handleBeerPress(beer.id)}>
+                  <Text>{beer.name}</Text>
+                </TouchableOpacity>
+              </View>
+            );
+          })}
       </ScrollView>
     </View>
   );
@@ -42,6 +76,31 @@ const YourBeersScreen = (props: YourBeersProps) => {
 export default YourBeersScreen;
 
 const styles = StyleSheet.create({
+  titleContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  title: {
+    fontSize: 50,
+    fontWeight: "bold",
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+  },
+  button: {
+    backgroundColor: "#b266b2",
+    padding: 10,
+    margin: 10,
+    borderRadius: 5,
+    shadowColor: "black",
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    shadowOffset: {
+      width: 1,
+      height: 1,
+    },
+  },
   dropDown: {
     backgroundColor: "white",
     padding: 10,

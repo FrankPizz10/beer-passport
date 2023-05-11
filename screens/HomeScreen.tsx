@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { auth } from "../Models/firebase";
 import { useNavigation } from "@react-navigation/core";
 import { HomeProps } from "../props";
-import { User } from "../Models/Collections";
+import { User } from "../Models/SQLData";
 import { API_URL } from "@env";
 
 const HomeScreen = (props: HomeProps) => {
@@ -22,19 +22,18 @@ const HomeScreen = (props: HomeProps) => {
   };
 
   const handleCategoryScreen = () => {
-    navigation.navigate("Category");
+    navigation.navigate("Category", { user_id: user.id });
   };
 
   const handleYourBeersScreen = () => {
-    navigation.navigate("YourBeers", { userId: user.id });
+    navigation.navigate("YourBeers", { user_id: user.id });
   };
 
   useEffect(() => {
     const getUser = async () => {
       try {
         const uid = auth.currentUser?.uid;
-        const url = `${API_URL}/api/users/${uid}`;
-        console.log(url);
+        const url = `${API_URL}/api/userbyuid/${uid}`;
         async function getUserHelper(): Promise<User> {
           const response = await fetch(url);
           const cur_user = await response.json();
@@ -52,7 +51,7 @@ const HomeScreen = (props: HomeProps) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Beer List</Text>
-      <Text style={styles.welcome}>Welcome {user.username}</Text>
+      <Text style={styles.welcome}>Welcome {user.user_name}</Text>
       <TouchableOpacity onPress={handleCategoryScreen} style={styles.button}>
         <Text style={styles.buttonText}>Find Beer By Category</Text>
       </TouchableOpacity>
@@ -62,22 +61,6 @@ const HomeScreen = (props: HomeProps) => {
       <TouchableOpacity onPress={handleLogout} style={styles.button}>
         <Text style={styles.buttonText}>Sign out</Text>
       </TouchableOpacity>
-      {/* <ScrollView> */}
-      {/* {users.map((user) => (
-          <View key={user.id}>
-            <Text>Name: {user.name}</Text>
-            <Text>Email: {user.email}</Text>
-            <Text>Age: {user.age}</Text>
-          </View>
-        ))} */}
-      {/* {beers.map((beer) => (
-          <View key={beer.id} style={styles.beerCard}>
-            <Text>Name: {beer.name}</Text>
-            <Text>ABV: {beer.abv}</Text>
-            <Text>Description: {beer.descript}</Text>
-          </View>
-        ))} */}
-      {/* </ScrollView> */}
     </View>
   );
 };
