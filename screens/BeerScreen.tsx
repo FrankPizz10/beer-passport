@@ -18,6 +18,7 @@ const BeerScreen = (props: BeerProps) => {
           return beer;
         }
         const beer = await fetchBeerHelper();
+        console.log(beer.abv);
         setBeer(beer);
       } catch (error) {
         console.log(error);
@@ -88,19 +89,37 @@ const BeerScreen = (props: BeerProps) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{beer.name}</Text>
-      {beer.style && (
-        <Text style={styles.style}>Style: {beer.style.style_name}</Text>
+      <View style={styles.titleContainer}>
+        <Text style={styles.title}>{beer.name}</Text>
+      </View>
+      <View style={styles.styleContainer}>
+        {beer.style && (
+          <Text style={styles.style}>Style: {beer.style.style_name}</Text>
+        )}
+      </View>
+      {(beer.abv || beer.abv === 0) && (
+        <View style={styles.abvContainer}>
+          <Text style={styles.abv}>ABV: {beer.abv}</Text>
+        </View>
       )}
       {!!beer.descript && (
-        <Text style={styles.description}>Description: {beer.descript}</Text>
+        <View style={styles.descriptionContainer}>
+          <Text style={styles.description}>Description: {beer.descript}</Text>
+        </View>
       )}
-      {beer.abv && <Text style={styles.abv}>ABV: {beer.abv}</Text>}
-      {beer.brewery && (
-        <Text style={styles.brewery}>Brewery: {beer.brewery.name}</Text>
-      )}
-      {userBeer.tried && <Text>Tried</Text>}
-      {userBeer.liked && <Text>Liked</Text>}
+      <View style={styles.breweryContainer}>
+        {beer.brewery && (
+          <Text style={styles.brewery}>Brewery: {beer.brewery.name}</Text>
+        )}
+      </View>
+      <View style={styles.triedLikedContainer}>
+        {userBeer.tried && (
+          <Text style={styles.triedLiked}>You tried this beer!</Text>
+        )}
+        {userBeer.liked && (
+          <Text style={styles.triedLiked}>You liked this beer!</Text>
+        )}
+      </View>
       <View>
         <TouchableOpacity style={styles.button} onPress={handleTriedPress}>
           <Text> Tried </Text>
@@ -119,11 +138,23 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
+    marginTop: 50,
+  },
+  titleContainer: {
+    alignItems: "center",
     justifyContent: "center",
+    width: 300,
+    marginBottom: 20,
   },
   title: {
-    fontSize: 50,
+    fontSize: 40,
     fontWeight: "bold",
+    alignItems: "center",
+  },
+  styleContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 20,
   },
   style: {
     fontSize: 30,
@@ -134,13 +165,28 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     width: 400,
   },
+  descriptionContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 20,
+  },
   abv: {
     fontSize: 20,
     fontWeight: "bold",
   },
+  abvContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 20,
+  },
   brewery: {
     fontSize: 20,
     fontWeight: "bold",
+  },
+  breweryContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 20,
   },
   buttonContainer: {
     flexDirection: "row",
@@ -158,5 +204,12 @@ const styles = StyleSheet.create({
       width: 1,
       height: 1,
     },
+  },
+  triedLikedContainer: {
+    marginBottom: 20,
+  },
+  triedLiked: {
+    fontSize: 20,
+    fontWeight: "bold",
   },
 });
