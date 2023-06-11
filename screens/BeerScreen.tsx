@@ -12,13 +12,8 @@ const BeerScreen = (props: BeerProps) => {
     const fetchBeer = async () => {
       try {
         const url = `${API_URL}/api/beers/${props.route.params.beer_id}}`;
-        async function fetchBeerHelper(): Promise<Beer> {
-          const response = await fetch(url);
-          const beer = await response.json();
-          return beer;
-        }
-        const beer = await fetchBeerHelper();
-        console.log(beer.abv);
+        const response = await fetch(url);
+        const beer = await response.json();
         setBeer(beer);
       } catch (error) {
         console.log(error);
@@ -28,12 +23,8 @@ const BeerScreen = (props: BeerProps) => {
     const fetchUserBeer = async () => {
       try {
         const url = `${API_URL}/api/userbeer/${props.route.params.user_id}/${props.route.params.beer_id}}`;
-        async function fetchUserBeerHelper(): Promise<UserBeer> {
-          const response = await fetch(url);
-          const userBeer = await response.json();
-          return userBeer;
-        }
-        const userBeer = await fetchUserBeerHelper();
+        const response = await fetch(url);
+        const userBeer = await response.json();
         setUserBeer(userBeer);
       } catch (error) {
         console.log(error);

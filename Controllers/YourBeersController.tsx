@@ -10,12 +10,8 @@ export const useYourBeers = (userId: number) => {
     try {
       userBeers.forEach(async (userBeer) => {
         const url = `${API_URL}/api/beers/${userBeer.beer_id}`;
-        async function fetchBeerHelper(): Promise<Beer> {
-          const response = await fetch(url);
-          const beer = await response.json();
-          return beer;
-        }
-        const beer = await fetchBeerHelper();
+        const response = await fetch(url);
+        const beer = await response.json();
         if (tried) {
           setTriedBeers((beers) => [...beers, beer]);
         } else {
@@ -29,12 +25,8 @@ export const useYourBeers = (userId: number) => {
 
   const fetchBeersHelper = async (url: string, tried: boolean) => {
     try {
-      async function fetchTriedUserBeers(): Promise<UserBeer[]> {
-        const response = await fetch(url);
-        const triedBeers = await response.json();
-        return triedBeers;
-      }
-      const userBeers = await fetchTriedUserBeers();
+      const response = await fetch(url);
+      const userBeers = await response.json();
       fetchBeers(userBeers, tried);
     } catch (error) {
       console.log(error);

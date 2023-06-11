@@ -37,7 +37,7 @@ const YourBeersScreen = (props: YourBeersProps) => {
   return (
     <View>
       <View style={styles.titleContainer}>
-        <Text style={styles.title}> Your Beers Screen </Text>
+        <Text style={styles.title}> Your Beers </Text>
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={handleTriedPress}>

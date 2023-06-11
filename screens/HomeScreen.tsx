@@ -29,6 +29,10 @@ const HomeScreen = (props: HomeProps) => {
     navigation.navigate("YourBeers", { user_id: user.id });
   };
 
+  const handleSearchScreen = () => {
+    navigation.navigate("SearchBeers", { user_id: user.id });
+  };
+
   useEffect(() => {
     const getUser = async () => {
       try {
@@ -52,6 +56,9 @@ const HomeScreen = (props: HomeProps) => {
     <View style={styles.container}>
       <Text style={styles.title}>Beer Passport</Text>
       <Text style={styles.welcome}>Welcome {user.user_name}</Text>
+      <TouchableOpacity onPress={handleSearchScreen} style={styles.button}>
+        <Text style={styles.buttonText}>Search Beers</Text>
+      </TouchableOpacity>
       <TouchableOpacity onPress={handleCategoryScreen} style={styles.button}>
         <Text style={styles.buttonText}>Find Beer By Category</Text>
       </TouchableOpacity>
