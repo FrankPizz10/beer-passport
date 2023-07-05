@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  SafeAreaView,
+} from "react-native";
 import { auth } from "../Models/firebase";
 import { useNavigation } from "@react-navigation/core";
 import { HomeProps } from "../props";
@@ -53,22 +59,24 @@ const HomeScreen = (props: HomeProps) => {
   }, []);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Beer Passport</Text>
-      <Text style={styles.welcome}>Welcome {user.user_name}</Text>
-      <TouchableOpacity onPress={handleSearchScreen} style={styles.button}>
-        <Text style={styles.buttonText}>Search Beers</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={handleCategoryScreen} style={styles.button}>
-        <Text style={styles.buttonText}>Find Beer By Category</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={handleYourBeersScreen} style={styles.button}>
-        <Text style={styles.buttonText}>Your Beers</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={handleLogout} style={styles.button}>
-        <Text style={styles.buttonText}>Sign out</Text>
-      </TouchableOpacity>
-    </View>
+    <SafeAreaView>
+      <View style={styles.container}>
+        <Text style={styles.title}>Beer Passport</Text>
+        <Text style={styles.welcome}>Welcome {user.user_name}</Text>
+        <TouchableOpacity onPress={handleSearchScreen} style={styles.button}>
+          <Text style={styles.buttonText}>Search Beers</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleCategoryScreen} style={styles.button}>
+          <Text style={styles.buttonText}>Find Beer By Category</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleYourBeersScreen} style={styles.button}>
+          <Text style={styles.buttonText}>Your Beers</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleLogout} style={styles.button}>
+          <Text style={styles.buttonText}>Sign out</Text>
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
   );
 };
 
