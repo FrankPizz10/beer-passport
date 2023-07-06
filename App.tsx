@@ -9,6 +9,7 @@ import CreatNewAccount from "./screens/CreateNewAccount";
 import { RootStackParamList } from "./props";
 import YourBeersScreen from "./screens/YourBeersScreen";
 import SearchBeers from "./screens/SearchBeers";
+import YourBadgesScreen from "./screens/YourBadgesScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -27,6 +28,7 @@ export default function App() {
         <Stack.Screen name="CreateNewAccount" component={CreatNewAccount} />
         <Stack.Screen name="YourBeers" component={YourBeersScreen} />
         <Stack.Screen name="SearchBeers" component={SearchBeers} />
+        <Stack.Screen name="YourBadges" component={YourBadgesScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -39,6 +39,10 @@ const HomeScreen = (props: HomeProps) => {
     navigation.navigate("SearchBeers", { user_id: user.id });
   };
 
+  const handleBadgesScreen = () => {
+    navigation.navigate("YourBadges", { user_id: user.id });
+  };
+
   useEffect(() => {
     const getUser = async () => {
       try {
@@ -71,6 +75,9 @@ const HomeScreen = (props: HomeProps) => {
         </TouchableOpacity>
         <TouchableOpacity onPress={handleYourBeersScreen} style={styles.button}>
           <Text style={styles.buttonText}>Your Beers</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleBadgesScreen} style={styles.button}>
+          <Text style={styles.buttonText}>Your Badges</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={handleLogout} style={styles.button}>
           <Text style={styles.buttonText}>Sign out</Text>

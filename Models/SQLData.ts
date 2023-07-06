@@ -66,3 +66,19 @@ export interface UserBeer {
   tried: boolean;
   liked: boolean;
 }
+
+export interface Collection {
+  id: number;
+  name: string;
+  difficulty: number;
+  description: string;
+}
+
+export interface UserBadge {
+  id: number;
+  user_id: number;
+  collection_id: number;
+  earned: boolean;
+  progress: number;
+  collections: Collection;
+}
