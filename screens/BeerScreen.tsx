@@ -11,7 +11,7 @@ const BeerScreen = (props: BeerProps) => {
   useEffect(() => {
     const fetchBeer = async () => {
       try {
-        const url = `${API_URL}/api/beers/${props.route.params.beer_id}}`;
+        const url = `${API_URL}/api/beers/${props.route.params.beer_id}`;
         const response = await fetch(url);
         const beer = await response.json();
         setBeer(beer);
@@ -22,7 +22,7 @@ const BeerScreen = (props: BeerProps) => {
     fetchBeer();
     const fetchUserBeer = async () => {
       try {
-        const url = `${API_URL}/api/userbeer/${props.route.params.user_id}/${props.route.params.beer_id}}`;
+        const url = `${API_URL}/api/userbeer/${props.route.params.user_id}/${props.route.params.beer_id}`;
         const response = await fetch(url);
         const userBeer = await response.json();
         setUserBeer(userBeer);
@@ -41,7 +41,6 @@ const BeerScreen = (props: BeerProps) => {
         body: JSON.stringify({
           user_id: props.route.params.user_id,
           beer_id: props.route.params.beer_id,
-          tried: true,
           liked: userBeer.liked,
         }),
         headers: {
@@ -64,7 +63,6 @@ const BeerScreen = (props: BeerProps) => {
         body: JSON.stringify({
           user_id: props.route.params.user_id,
           beer_id: props.route.params.beer_id,
-          tried: userBeer.tried,
           liked: true,
         }),
         headers: {
