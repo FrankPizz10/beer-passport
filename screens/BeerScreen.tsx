@@ -7,6 +7,63 @@ import { BeerProps } from "../props";
 const BeerScreen = (props: BeerProps) => {
   const [beer, setBeer] = useState({} as Beer);
   const [userBeer, setUserBeer] = useState({} as UserBeer);
+  const [tried, setTried] = useState(false);
+  const [liked, setLiked] = useState(false);
+
+  const handleTriedPress = async () => {
+    try {
+      const url = `${API_URL}/api/userbeers/`;
+      const userBeer: UserBeer = {
+        user_id: props.route.params.user_id,
+        beer_id: props.route.params.beer_id,
+        liked: false,
+        collection_id: props.route.params.collection_id,
+      };
+      console.log(userBeer);
+      const response = await fetch(url, {
+        method: "POST",
+        body: JSON.stringify({
+          userBeer,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const newUserBeer = await response.json();
+      console.log(newUserBeer);
+      setUserBeer(newUserBeer);
+      setTried(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleLikedPress = async () => {
+    try {
+      const url = `${API_URL}/api/userbeers/`;
+      const userBeer: UserBeer = {
+        user_id: props.route.params.user_id,
+        beer_id: props.route.params.beer_id,
+        liked: true,
+        collection_id: props.route.params.collection_id,
+      };
+      console.log(userBeer);
+      const response = await fetch(url, {
+        method: "POST",
+        body: JSON.stringify({
+          userBeer,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const newUserBeer = await response.json();
+      setUserBeer(newUserBeer);
+      setLiked(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     const fetchBeer = async () => {
@@ -31,50 +88,7 @@ const BeerScreen = (props: BeerProps) => {
       }
     };
     fetchUserBeer();
-  }, []);
-
-  const handleTriedPress = async () => {
-    try {
-      const url = `${API_URL}/api/userbeers/`;
-      const response = await fetch(url, {
-        method: "POST",
-        body: JSON.stringify({
-          user_id: props.route.params.user_id,
-          beer_id: props.route.params.beer_id,
-          liked: userBeer.liked,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const newUserBeer = await response.json();
-      console.log(newUserBeer);
-      setUserBeer(newUserBeer);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleLikedPress = async () => {
-    try {
-      const url = `${API_URL}/api/userbeers/`;
-      const response = await fetch(url, {
-        method: "POST",
-        body: JSON.stringify({
-          user_id: props.route.params.user_id,
-          beer_id: props.route.params.beer_id,
-          liked: true,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const newUserBeer = await response.json();
-      setUserBeer(newUserBeer);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  }, [tried, liked]);
 
   return (
     <View style={styles.container}>
@@ -102,7 +116,7 @@ const BeerScreen = (props: BeerProps) => {
         )}
       </View>
       <View style={styles.triedLikedContainer}>
-        {userBeer.tried && (
+        {userBeer.id && (
           <Text style={styles.triedLiked}>You tried this beer!</Text>
         )}
         {userBeer.liked && (

@@ -15,6 +15,7 @@ export interface Beer {
   style?: Style;
   category?: Category;
   brewery?: Brewery;
+  collection_id?: number;
 }
 
 export interface Category {
@@ -60,11 +61,11 @@ export interface User {
 }
 
 export interface UserBeer {
-  id: number;
+  id?: number;
   user_id: number;
   beer_id: number;
-  tried: boolean;
   liked: boolean;
+  collection_id?: number;
 }
 
 export interface Collection {

@@ -47,10 +47,14 @@ const SearchBeerScreen = (props: SearchBeersProps) => {
     fetchBeers();
   }, []);
 
-  const handleBeerPress = (beerId: number) => {
+  const handleBeerPress = (
+    beerId: number,
+    collectionId: number | undefined
+  ) => {
     navigation.navigate("Beer", {
       user_id: props.route.params.user_id,
       beer_id: beerId,
+      collection_id: collectionId,
     });
   };
 
@@ -68,7 +72,9 @@ const SearchBeerScreen = (props: SearchBeersProps) => {
         {filteredList?.map((beer) => {
           return (
             <View key={beer.id} style={styles.beerCard}>
-              <TouchableOpacity onPress={() => handleBeerPress(beer.id)}>
+              <TouchableOpacity
+                onPress={() => handleBeerPress(beer.id, beer.collection_id)}
+              >
                 <Text>{beer.name}</Text>
               </TouchableOpacity>
             </View>
