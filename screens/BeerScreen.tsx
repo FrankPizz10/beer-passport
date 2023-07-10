@@ -115,6 +115,11 @@ const BeerScreen = (props: BeerProps) => {
           <Text style={styles.brewery}>Brewery: {beer.brewery.name}</Text>
         )}
       </View>
+      <View style={styles.breweryContainer}>
+        {beer.collection_id && (
+          <Text style={styles.brewery}>Collection: {beer.collection_id}</Text>
+        )}
+      </View>
       <View style={styles.triedLikedContainer}>
         {userBeer.id && (
           <Text style={styles.triedLiked}>You tried this beer!</Text>
