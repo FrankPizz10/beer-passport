@@ -16,8 +16,9 @@
     "firebase": "^9.20.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-native": "0.71.6",
+    "react-native": "0.71.7",
     "react-native-dotenv": "^3.4.8",
+    "react-native-dropdown-select-list": "^2.0.4",
     "react-native-web": "~0.18.10",
     "typescript": "^4.9.4"
   },
@@ -26,6 +27,7 @@
     "@tsconfig/react-native": "^3.0.0",
     "@types/jest": "^29.5.1",
     "@types/react": "^18.0.38",
+    "@types/react-native-material-dropdown": "^0.11.5",
     "@types/react-test-renderer": "^18.0.0",
     "typescript": "^4.9.4"
   },

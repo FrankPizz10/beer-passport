@@ -1,24 +1,26 @@
 import React, { useEffect, useState } from "react";
+import { CreateAccountProps } from "../props";
+import { useNavigation } from "@react-navigation/core";
 import {
-  StyleSheet,
-  TextInput,
-  Text,
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+} from "firebase/auth";
+import {
   View,
+  Text,
+  TextInput,
+  StyleSheet,
   KeyboardAvoidingView,
   TouchableOpacity,
 } from "react-native";
 import { auth } from "../Models/firebase";
-import {
-  createUserWithEmailAndPassword,
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
-import { useNavigation } from "@react-navigation/core";
-import { LoginProps } from "../props";
+import { API_URL } from "@env";
 
-const LoginScreen = (props: LoginProps) => {
+const CreateNewAccount = (props: CreateAccountProps) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [age, setAge] = useState("");
+  const [username, setUsername] = useState("");
 
   const navigation = useNavigation<(typeof props)["navigation"]>();
 
@@ -32,18 +34,27 @@ const LoginScreen = (props: LoginProps) => {
   }, []);
 
   const handleSignUp = async () => {
-    navigation.navigate("CreateNewAccount");
-  };
-
-  const handleLogin = async () => {
     try {
-      const userCredentials = await signInWithEmailAndPassword(
+      const userCredentials = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       );
-      const user = userCredentials.user;
-      console.log("Logged in with:", user.email);
+      const userUID = userCredentials.user.uid;
+      const url = `${API_URL}/api/users/`;
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: userUID,
+          username: username,
+          age: age,
+          email: email,
+        }),
+      });
     } catch (error: any) {
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -54,7 +65,7 @@ const LoginScreen = (props: LoginProps) => {
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
-      <Text style={styles.title}>Login Screen</Text>
+      <Text style={styles.title}>Create New Account</Text>
       <View style={styles.inputContainer}>
         <TextInput
           placeholder="Email"
@@ -69,20 +80,28 @@ const LoginScreen = (props: LoginProps) => {
           style={styles.input}
           secureTextEntry
         />
+        <TextInput
+          placeholder="Age"
+          keyboardType="numeric"
+          value={age}
+          onChangeText={(text) => setAge(text)}
+          style={styles.input}
+        />
+        <TextInput
+          placeholder="Username"
+          value={username}
+          onChangeText={(text) => setUsername(text)}
+          style={styles.input}
+        />
       </View>
-      <View>
-        <TouchableOpacity onPress={handleLogin} style={styles.button}>
-          <Text style={styles.buttonText}>Login</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={handleSignUp} style={styles.button}>
-          <Text style={styles.buttonText}>Register</Text>
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity onPress={handleSignUp} style={styles.button}>
+        <Text style={styles.buttonText}>Register</Text>
+      </TouchableOpacity>
     </KeyboardAvoidingView>
   );
 };
 
-export default LoginScreen;
+export default CreateNewAccount;
 
 const styles = StyleSheet.create({
   container: {
