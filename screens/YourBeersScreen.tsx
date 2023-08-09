@@ -56,9 +56,7 @@ const YourBeersScreen = (props: YourBeersProps) => {
           triedBeers?.map((beer) => {
             return (
               <View key={beer.id} style={styles.beerCard}>
-                <TouchableOpacity
-                  onPress={() => handleBeerPress(beer.id, beer.collection_id)}
-                >
+                <TouchableOpacity onPress={() => handleBeerPress(beer.id, 1)}>
                   <Text>{beer.name}</Text>
                 </TouchableOpacity>
               </View>
@@ -68,9 +66,7 @@ const YourBeersScreen = (props: YourBeersProps) => {
           likedBeers?.map((beer) => {
             return (
               <View key={beer.id} style={styles.beerCard}>
-                <TouchableOpacity
-                  onPress={() => handleBeerPress(beer.id, beer.collection_id)}
-                >
+                <TouchableOpacity onPress={() => handleBeerPress(beer.id, 1)}>
                   <Text>{beer.name}</Text>
                 </TouchableOpacity>
               </View>

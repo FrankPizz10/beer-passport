@@ -1,14 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { API_URL } from "@env";
-import { Beer, UserBeer } from "../Models/SQLData";
+import { Beer, CollectionBeer, UserBeer } from "../Models/SQLData";
 import { BeerProps } from "../props";
+import {
+  fetchBeer,
+  fetchCollectionBeer,
+  fetchUserBeer,
+} from "../Models/Requests";
 
 const BeerScreen = (props: BeerProps) => {
-  const [beer, setBeer] = useState({} as Beer);
-  const [userBeer, setUserBeer] = useState({} as UserBeer);
+  const [beer, setBeer] = useState({} as Beer | undefined);
+  const [userBeer, setUserBeer] = useState({} as UserBeer | undefined);
   const [tried, setTried] = useState(false);
   const [liked, setLiked] = useState(false);
+  const [collectionBeer, setCollectionBeer] = useState(
+    {} as CollectionBeer | undefined
+  );
 
   const handleTriedPress = async () => {
     try {
@@ -66,76 +74,81 @@ const BeerScreen = (props: BeerProps) => {
   };
 
   useEffect(() => {
-    const fetchBeer = async () => {
-      try {
-        const url = `${API_URL}/api/beers/${props.route.params.beer_id}`;
-        const response = await fetch(url);
-        const beer = await response.json();
-        setBeer(beer);
-      } catch (error) {
-        console.log(error);
-      }
+    const getAllBeerData = async () => {
+      await Promise.all([
+        fetchBeer(props.route.params.beer_id),
+        fetchUserBeer(props.route.params.user_id, props.route.params.beer_id),
+        fetchCollectionBeer(1, props.route.params.beer_id),
+      ])
+        .then((results) => {
+          const newBeer = results[0];
+          setBeer(results[0]);
+          setUserBeer(results[1]);
+          setCollectionBeer(results[2]);
+          console.log("All data fetched");
+          console.log(results[0] + " " + results[1] + " " + results[2]);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     };
-    fetchBeer();
-    const fetchUserBeer = async () => {
-      try {
-        const url = `${API_URL}/api/userbeer/${props.route.params.user_id}/${props.route.params.beer_id}`;
-        const response = await fetch(url);
-        const userBeer = await response.json();
-        setUserBeer(userBeer);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchUserBeer();
-  }, [tried, liked]);
+    getAllBeerData();
+  }, [tried, liked, props.route.params.beer_id, props.route.params.user_id]);
 
   return (
     <View style={styles.container}>
-      <View style={styles.titleContainer}>
-        <Text style={styles.title}>{beer.name}</Text>
-      </View>
-      <View style={styles.styleContainer}>
-        {beer.style && (
-          <Text style={styles.style}>Style: {beer.style.style_name}</Text>
-        )}
-      </View>
-      {(beer.abv || beer.abv === 0) && (
-        <View style={styles.abvContainer}>
-          <Text style={styles.abv}>ABV: {beer.abv}</Text>
+      {beer && (
+        <View>
+          <View style={styles.titleContainer}>
+            <Text style={styles.title}>{beer.name}</Text>
+          </View>
+          <View style={styles.styleContainer}>
+            {beer.style && (
+              <Text style={styles.style}>Style: {beer.style.style_name}</Text>
+            )}
+          </View>
+          {(beer.abv || beer.abv === 0) && (
+            <View style={styles.abvContainer}>
+              <Text style={styles.abv}>ABV: {beer.abv}</Text>
+            </View>
+          )}
+          {!!beer.descript && (
+            <View style={styles.descriptionContainer}>
+              <Text style={styles.description}>
+                Description: {beer.descript}
+              </Text>
+            </View>
+          )}
+          <View style={styles.breweryContainer}>
+            {beer.brewery && (
+              <Text style={styles.brewery}>Brewery: {beer.brewery.name}</Text>
+            )}
+          </View>
+          <View style={styles.breweryContainer}>
+            {collectionBeer && collectionBeer.collection_id && (
+              <Text style={styles.brewery}>
+                Collection: {collectionBeer.collection_id}
+              </Text>
+            )}
+          </View>
+          <View style={styles.triedLikedContainer}>
+            {userBeer && userBeer.id && (
+              <Text style={styles.triedLiked}>You tried this beer!</Text>
+            )}
+            {userBeer && userBeer.liked && (
+              <Text style={styles.triedLiked}>You liked this beer!</Text>
+            )}
+          </View>
+          <View>
+            <TouchableOpacity style={styles.button} onPress={handleTriedPress}>
+              <Text> Tried </Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={handleLikedPress}>
+              <Text> Liked </Text>
+            </TouchableOpacity>
+          </View>
         </View>
       )}
-      {!!beer.descript && (
-        <View style={styles.descriptionContainer}>
-          <Text style={styles.description}>Description: {beer.descript}</Text>
-        </View>
-      )}
-      <View style={styles.breweryContainer}>
-        {beer.brewery && (
-          <Text style={styles.brewery}>Brewery: {beer.brewery.name}</Text>
-        )}
-      </View>
-      <View style={styles.breweryContainer}>
-        {beer.collection_id && (
-          <Text style={styles.brewery}>Collection: {beer.collection_id}</Text>
-        )}
-      </View>
-      <View style={styles.triedLikedContainer}>
-        {userBeer.id && (
-          <Text style={styles.triedLiked}>You tried this beer!</Text>
-        )}
-        {userBeer.liked && (
-          <Text style={styles.triedLiked}>You liked this beer!</Text>
-        )}
-      </View>
-      <View>
-        <TouchableOpacity style={styles.button} onPress={handleTriedPress}>
-          <Text> Tried </Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={handleLikedPress}>
-          <Text> Liked </Text>
-        </TouchableOpacity>
-      </View>
     </View>
   );
 };

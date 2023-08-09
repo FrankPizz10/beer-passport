@@ -15,7 +15,6 @@ export interface Beer {
   style?: Style;
   category?: Category;
   brewery?: Brewery;
-  collection_id?: number;
 }
 
 export interface Category {
@@ -82,4 +81,10 @@ export interface UserBadge {
   earned: boolean;
   progress: number;
   collections: Collection;
+}
+
+export interface CollectionBeer {
+  id: number;
+  collection_id: number;
+  beer_id: number;
 }
