@@ -86,7 +86,9 @@ const BeerScreen = (props: BeerProps) => {
           setUserBeer(results[1]);
           setCollectionBeer(results[2]);
           console.log("All data fetched");
-          console.log(results[0] + " " + results[1] + " " + results[2]);
+          console.log(results[0]);
+          console.log(results[1]);
+          console.log(results[2]);
         })
         .catch((error) => {
           console.log(error);
