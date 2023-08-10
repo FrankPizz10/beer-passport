@@ -13,6 +13,7 @@ import { SelectList } from "react-native-dropdown-select-list";
 import { Beer, Category } from "../Models/SQLData";
 import { API_URL } from "@env";
 import { useCategory } from "../Controllers/CategoryController";
+import { fetchAllBeers } from "../Models/Requests";
 
 const useSearchFilter = (initialList: Beer[]) => {
   const [searchInput, setSearchInput] = useState("");
@@ -38,13 +39,12 @@ const SearchBeerScreen = (props: SearchBeersProps) => {
   const [beers, setBeers] = useState([] as Beer[]);
 
   useEffect(() => {
-    const fetchBeers = async () => {
-      const url = `${API_URL}/api/beers`;
-      const response = await fetch(url);
-      const beers = await response.json();
-      setBeers(beers);
+    const getBeersData = async () => {
+      await fetchAllBeers()
+        .then((data) => setBeers(data))
+        .catch((error) => console.log(error));
     };
-    fetchBeers();
+    getBeersData();
   }, []);
 
   const handleBeerPress = (

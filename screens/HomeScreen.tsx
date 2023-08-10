@@ -43,6 +43,10 @@ const HomeScreen = (props: HomeProps) => {
     navigation.navigate("YourBadges", { user_id: user.id });
   };
 
+  const handleCollectionsScreen = () => {
+    navigation.navigate("AllCollections", { user_id: user.id });
+  };
+
   useEffect(() => {
     const getUser = async () => {
       try {
@@ -78,6 +82,12 @@ const HomeScreen = (props: HomeProps) => {
         </TouchableOpacity>
         <TouchableOpacity onPress={handleBadgesScreen} style={styles.button}>
           <Text style={styles.buttonText}>Your Badges</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={handleCollectionsScreen}
+          style={styles.button}
+        >
+          <Text style={styles.buttonText}>Collections</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={handleLogout} style={styles.button}>
           <Text style={styles.buttonText}>Sign out</Text>

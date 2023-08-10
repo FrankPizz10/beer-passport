@@ -1,11 +1,19 @@
 // This is develop branch
 import { API_URL } from "@env";
-import { Beer, CollectionBeer, UserBeer } from "./SQLData";
+import { Beer, Collection, CollectionBeer, UserBeer } from "./SQLData";
+
+export const fetchAllBeers = async (): Promise<Beer[]> => {
+  const url = `${API_URL}/api/beers`;
+  const response = await fetch(url);
+  const beers = await response.json();
+  return beers;
+};
 
 export const fetchBeer = async (beer_id: number): Promise<Beer | undefined> => {
   try {
     const url = `${API_URL}/api/beers/${beer_id}`;
     const response = await fetch(url);
+    if (response.status === 204) return undefined;
     const beer = await response.json();
     return beer;
   } catch (error) {
@@ -20,6 +28,7 @@ export const fetchUserBeer = async (
   try {
     const url = `${API_URL}/api/userbeer/${user_id}/${beer_id}`;
     const response = await fetch(url);
+    if (response.status === 204) return undefined;
     const userBeer = await response.json();
     return userBeer;
   } catch (error) {
@@ -35,9 +44,27 @@ export const fetchCollectionBeer = async (
   try {
     const url = `${API_URL}/api/collectionbeer/${collection_id}/${beer_id}`;
     const response = await fetch(url);
+    if (response.status === 204) return undefined;
     const collectionBeer = await response.json();
     return collectionBeer;
   } catch (error) {
     console.log(error);
   }
+};
+
+export const fetchAllCollections = async (): Promise<Collection[]> => {
+  const url = `${API_URL}/api/collections`;
+  const response = await fetch(url);
+  const collections = await response.json();
+  return collections;
+};
+
+export const fetchCollection = async (
+  collectionId: number
+): Promise<Collection | undefined> => {
+  const url = `${API_URL}/api/collections/${collectionId}`;
+  const response = await fetch(url);
+  if (response.status === 204) return undefined;
+  const collection = await response.json();
+  return collection;
 };

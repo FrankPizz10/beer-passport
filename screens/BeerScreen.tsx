@@ -81,7 +81,6 @@ const BeerScreen = (props: BeerProps) => {
         fetchCollectionBeer(1, props.route.params.beer_id),
       ])
         .then((results) => {
-          const newBeer = results[0];
           setBeer(results[0]);
           setUserBeer(results[1]);
           setCollectionBeer(results[2]);
@@ -91,6 +90,7 @@ const BeerScreen = (props: BeerProps) => {
           console.log(results[2]);
         })
         .catch((error) => {
+          console.log("Error fetching data");
           console.log(error);
         });
     };

@@ -9,6 +9,8 @@ export type RootStackParamList = {
   YourBeers: { user_id: number };
   SearchBeers: { user_id: number };
   YourBadges: { user_id: number };
+  AllCollections: { user_id: number };
+  Collection: { user_id: number; collection_id: number };
 };
 
 export type LoginProps = NativeStackScreenProps<RootStackParamList, "Login">;
@@ -33,4 +35,14 @@ export type SearchBeersProps = NativeStackScreenProps<
 export type YourBadgesProps = NativeStackScreenProps<
   RootStackParamList,
   "YourBadges"
+>;
+
+export type AllCollectionsProps = NativeStackScreenProps<
+  RootStackParamList,
+  "AllCollections"
+>;
+
+export type CollectionProps = NativeStackScreenProps<
+  RootStackParamList,
+  "Collection"
 >;
