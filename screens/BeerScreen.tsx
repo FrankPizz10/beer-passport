@@ -8,6 +8,7 @@ import {
   fetchCollectionBeer,
   fetchUserBeer,
 } from "../Models/Requests";
+import { auth } from "../Models/firebase";
 
 const BeerScreen = (props: BeerProps) => {
   const [beer, setBeer] = useState({} as Beer | undefined);
@@ -28,6 +29,7 @@ const BeerScreen = (props: BeerProps) => {
         collection_id: props.route.params.collection_id,
       };
       console.log(userBeer);
+      const token = await auth.currentUser?.getIdToken();
       const response = await fetch(url, {
         method: "POST",
         body: JSON.stringify({
@@ -35,6 +37,7 @@ const BeerScreen = (props: BeerProps) => {
         }),
         headers: {
           "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
         },
       });
       const newUserBeer = await response.json();
@@ -56,6 +59,7 @@ const BeerScreen = (props: BeerProps) => {
         collection_id: props.route.params.collection_id,
       };
       console.log(userBeer);
+      const token = await auth.currentUser?.getIdToken();
       const response = await fetch(url, {
         method: "POST",
         body: JSON.stringify({
@@ -63,6 +67,7 @@ const BeerScreen = (props: BeerProps) => {
         }),
         headers: {
           "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
         },
       });
       const newUserBeer = await response.json();

@@ -1,10 +1,17 @@
 // This is develop branch
 import { API_URL } from "@env";
 import { Beer, Collection, CollectionBeer, UserBeer } from "./SQLData";
+import { auth } from "../Models/firebase";
 
 export const fetchAllBeers = async (): Promise<Beer[]> => {
   const url = `${API_URL}/api/beers`;
-  const response = await fetch(url);
+  const token = await auth.currentUser?.getIdToken();
+  const response = await fetch(url, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+  });
   const beers = await response.json();
   return beers;
 };
@@ -12,7 +19,13 @@ export const fetchAllBeers = async (): Promise<Beer[]> => {
 export const fetchBeer = async (beer_id: number): Promise<Beer | undefined> => {
   try {
     const url = `${API_URL}/api/beers/${beer_id}`;
-    const response = await fetch(url);
+    const token = await auth.currentUser?.getIdToken();
+    const response = await fetch(url, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
     if (response.status === 204) return undefined;
     const beer = await response.json();
     return beer;
@@ -27,7 +40,13 @@ export const fetchUserBeer = async (
 ): Promise<UserBeer | undefined> => {
   try {
     const url = `${API_URL}/api/userbeer/${user_id}/${beer_id}`;
-    const response = await fetch(url);
+    const token = await auth.currentUser?.getIdToken();
+    const response = await fetch(url, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
     if (response.status === 204) return undefined;
     const userBeer = await response.json();
     return userBeer;
@@ -43,7 +62,13 @@ export const fetchCollectionBeer = async (
   if (!collection_id) return;
   try {
     const url = `${API_URL}/api/collectionbeer/${collection_id}/${beer_id}`;
-    const response = await fetch(url);
+    const token = await auth.currentUser?.getIdToken();
+    const response = await fetch(url, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
     if (response.status === 204) return undefined;
     const collectionBeer = await response.json();
     return collectionBeer;
@@ -54,7 +79,13 @@ export const fetchCollectionBeer = async (
 
 export const fetchAllCollections = async (): Promise<Collection[]> => {
   const url = `${API_URL}/api/collections`;
-  const response = await fetch(url);
+  const token = await auth.currentUser?.getIdToken();
+  const response = await fetch(url, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+  });
   const collections = await response.json();
   return collections;
 };
@@ -63,7 +94,13 @@ export const fetchCollection = async (
   collectionId: number
 ): Promise<Collection | undefined> => {
   const url = `${API_URL}/api/collections/${collectionId}`;
-  const response = await fetch(url);
+  const token = await auth.currentUser?.getIdToken();
+  const response = await fetch(url, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+  });
   if (response.status === 204) return undefined;
   const collection = await response.json();
   return collection;
