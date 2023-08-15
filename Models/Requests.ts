@@ -105,3 +105,18 @@ export const fetchCollection = async (
   const collection = await response.json();
   return collection;
 };
+
+export const fetchCollectionBeers = async (
+  collectionId: number
+): Promise<CollectionBeer[]> => {
+  const url = `${API_URL}/api/collections/${collectionId}/beers/`;
+  const token = await auth.currentUser?.getIdToken();
+  const response = await fetch(url, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+  });
+  const collectionBeers = await response.json();
+  return collectionBeers;
+};

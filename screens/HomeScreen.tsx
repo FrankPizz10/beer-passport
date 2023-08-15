@@ -65,7 +65,7 @@ const HomeScreen = (props: HomeProps) => {
         const cur_user = await getUserHelper();
         setUser(cur_user);
       } catch (error) {
-        console.log(error);
+        console.log("GetUserError", error);
       }
     };
     getUser();

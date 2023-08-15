@@ -29,7 +29,7 @@ const AllCollectionsScreen = (props: AllCollectionsProps) => {
         .catch((error) => console.log(error));
     };
     getCollectionData();
-  });
+  }, []);
 
   return (
     <View>
