@@ -56,10 +56,11 @@ const CollectionScreen = (props: CollectionProps) => {
 
   return (
     <View>
-      <Text>CollectionScreen</Text>
-      <Text>{collection?.name}</Text>
-      <Text>{collection?.description}</Text>
-      <Text>{collection?.difficulty}</Text>
+      <Text style={styles.CollectionTitle}>{collection?.name}</Text>
+      <Text style={styles.CollectionDetails}>{collection?.description}</Text>
+      <Text style={styles.CollectionDetails}>
+        Difficulty: {collection?.difficulty}
+      </Text>
       <ScrollView>
         {beers?.map((beer) => {
           return (
@@ -104,5 +105,15 @@ const styles = StyleSheet.create({
     borderStyle: "solid",
     borderColor: "black",
     padding: 10,
+  },
+  CollectionTitle: {
+    fontSize: 30,
+    textAlign: "center",
+    margin: 10,
+  },
+  CollectionDetails: {
+    fontSize: 20,
+    textAlign: "center",
+    margin: 10,
   },
 });

@@ -171,7 +171,6 @@ const styles = StyleSheet.create({
   titleContainer: {
     alignItems: "center",
     justifyContent: "center",
-    width: 300,
     marginBottom: 20,
   },
   title: {
