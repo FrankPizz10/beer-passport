@@ -64,7 +64,6 @@ export interface UserBeer {
   user_id: number;
   beer_id: number;
   liked: boolean;
-  collection_id?: number;
 }
 
 export interface Collection {

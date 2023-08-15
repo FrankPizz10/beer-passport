@@ -106,10 +106,25 @@ export const fetchCollection = async (
   return collection;
 };
 
-export const fetchCollectionBeers = async (
+export const fetchCollectionBeersByCollectionId = async (
   collectionId: number
 ): Promise<CollectionBeer[]> => {
   const url = `${API_URL}/api/collections/${collectionId}/beers/`;
+  const token = await auth.currentUser?.getIdToken();
+  const response = await fetch(url, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+  });
+  const collectionBeers = await response.json();
+  return collectionBeers;
+};
+
+export const fetchCollectionBeersByBeerId = async (
+  beerId: number
+): Promise<CollectionBeer[]> => {
+  const url = `${API_URL}/api/beers/${beerId}/collections/`;
   const token = await auth.currentUser?.getIdToken();
   const response = await fetch(url, {
     headers: {

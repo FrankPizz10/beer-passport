@@ -5,7 +5,8 @@ import { Beer, CollectionBeer, UserBeer } from "../Models/SQLData";
 import { BeerProps } from "../props";
 import {
   fetchBeer,
-  fetchCollectionBeer,
+  fetchCollection,
+  fetchCollectionBeersByBeerId,
   fetchUserBeer,
 } from "../Models/Requests";
 import { auth } from "../Models/firebase";
@@ -15,9 +16,7 @@ const BeerScreen = (props: BeerProps) => {
   const [userBeer, setUserBeer] = useState({} as UserBeer | undefined);
   const [tried, setTried] = useState(false);
   const [liked, setLiked] = useState(false);
-  const [collectionBeer, setCollectionBeer] = useState(
-    {} as CollectionBeer | undefined
-  );
+  const [collectionNames, setCollectionNames] = useState([] as string[]);
 
   const handleTriedPress = async () => {
     try {
@@ -26,7 +25,6 @@ const BeerScreen = (props: BeerProps) => {
         user_id: props.route.params.user_id,
         beer_id: props.route.params.beer_id,
         liked: false,
-        collection_id: props.route.params.collection_id,
       };
       console.log(userBeer);
       const token = await auth.currentUser?.getIdToken();
@@ -56,7 +54,6 @@ const BeerScreen = (props: BeerProps) => {
         user_id: props.route.params.user_id,
         beer_id: props.route.params.beer_id,
         liked: true,
-        collection_id: props.route.params.collection_id,
       };
       console.log(userBeer);
       const token = await auth.currentUser?.getIdToken();
@@ -83,16 +80,18 @@ const BeerScreen = (props: BeerProps) => {
       await Promise.all([
         fetchBeer(props.route.params.beer_id),
         fetchUserBeer(props.route.params.user_id, props.route.params.beer_id),
-        fetchCollectionBeer(1, props.route.params.beer_id),
+        fetchCollectionBeersByBeerId(props.route.params.beer_id),
       ])
         .then((results) => {
           setBeer(results[0]);
           setUserBeer(results[1]);
-          setCollectionBeer(results[2]);
-          console.log("All data fetched");
-          console.log(results[0]);
-          console.log(results[1]);
-          console.log(results[2]);
+          results[2].forEach((collectionBeer: CollectionBeer) => {
+            fetchCollection(collectionBeer.collection_id).then((collection) => {
+              if (collection) {
+                setCollectionNames([...collectionNames, collection.name]);
+              }
+            });
+          });
         })
         .catch((error) => {
           console.log("Error fetching data");
@@ -132,9 +131,9 @@ const BeerScreen = (props: BeerProps) => {
             )}
           </View>
           <View style={styles.breweryContainer}>
-            {collectionBeer && collectionBeer.collection_id && (
+            {collectionNames.length > 0 && (
               <Text style={styles.brewery}>
-                Collection: {collectionBeer.collection_id}
+                Collections: {collectionNames.join(", ")}
               </Text>
             )}
           </View>

@@ -4,7 +4,7 @@ export type RootStackParamList = {
   Home: undefined;
   Login: undefined;
   Category: { user_id: number };
-  Beer: { user_id: number; beer_id: number; collection_id: number | undefined };
+  Beer: { user_id: number; beer_id: number };
   CreateNewAccount: undefined;
   YourBeers: { user_id: number };
   SearchBeers: { user_id: number };

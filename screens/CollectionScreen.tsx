@@ -10,7 +10,7 @@ import { Beer, Collection, CollectionBeer } from "../Models/SQLData";
 import {
   fetchBeer,
   fetchCollection,
-  fetchCollectionBeers,
+  fetchCollectionBeersByCollectionId,
 } from "../Models/Requests";
 import { CollectionProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
@@ -22,7 +22,7 @@ const CollectionScreen = (props: CollectionProps) => {
 
   useEffect(() => {
     const getCollectionBeers = async () => {
-      await fetchCollectionBeers(props.route.params.collection_id)
+      await fetchCollectionBeersByCollectionId(props.route.params.collection_id)
         .then((collectionBeer) =>
           collectionBeer.map((beer) => {
             fetchBeer(beer.beer_id).then((beer) => {
@@ -50,7 +50,6 @@ const CollectionScreen = (props: CollectionProps) => {
     navigation.navigate("Beer", {
       user_id: props.route.params.user_id,
       beer_id: beerId,
-      collection_id: collectionId,
     });
   };
 
