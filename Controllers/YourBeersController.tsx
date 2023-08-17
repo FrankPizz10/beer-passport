@@ -21,9 +21,11 @@ export const useYourBeers = (userId: number) => {
         });
         const beer = await response.json();
         if (tried) {
-          setTriedBeers((beers) => [...beers, beer]);
+          if (triedBeers.find((b) => b.id === beer.id)) return;
+          setTriedBeers((prevTriedBeers) => [...prevTriedBeers, beer]);
         } else {
-          setLikedBeers((beers) => [...beers, beer]);
+          if (likedBeers.find((b) => b.id === beer.id)) return;
+          setLikedBeers((prevLikeBeers) => [...prevLikeBeers, beer]);
         }
       });
     } catch (error) {

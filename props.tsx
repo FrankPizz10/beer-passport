@@ -13,6 +13,18 @@ export type RootStackParamList = {
   Collection: { user_id: number; collection_id: number };
 };
 
+export type RouterProps =
+  | LoginProps
+  | HomeProps
+  | CategoryProps
+  | BeerProps
+  | CreateAccountProps
+  | YourBeersProps
+  | SearchBeersProps
+  | YourBadgesProps
+  | AllCollectionsProps
+  | CollectionProps;
+
 export type LoginProps = NativeStackScreenProps<RootStackParamList, "Login">;
 export type HomeProps = NativeStackScreenProps<RootStackParamList, "Home">;
 export type CategoryProps = NativeStackScreenProps<

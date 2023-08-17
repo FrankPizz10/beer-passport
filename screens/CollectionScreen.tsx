@@ -5,6 +5,7 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  SafeAreaView,
 } from "react-native";
 import { Beer, Collection, CollectionBeer } from "../Models/SQLData";
 import {
@@ -14,6 +15,7 @@ import {
 } from "../Models/Requests";
 import { CollectionProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
+import HomeButton from "./HomeButton";
 
 const CollectionScreen = (props: CollectionProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
@@ -21,32 +23,24 @@ const CollectionScreen = (props: CollectionProps) => {
   const [beers, setBeers] = useState([] as Beer[]);
 
   useEffect(() => {
-    const getCollectionBeers = async () => {
-      await fetchCollectionBeersByCollectionId(props.route.params.collection_id)
-        .then((collectionBeer) =>
-          collectionBeer.map((beer) => {
-            fetchBeer(beer.beer_id).then((beer) => {
-              if (beer) {
-                setBeers([...beers, beer]);
-              }
-            });
-          })
-        )
-        .catch((error) => console.log(error));
-    };
-    getCollectionBeers();
     const getCollectionData = async () => {
-      await fetchCollection(props.route.params.collection_id)
-        .then((data) => setCollection(data))
-        .catch((error) => console.log(error));
+      await Promise.all([
+        fetchCollectionBeersByCollectionId(props.route.params.collection_id),
+        fetchCollection(props.route.params.collection_id),
+      ]).then((results) => {
+        setCollection(results[1]);
+        results[0].forEach((collectionBeer: CollectionBeer) => {
+          fetchBeer(collectionBeer.beer_id).then((beer) => {
+            if (!beer || beers.find((b) => b.id === beer.id)) return;
+            setBeers((prevBeers) => [...prevBeers, beer]);
+          });
+        });
+      });
     };
     getCollectionData();
   }, [props.route.params.collection_id, props.route.params.user_id]);
 
-  const handleBeerPress = (
-    beerId: number,
-    collectionId: number | undefined
-  ) => {
+  const handleBeerPress = (beerId: number) => {
     navigation.navigate("Beer", {
       user_id: props.route.params.user_id,
       beer_id: beerId,
@@ -54,7 +48,10 @@ const CollectionScreen = (props: CollectionProps) => {
   };
 
   return (
-    <View>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.HomeButton}>
+        <HomeButton route={props.route} navigation={props.navigation} />
+      </View>
       <Text style={styles.CollectionTitle}>{collection?.name}</Text>
       <Text style={styles.CollectionDetails}>{collection?.description}</Text>
       <Text style={styles.CollectionDetails}>
@@ -64,20 +61,24 @@ const CollectionScreen = (props: CollectionProps) => {
         {beers?.map((beer) => {
           return (
             <View key={beer.id} style={styles.beerCard}>
-              <TouchableOpacity onPress={() => handleBeerPress(beer.id, 1)}>
+              <TouchableOpacity onPress={() => handleBeerPress(beer.id)}>
                 <Text>{beer.name}</Text>
               </TouchableOpacity>
             </View>
           );
         })}
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 
 export default CollectionScreen;
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginTop: 10,
+  },
   dropDown: {
     backgroundColor: "white",
     padding: 10,
@@ -114,5 +115,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: "center",
     margin: 10,
+  },
+  HomeButton: {
+    alignItems: "flex-end",
+    justifyContent: "flex-end",
+    marginRight: 15,
+    height: 80,
   },
 });

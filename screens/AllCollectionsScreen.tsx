@@ -5,11 +5,13 @@ import {
   ScrollView,
   TouchableOpacity,
   StyleSheet,
+  SafeAreaView,
 } from "react-native";
 import { Collection } from "../Models/SQLData";
 import { fetchAllCollections } from "../Models/Requests";
 import { AllCollectionsProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
+import HomeButton from "./HomeButton";
 
 const AllCollectionsScreen = (props: AllCollectionsProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
@@ -32,7 +34,10 @@ const AllCollectionsScreen = (props: AllCollectionsProps) => {
   }, []);
 
   return (
-    <View>
+    <SafeAreaView>
+      <View style={styles.HomeButton}>
+        <HomeButton route={props.route} navigation={props.navigation} />
+      </View>
       <Text style={styles.ScreenTitle}>CollectionsScreen</Text>
       <ScrollView>
         {collections?.map((collection) => {
@@ -47,13 +52,17 @@ const AllCollectionsScreen = (props: AllCollectionsProps) => {
           );
         })}
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 
 export default AllCollectionsScreen;
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginTop: 10,
+  },
   dropDown: {
     backgroundColor: "white",
     padding: 10,
@@ -86,5 +95,11 @@ const styles = StyleSheet.create({
     borderStyle: "solid",
     borderColor: "black",
     padding: 10,
+  },
+  HomeButton: {
+    alignItems: "flex-end",
+    justifyContent: "flex-end",
+    marginRight: 15,
+    height: 80,
   },
 });
