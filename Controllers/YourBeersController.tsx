@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Beer, BeerId, UserBeer } from "../Models/SQLData";
 import { API_URL } from "@env";
+import { auth } from "../Models/firebase";
 
 export const useYourBeers = (userId: number) => {
   const [triedBeers, setTriedBeers] = useState([] as Beer[]);
@@ -10,12 +11,21 @@ export const useYourBeers = (userId: number) => {
     try {
       userBeers.forEach(async (userBeer) => {
         const url = `${API_URL}/api/beers/${userBeer.beer_id}`;
-        const response = await fetch(url);
+        const token = await auth.currentUser?.getIdToken();
+        const response = await fetch(url, {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        });
         const beer = await response.json();
         if (tried) {
-          setTriedBeers((beers) => [...beers, beer]);
+          if (triedBeers.find((b) => b.id === beer.id)) return;
+          setTriedBeers((prevTriedBeers) => [...prevTriedBeers, beer]);
         } else {
-          setLikedBeers((beers) => [...beers, beer]);
+          if (likedBeers.find((b) => b.id === beer.id)) return;
+          setLikedBeers((prevLikeBeers) => [...prevLikeBeers, beer]);
         }
       });
     } catch (error) {
@@ -25,7 +35,14 @@ export const useYourBeers = (userId: number) => {
 
   const fetchBeersHelper = async (url: string, tried: boolean) => {
     try {
-      const response = await fetch(url);
+      const token = await auth.currentUser?.getIdToken();
+      const response = await fetch(url, {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
       const userBeers = await response.json();
       fetchBeers(userBeers, tried);
     } catch (error) {

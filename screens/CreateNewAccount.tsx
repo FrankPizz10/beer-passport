@@ -42,11 +42,13 @@ const CreateNewAccount = (props: CreateAccountProps) => {
       );
       const userUID = userCredentials.user.uid;
       const url = `${API_URL}/api/users/`;
+      const token = await auth.currentUser?.getIdToken();
       const response = await fetch(url, {
         method: "POST",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
         },
         body: JSON.stringify({
           id: userUID,
