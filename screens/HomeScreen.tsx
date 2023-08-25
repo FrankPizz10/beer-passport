@@ -11,6 +11,7 @@ import { useNavigation } from "@react-navigation/core";
 import { HomeProps } from "../props";
 import { User } from "../Models/SQLData";
 import { API_URL } from "@env";
+import { ButtonColor, TitleColor } from "./colors";
 
 const HomeScreen = (props: HomeProps) => {
   const [user, setUser] = useState({} as User);
@@ -72,55 +73,82 @@ const HomeScreen = (props: HomeProps) => {
   }, []);
 
   return (
-    // <SafeAreaView>
-    <View style={styles.container}>
-      <Text style={styles.title}>Beer Passport</Text>
-      <Text style={styles.welcome}>Welcome {user.user_name}</Text>
-      <TouchableOpacity onPress={handleSearchScreen} style={styles.button}>
-        <Text style={styles.buttonText}>Search Beers</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={handleCategoryScreen} style={styles.button}>
-        <Text style={styles.buttonText}>Find Beer By Category</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={handleYourBeersScreen} style={styles.button}>
-        <Text style={styles.buttonText}>Your Beers</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={handleBadgesScreen} style={styles.button}>
-        <Text style={styles.buttonText}>Your Badges</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={handleCollectionsScreen} style={styles.button}>
-        <Text style={styles.buttonText}>Collections</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={handleLogout} style={styles.button}>
-        <Text style={styles.buttonText}>Sign out</Text>
-      </TouchableOpacity>
-    </View>
-    /* </SafeAreaView> */
+    <SafeAreaView style={styles.screen}>
+      <View style={styles.container}>
+        <Text style={styles.title}>Beer Passport</Text>
+        <Text style={styles.welcome}>Welcome {user.user_name}</Text>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity onPress={handleSearchScreen} style={styles.button}>
+            <Text style={styles.buttonText}>Search Beers</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={handleCategoryScreen}
+            style={styles.button}
+          >
+            <Text style={styles.buttonText}>Find Beer By Category</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={handleYourBeersScreen}
+            style={styles.button}
+          >
+            <Text style={styles.buttonText}>Your Beers</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleBadgesScreen} style={styles.button}>
+            <Text style={styles.buttonText}>Your Badges</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={handleCollectionsScreen}
+            style={styles.button}
+          >
+            <Text style={styles.buttonText}>Collections</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleLogout} style={styles.button}>
+            <Text style={styles.buttonText}>Sign out</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </SafeAreaView>
   );
 };
 
 export default HomeScreen;
 
 const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    backgroundColor: "#00A1E1",
+  },
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    marginTop: 10,
   },
   title: {
     fontSize: 50,
+    height: 80,
     fontWeight: "bold",
+    marginTop: 30,
+    textAlign: "center",
+    color: TitleColor,
   },
   welcome: {
     fontSize: 20,
     fontWeight: "bold",
     margin: 10,
+    height: 50,
+    textAlign: "center",
+    color: TitleColor,
+  },
+  buttonContainer: {
+    alignItems: "center",
+    justifyContent: "center",
   },
   button: {
-    backgroundColor: "blue",
+    backgroundColor: ButtonColor,
     color: "white",
+    height: 50,
     padding: 10,
     margin: 10,
+    width: 300,
     borderRadius: 5,
     alignItems: "center",
     justifyContent: "center",
@@ -129,18 +157,5 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 20,
     fontWeight: "bold",
-  },
-  beerCard: {
-    backgroundColor: "white",
-    padding: 10,
-    margin: 10,
-    borderRadius: 5,
-    shadowColor: "black",
-    shadowOpacity: 0.5,
-    shadowRadius: 5,
-    shadowOffset: {
-      width: 1,
-      height: 1,
-    },
   },
 });

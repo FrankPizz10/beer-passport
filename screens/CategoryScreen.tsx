@@ -61,7 +61,6 @@ const CategoryScreen = (props: CategoryProps) => {
     navigation.navigate("Beer", {
       user_id: props.route.params.user_id,
       beer_id: beerId,
-      collection_id: 1,
     });
   };
 

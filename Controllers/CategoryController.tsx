@@ -8,10 +8,10 @@ export const useCategory = (cat: string) => {
   useEffect(() => {
     const fetchBeersByCat = async () => {
       try {
+        if (!cat) return;
         const url = `${API_URL}/api/beers/cat`;
         const token = await auth.currentUser?.getIdToken();
         async function fetchBeersHelper(): Promise<Beer[]> {
-          console.log(cat);
           const response = await fetch(url, {
             method: "POST",
             headers: {
