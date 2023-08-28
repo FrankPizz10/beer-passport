@@ -66,6 +66,7 @@ const SearchBeerScreen = (props: SearchBeersProps) => {
         style={styles.input}
         value={searchInput}
         onChangeText={(text) => setSearchInput(text)}
+        placeholder="Search for a beer"
       />
       <ScrollView>
         {filteredList?.map((beer) => {

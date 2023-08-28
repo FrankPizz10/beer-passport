@@ -24,7 +24,7 @@ const YourBadgesScreen = (props: YourBadgesProps) => {
         <HomeButton route={props.route} navigation={props.navigation} />
       </View>
       <View style={styles.titleContainer}>
-        <Text style={styles.pageTitle}> Your Badges </Text>
+        <Text style={styles.pageTitle}> My Badges </Text>
       </View>
       <ScrollView>
         {userBadges?.map((badge) => {

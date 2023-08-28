@@ -70,6 +70,7 @@ const CategoryScreen = (props: CategoryProps) => {
         setSelected={handleSelected}
         data={categories}
         boxStyles={styles.dropDown}
+        placeholder="Select a category"
       />
       <ScrollView>
         {beersByCategory?.map((beer) => {

@@ -43,7 +43,7 @@ const YourBeersScreen = (props: YourBeersProps) => {
         <HomeButton route={props.route} navigation={props.navigation} />
       </View>
       <View style={styles.titleContainer}>
-        <Text style={styles.title}> Your Beers </Text>
+        <Text style={styles.title}> My Beers </Text>
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={handleTriedPress}>

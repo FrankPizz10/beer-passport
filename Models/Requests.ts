@@ -138,7 +138,6 @@ export const fetchCollectionBeersByBeerId = async (
 
 export const fetchFriends = async (userId: number): Promise<Friend[]> => {
   const url = `${API_URL}/api/friends/${userId}`;
-  console.log(url);
   const token = await auth.currentUser?.getIdToken();
   const response = await fetch(url, {
     headers: {

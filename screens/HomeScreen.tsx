@@ -91,10 +91,10 @@ const HomeScreen = (props: HomeProps) => {
             onPress={handleYourBeersScreen}
             style={styles.button}
           >
-            <Text style={styles.buttonText}>Your Beers</Text>
+            <Text style={styles.buttonText}>My Beers</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={handleBadgesScreen} style={styles.button}>
-            <Text style={styles.buttonText}>Your Badges</Text>
+            <Text style={styles.buttonText}>My Badges</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={handleCollectionsScreen}
@@ -108,7 +108,7 @@ const HomeScreen = (props: HomeProps) => {
             }}
             style={styles.button}
           >
-            <Text style={styles.buttonText}>Friends</Text>
+            <Text style={styles.buttonText}>My Friends</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={handleLogout} style={styles.button}>
             <Text style={styles.buttonText}>Sign out</Text>

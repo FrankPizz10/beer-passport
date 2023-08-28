@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  StyleSheet,
+  SafeAreaView,
+} from "react-native";
 import { User } from "../Models/SQLData";
 import { fetchFriends } from "../Models/Requests";
 import { FriendsProps } from "../props";
@@ -19,19 +26,47 @@ const FriendScreen = (props: FriendsProps) => {
   }, []);
 
   return (
-    <View>
-      <Text>Friend Screen</Text>
+    <SafeAreaView>
+      <Text style={styles.ScreenTitle}>My Friends</Text>
       <ScrollView>
         {friends.map((friend) => {
           return (
-            <View key={friend.id}>
-              <Text>{friend.user_name}</Text>
+            <View key={friend.id} style={styles.beerCard}>
+              <TouchableOpacity>
+                <Text>{friend.user_name}</Text>
+              </TouchableOpacity>
             </View>
           );
         })}
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginTop: 10,
+  },
+  ScreenTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center",
+    margin: 10,
+  },
+  beerCard: {
+    backgroundColor: "lightblue",
+    padding: 10,
+    margin: 10,
+    borderRadius: 5,
+    shadowColor: "black",
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    shadowOffset: {
+      width: 1,
+      height: 1,
+    },
+  },
+});
 
 export default FriendScreen;

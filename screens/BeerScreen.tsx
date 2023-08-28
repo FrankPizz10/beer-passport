@@ -38,7 +38,6 @@ const BeerScreen = (props: BeerProps) => {
         liked: false,
         collection_id: collectionId,
       };
-      console.log(userBeer);
       const token = await auth.currentUser?.getIdToken();
       const response = await fetch(url, {
         method: "POST",
@@ -51,7 +50,6 @@ const BeerScreen = (props: BeerProps) => {
         },
       });
       const newUserBeer = await response.json();
-      console.log(newUserBeer);
       setUserBeer(newUserBeer);
       setTried(true);
     } catch (error) {
@@ -68,7 +66,6 @@ const BeerScreen = (props: BeerProps) => {
         liked: true,
         collection_id: collectionId,
       };
-      console.log(userBeer);
       const token = await auth.currentUser?.getIdToken();
       const response = await fetch(url, {
         method: "POST",
