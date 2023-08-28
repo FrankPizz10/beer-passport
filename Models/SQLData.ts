@@ -95,4 +95,5 @@ export interface Friend {
   user_1: number;
   user_2: number;
   users_friends_user_1Tousers: User;
+  users_friends_user_2Tousers: User;
 }

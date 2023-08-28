@@ -10,11 +10,9 @@ const FriendScreen = (props: FriendsProps) => {
   useEffect(() => {
     const getFriendsData = async () => {
       const friendsData = await fetchFriends(props.route.params.user_id);
-      console.log(friendsData);
       const friends = friendsData.map((friend) => {
-        return friend.users_friends_user_1Tousers;
+        return friend.users_friends_user_2Tousers;
       });
-      console.log(friends);
       setFriends(friends);
     };
     getFriendsData();

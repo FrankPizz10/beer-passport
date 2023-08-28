@@ -30,7 +30,7 @@ const LoginScreen = (props: LoginProps) => {
       }
     });
     return unsibscribe;
-  }, []);
+  }, [loginPressed]);
 
   const handleSignUp = async () => {
     navigation.navigate("CreateNewAccount");
