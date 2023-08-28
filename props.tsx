@@ -14,6 +14,11 @@ export type RootStackParamList = {
   Friends: { user_id: number };
 };
 
+export interface DeleteAccountProps {
+  navigation: NativeStackScreenProps<RootStackParamList, "Home">["navigation"];
+  user_id: number;
+}
+
 export type RouterProps =
   | LoginProps
   | HomeProps

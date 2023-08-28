@@ -148,3 +148,17 @@ export const fetchFriends = async (userId: number): Promise<Friend[]> => {
   const friends = await response.json();
   return friends;
 };
+
+export const deleteAccount = async (): Promise<void> => {
+  const uid = auth.currentUser?.uid;
+  const url = `${API_URL}/api/users/${uid}`;
+  const token = await auth.currentUser?.getIdToken();
+  await fetch(url, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+  });
+  await auth.currentUser?.delete();
+};
