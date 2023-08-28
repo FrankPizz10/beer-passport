@@ -1,6 +1,6 @@
 // This is develop branch
 import { API_URL } from "@env";
-import { Beer, Collection, CollectionBeer, UserBeer } from "./SQLData";
+import { Beer, Collection, CollectionBeer, Friend, UserBeer } from "./SQLData";
 import { auth } from "../Models/firebase";
 
 export const fetchAllBeers = async (): Promise<Beer[]> => {
@@ -134,4 +134,18 @@ export const fetchCollectionBeersByBeerId = async (
   });
   const collectionBeers = await response.json();
   return collectionBeers;
+};
+
+export const fetchFriends = async (userId: number): Promise<Friend[]> => {
+  const url = `${API_URL}/api/friends/${userId}`;
+  console.log(url);
+  const token = await auth.currentUser?.getIdToken();
+  const response = await fetch(url, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+  });
+  const friends = await response.json();
+  return friends;
 };

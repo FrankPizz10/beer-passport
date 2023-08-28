@@ -19,12 +19,13 @@ import { LoginProps } from "../props";
 const LoginScreen = (props: LoginProps) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loginPressed, setLoginPressed] = useState(false);
 
   const navigation = useNavigation<(typeof props)["navigation"]>();
 
   useEffect(() => {
     const unsibscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
+      if (user && loginPressed) {
         navigation.replace("Home");
       }
     });
@@ -42,6 +43,7 @@ const LoginScreen = (props: LoginProps) => {
         email,
         password
       );
+      setLoginPressed(true);
       const user = userCredentials.user;
       console.log("Logged in with:", user.email);
     } catch (error: any) {

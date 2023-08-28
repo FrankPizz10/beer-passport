@@ -102,6 +102,14 @@ const HomeScreen = (props: HomeProps) => {
           >
             <Text style={styles.buttonText}>Collections</Text>
           </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("Friends", { user_id: user.id });
+            }}
+            style={styles.button}
+          >
+            <Text style={styles.buttonText}>Friends</Text>
+          </TouchableOpacity>
           <TouchableOpacity onPress={handleLogout} style={styles.button}>
             <Text style={styles.buttonText}>Sign out</Text>
           </TouchableOpacity>

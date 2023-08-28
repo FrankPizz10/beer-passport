@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "./screens/HomeScreen";
@@ -12,6 +12,7 @@ import SearchBeers from "./screens/SearchBeers";
 import YourBadgesScreen from "./screens/YourBadgesScreen";
 import AllCollectionsScreen from "./screens/AllCollectionsScreen";
 import CollectionScreen from "./screens/CollectionScreen";
+import FriendScreen from "./screens/FriendScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -39,6 +40,7 @@ export default function App() {
         <Stack.Screen name="YourBadges" component={YourBadgesScreen} />
         <Stack.Screen name="AllCollections" component={AllCollectionsScreen} />
         <Stack.Screen name="Collection" component={CollectionScreen} />
+        <Stack.Screen name="Friends" component={FriendScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

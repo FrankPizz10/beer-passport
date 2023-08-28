@@ -57,6 +57,7 @@ export interface User {
   email: string;
   age: number;
   user_name: string;
+  private: boolean;
 }
 
 export interface UserBeer {
@@ -87,4 +88,11 @@ export interface CollectionBeer {
   id: number;
   collection_id: number;
   beer_id: number;
+}
+
+export interface Friend {
+  id: number;
+  user_1: number;
+  user_2: number;
+  users_friends_user_1Tousers: User;
 }
