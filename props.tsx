@@ -12,10 +12,14 @@ export type RootStackParamList = {
   AllCollections: { user_id: number };
   Collection: { user_id: number; collection_id: number };
   Friends: { user_id: number };
+  AddFriends: { user_id: number };
 };
 
-export interface DeleteAccountProps {
-  navigation: NativeStackScreenProps<RootStackParamList, "Home">["navigation"];
+export interface CommonNavButtonProps {
+  navigation: NativeStackScreenProps<
+    RootStackParamList,
+    "Home" | "Friends"
+  >["navigation"];
   user_id: number;
 }
 
@@ -69,4 +73,9 @@ export type CollectionProps = NativeStackScreenProps<
 export type FriendsProps = NativeStackScreenProps<
   RootStackParamList,
   "Friends"
+>;
+
+export type AddFriendsProps = NativeStackScreenProps<
+  RootStackParamList,
+  "AddFriends"
 >;

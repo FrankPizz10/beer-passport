@@ -1,6 +1,13 @@
 // This is develop branch
 import { API_URL } from "@env";
-import { Beer, Collection, CollectionBeer, Friend, UserBeer } from "./SQLData";
+import {
+  Beer,
+  Collection,
+  CollectionBeer,
+  Friend,
+  User,
+  UserBeer,
+} from "./SQLData";
 import { auth } from "../Models/firebase";
 
 export const fetchAllBeers = async (): Promise<Beer[]> => {
@@ -153,7 +160,7 @@ export const deleteAccount = async (): Promise<void> => {
   const uid = auth.currentUser?.uid;
   const url = `${API_URL}/api/users/${uid}`;
   const token = await auth.currentUser?.getIdToken();
-  await fetch(url, {
+  const response = await fetch(url, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
@@ -161,4 +168,17 @@ export const deleteAccount = async (): Promise<void> => {
     },
   });
   await auth.currentUser?.delete();
+};
+
+export const fetchAllUsers = async (): Promise<User[]> => {
+  const url = `${API_URL}/api/users`;
+  const token = await auth.currentUser?.getIdToken();
+  const response = await fetch(url, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+  });
+  const users = await response.json();
+  return users;
 };

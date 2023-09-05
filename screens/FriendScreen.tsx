@@ -10,8 +10,11 @@ import {
 import { User } from "../Models/SQLData";
 import { fetchFriends } from "../Models/Requests";
 import { FriendsProps } from "../props";
+import AddFriendsButton from "./AddFriendsButton";
+import { useNavigation } from "@react-navigation/core";
 
 const FriendScreen = (props: FriendsProps) => {
+  const navigation = useNavigation<(typeof props)["navigation"]>();
   const [friends, setFriends] = useState([] as User[]);
 
   useEffect(() => {
@@ -28,6 +31,10 @@ const FriendScreen = (props: FriendsProps) => {
   return (
     <SafeAreaView>
       <Text style={styles.ScreenTitle}>My Friends</Text>
+      <AddFriendsButton
+        navigation={navigation}
+        user_id={props.route.params.user_id}
+      />
       <ScrollView>
         {friends.map((friend) => {
           return (

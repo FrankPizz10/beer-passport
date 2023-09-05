@@ -9,30 +9,9 @@ import {
 } from "react-native";
 import { SearchBeersProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
-import { SelectList } from "react-native-dropdown-select-list";
-import { Beer, Category } from "../Models/SQLData";
-import { API_URL } from "@env";
-import { useCategory } from "../Controllers/CategoryController";
+import { Beer } from "../Models/SQLData";
 import { fetchAllBeers } from "../Models/Requests";
-
-const useSearchFilter = (initialList: Beer[]) => {
-  const [searchInput, setSearchInput] = useState("");
-
-  const filteredList = useMemo(() => {
-    return initialList
-      .filter((beer) =>
-        beer.name.toLowerCase().includes(searchInput.toLowerCase())
-      )
-      .slice(0, 20)
-      .sort((a, b) => a.name.localeCompare(b.name));
-  }, [searchInput, initialList]);
-
-  return {
-    searchInput,
-    setSearchInput,
-    filteredList,
-  };
-};
+import { useSearchFilter } from "../Controllers/SearchController";
 
 const SearchBeerScreen = (props: SearchBeersProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
@@ -47,17 +26,17 @@ const SearchBeerScreen = (props: SearchBeersProps) => {
     getBeersData();
   }, []);
 
-  const handleBeerPress = (
-    beerId: number,
-    collectionId: number | undefined
-  ) => {
+  const handleBeerPress = (beerId: number) => {
     navigation.navigate("Beer", {
       user_id: props.route.params.user_id,
       beer_id: beerId,
     });
   };
 
-  const { searchInput, setSearchInput, filteredList } = useSearchFilter(beers);
+  const { searchInput, setSearchInput, filteredList } = useSearchFilter({
+    initialList: beers,
+    nameKey: "name",
+  });
 
   return (
     <View>
@@ -72,7 +51,7 @@ const SearchBeerScreen = (props: SearchBeersProps) => {
         {filteredList?.map((beer) => {
           return (
             <View key={beer.id} style={styles.beerCard}>
-              <TouchableOpacity onPress={() => handleBeerPress(beer.id, 1)}>
+              <TouchableOpacity onPress={() => handleBeerPress(beer.id)}>
                 <Text>{beer.name}</Text>
               </TouchableOpacity>
             </View>

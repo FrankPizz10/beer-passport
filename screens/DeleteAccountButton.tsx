@@ -1,11 +1,11 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { DeleteAccountProps } from "../props";
+import { CommonNavButtonProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
 import { ButtonColor } from "./colors";
 import { deleteAccount } from "../Models/Requests";
 
-const DeleteAccountButton = (props: DeleteAccountProps) => {
+const DeleteAccountButton = (props: CommonNavButtonProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
 
   const handleDeleteAccount = async () => {

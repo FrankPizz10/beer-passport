@@ -114,7 +114,9 @@ const HomeScreen = (props: HomeProps) => {
           <TouchableOpacity onPress={handleLogout} style={styles.button}>
             <Text style={styles.buttonText}>Sign out</Text>
           </TouchableOpacity>
-          <DeleteAccountButton navigation={navigation} user_id={user.id} />
+          <View>
+            <DeleteAccountButton navigation={navigation} user_id={user.id} />
+          </View>
         </View>
       </View>
     </SafeAreaView>
