@@ -9,9 +9,9 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/core";
 import { AddFriendsProps } from "../props";
-import { Friend, User } from "../Models/SQLData";
+import { User } from "../Models/SQLData";
 import { useSearchFilter } from "../Controllers/SearchController";
-import { fetchAllUsers } from "../Models/Requests";
+import { addFriend, fetchAllUsers } from "../Models/Requests";
 
 const AddFriendsScreen = (props: AddFriendsProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
@@ -20,7 +20,11 @@ const AddFriendsScreen = (props: AddFriendsProps) => {
   useEffect(() => {
     const getFriendsData = async () => {
       await fetchAllUsers()
-        .then((data) => setFriends(data))
+        .then((data) =>
+          setFriends(
+            data.filter((user) => user.id !== props.route.params.user_id)
+          )
+        )
         .catch((error) => console.log(error));
     };
     getFriendsData();
@@ -30,6 +34,10 @@ const AddFriendsScreen = (props: AddFriendsProps) => {
     initialList: friends,
     nameKey: "user_name",
   });
+
+  const handleAddFriend = async (friendId: number) => {
+    await addFriend(props.route.params.user_id, friendId);
+  };
 
   return (
     <View>
@@ -42,13 +50,13 @@ const AddFriendsScreen = (props: AddFriendsProps) => {
           style={styles.input}
           value={searchInput}
           onChangeText={(text) => setSearchInput(text)}
-          placeholder="Search for a beer"
+          placeholder="Search for a user"
         />
         <ScrollView>
           {filteredList?.map((friend) => {
             return (
               <View key={friend.id} style={styles.beerCard}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => handleAddFriend(friend.id)}>
                   <Text>{friend.user_name}</Text>
                 </TouchableOpacity>
               </View>

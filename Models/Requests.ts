@@ -182,3 +182,33 @@ export const fetchAllUsers = async (): Promise<User[]> => {
   const users = await response.json();
   return users;
 };
+
+export const addFriend = async (
+  user1: number,
+  user2: number
+): Promise<void> => {
+  const url = `${API_URL}/api/friends/${user1}/${user2}`;
+  const token = await auth.currentUser?.getIdToken();
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+  });
+  const friend = await response.json();
+  console.log(friend);
+};
+
+export const fetchUserById = async (userId: number): Promise<User> => {
+  const url = `${API_URL}/api/users/${userId}`;
+  const token = await auth.currentUser?.getIdToken();
+  const response = await fetch(url, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+  });
+  const user = await response.json();
+  return user;
+};

@@ -13,6 +13,7 @@ export type RootStackParamList = {
   Collection: { user_id: number; collection_id: number };
   Friends: { user_id: number };
   AddFriends: { user_id: number };
+  FriendProfile: { user_id: number; friend_id: number };
 };
 
 export interface CommonNavButtonProps {
@@ -78,4 +79,9 @@ export type FriendsProps = NativeStackScreenProps<
 export type AddFriendsProps = NativeStackScreenProps<
   RootStackParamList,
   "AddFriends"
+>;
+
+export type FriendProfileProps = NativeStackScreenProps<
+  RootStackParamList,
+  "FriendProfile"
 >;

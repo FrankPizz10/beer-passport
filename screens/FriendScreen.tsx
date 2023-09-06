@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -12,21 +12,31 @@ import { fetchFriends } from "../Models/Requests";
 import { FriendsProps } from "../props";
 import AddFriendsButton from "./AddFriendsButton";
 import { useNavigation } from "@react-navigation/core";
+import { useFocusEffect } from "@react-navigation/native";
 
 const FriendScreen = (props: FriendsProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
   const [friends, setFriends] = useState([] as User[]);
 
-  useEffect(() => {
-    const getFriendsData = async () => {
-      const friendsData = await fetchFriends(props.route.params.user_id);
-      const friends = friendsData.map((friend) => {
-        return friend.users_friends_user_2Tousers;
-      });
-      setFriends(friends);
-    };
-    getFriendsData();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      const getFriendsData = async () => {
+        const friendsData = await fetchFriends(props.route.params.user_id);
+        const friends = friendsData.map((friend) => {
+          return friend.users_friends_user_2Tousers;
+        });
+        setFriends(friends);
+      };
+      getFriendsData();
+    }, [])
+  );
+
+  const handleFriendPress = (friendId: number) => {
+    navigation.navigate("FriendProfile", {
+      user_id: props.route.params.user_id,
+      friend_id: friendId,
+    });
+  };
 
   return (
     <SafeAreaView>
@@ -39,7 +49,7 @@ const FriendScreen = (props: FriendsProps) => {
         {friends.map((friend) => {
           return (
             <View key={friend.id} style={styles.beerCard}>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => handleFriendPress(friend.id)}>
                 <Text>{friend.user_name}</Text>
               </TouchableOpacity>
             </View>
