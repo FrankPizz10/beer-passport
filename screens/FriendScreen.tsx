@@ -21,7 +21,7 @@ const FriendScreen = (props: FriendsProps) => {
   useFocusEffect(
     React.useCallback(() => {
       const getFriendsData = async () => {
-        const friendsData = await fetchFriends(props.route.params.user_id);
+        const friendsData = await fetchFriends();
         const friends = friendsData.map((friend) => {
           return friend.users_friends_user_2Tousers;
         });

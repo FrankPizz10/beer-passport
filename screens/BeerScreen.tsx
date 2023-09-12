@@ -32,17 +32,13 @@ const BeerScreen = (props: BeerProps) => {
   const handleTriedPress = async () => {
     try {
       const url = `${API_URL}/api/userbeers/`;
-      const userBeer: UserBeer = {
-        user_id: props.route.params.user_id,
-        beer_id: props.route.params.beer_id,
-        liked: false,
-        collection_id: collectionId,
-      };
       const token = await auth.currentUser?.getIdToken();
       const response = await fetch(url, {
         method: "POST",
         body: JSON.stringify({
-          userBeer,
+          beer_id: props.route.params.beer_id,
+          liked: false,
+          collection_id: collectionId,
         }),
         headers: {
           "Content-Type": "application/json",
@@ -60,17 +56,13 @@ const BeerScreen = (props: BeerProps) => {
   const handleLikedPress = async () => {
     try {
       const url = `${API_URL}/api/userbeers/`;
-      const userBeer: UserBeer = {
-        user_id: props.route.params.user_id,
-        beer_id: props.route.params.beer_id,
-        liked: true,
-        collection_id: collectionId,
-      };
       const token = await auth.currentUser?.getIdToken();
       const response = await fetch(url, {
         method: "POST",
         body: JSON.stringify({
-          userBeer,
+          beer_id: props.route.params.beer_id,
+          liked: true,
+          collection_id: collectionId,
         }),
         headers: {
           "Content-Type": "application/json",
@@ -89,7 +81,7 @@ const BeerScreen = (props: BeerProps) => {
     const getAllBeerData = async () => {
       await Promise.all([
         fetchBeer(props.route.params.beer_id),
-        fetchUserBeer(props.route.params.user_id, props.route.params.beer_id),
+        fetchUserBeer(props.route.params.beer_id),
         fetchCollectionBeersByBeerId(props.route.params.beer_id),
       ])
         .then((results) => {

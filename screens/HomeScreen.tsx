@@ -56,6 +56,7 @@ const HomeScreen = (props: HomeProps) => {
         const url = `${API_URL}/api/userbyuid/${uid}`;
         async function getUserHelper(): Promise<User> {
           const token = await auth.currentUser?.getIdToken();
+          console.log("token", token);
           const response = await fetch(url, {
             headers: {
               Authorization: "Bearer " + token,

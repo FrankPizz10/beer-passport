@@ -7,7 +7,7 @@ export const useYourBadges = (userId: number) => {
   const [badges, setBadges] = useState([] as UserBadge[]);
   const fetchBadges = async () => {
     try {
-      const badgesurl = `${API_URL}/api/userbadges/${userId}`;
+      const badgesurl = `${API_URL}/api/userbadges/`;
       const token = await auth.currentUser?.getIdToken();
       const response = await fetch(badgesurl, {
         headers: {

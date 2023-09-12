@@ -36,7 +36,7 @@ const AddFriendsScreen = (props: AddFriendsProps) => {
   });
 
   const handleAddFriend = async (friendId: number) => {
-    await addFriend(props.route.params.user_id, friendId);
+    await addFriend(friendId);
   };
 
   return (

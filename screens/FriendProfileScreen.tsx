@@ -18,13 +18,24 @@ const FriendProfileScreen = (props: FriendProfileProps) => {
   }, []);
 
   return (
-    <View>
-      <Text>FriendProfileScreen</Text>
-      <Text>{friend.user_name}</Text>
-      <Text>{friend.email}</Text>
-      <Text>{friend.age}</Text>
+    <View style={styles.container}>
+      <Text style={styles.details}>FriendProfileScreen</Text>
+      <Text style={styles.details}>{friend.user_name}</Text>
+      <Text style={styles.details}>{friend.email}</Text>
+      <Text style={styles.details}>{friend.age}</Text>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  details: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
 
 export default FriendProfileScreen;

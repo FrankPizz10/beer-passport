@@ -42,11 +42,10 @@ export const fetchBeer = async (beer_id: number): Promise<Beer | undefined> => {
 };
 
 export const fetchUserBeer = async (
-  user_id: number,
   beer_id: number
 ): Promise<UserBeer | undefined> => {
   try {
-    const url = `${API_URL}/api/userbeer/${user_id}/${beer_id}`;
+    const url = `${API_URL}/api/userbeer/${beer_id}`;
     const token = await auth.currentUser?.getIdToken();
     const response = await fetch(url, {
       headers: {
@@ -143,8 +142,8 @@ export const fetchCollectionBeersByBeerId = async (
   return collectionBeers;
 };
 
-export const fetchFriends = async (userId: number): Promise<Friend[]> => {
-  const url = `${API_URL}/api/friends/${userId}`;
+export const fetchFriends = async (): Promise<Friend[]> => {
+  const url = `${API_URL}/api/friends/`;
   const token = await auth.currentUser?.getIdToken();
   const response = await fetch(url, {
     headers: {
@@ -183,11 +182,8 @@ export const fetchAllUsers = async (): Promise<User[]> => {
   return users;
 };
 
-export const addFriend = async (
-  user1: number,
-  user2: number
-): Promise<void> => {
-  const url = `${API_URL}/api/friends/${user1}/${user2}`;
+export const addFriend = async (user2: number): Promise<void> => {
+  const url = `${API_URL}/api/friends/${user2}`;
   const token = await auth.currentUser?.getIdToken();
   const response = await fetch(url, {
     method: "POST",
