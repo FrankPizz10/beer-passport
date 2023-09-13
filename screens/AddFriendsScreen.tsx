@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   StyleSheet,
   Text,
@@ -6,37 +6,64 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
+  Modal,
+  Animated,
+  Dimensions,
 } from "react-native";
 import { useNavigation } from "@react-navigation/core";
 import { AddFriendsProps } from "../props";
 import { User } from "../Models/SQLData";
 import { useSearchFilter } from "../Controllers/SearchController";
-import { addFriend, fetchAllUsers } from "../Models/Requests";
+import { addFriend, fetchAllUsers, fetchFriends } from "../Models/Requests";
 
 const AddFriendsScreen = (props: AddFriendsProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
-  const [friends, setFriends] = useState([] as User[]);
+  const [users, setUsers] = useState([] as User[]);
+  const [animation] = useState(() => new Animated.Value(0));
+  const [friendAdded, setFriendAdded] = useState(false);
+
+  const { height } = Dimensions.get("window");
+
+  const display = animation.interpolate({
+    inputRange: [0.2, 1],
+    outputRange: [0, 1],
+    extrapolate: "clamp",
+  });
+
+  const success = animation.interpolate({
+    inputRange: [1.1, 2],
+    outputRange: [0, -height],
+    extrapolate: "clamp",
+  });
 
   useEffect(() => {
-    const getFriendsData = async () => {
-      await fetchAllUsers()
-        .then((data) =>
-          setFriends(
-            data.filter((user) => user.id !== props.route.params.user_id)
-          )
+    const getFriendScreenData = async () => {
+      const unfilteredUsers = await fetchAllUsers();
+      const friends = await fetchFriends();
+      const friendIds = friends.map((friend) => friend.user_2);
+      setUsers(
+        unfilteredUsers.filter(
+          (user) =>
+            !friendIds.includes(user.id) &&
+            user.id !== props.route.params.user_id
         )
-        .catch((error) => console.log(error));
+      );
     };
-    getFriendsData();
-  }, []);
+    getFriendScreenData();
+  }, [friendAdded]);
 
   const { searchInput, setSearchInput, filteredList } = useSearchFilter({
-    initialList: friends,
+    initialList: users,
     nameKey: "user_name",
   });
 
   const handleAddFriend = async (friendId: number) => {
     await addFriend(friendId);
+    setFriendAdded(true);
+    Animated.spring(animation, {
+      toValue: 1,
+      useNativeDriver: true,
+    }).start();
   };
 
   return (
@@ -53,16 +80,49 @@ const AddFriendsScreen = (props: AddFriendsProps) => {
           placeholder="Search for a user"
         />
         <ScrollView>
-          {filteredList?.map((friend) => {
+          {filteredList?.map((user) => {
             return (
-              <View key={friend.id} style={styles.beerCard}>
-                <TouchableOpacity onPress={() => handleAddFriend(friend.id)}>
-                  <Text>{friend.user_name}</Text>
+              <View key={user.id} style={styles.beerCard}>
+                <TouchableOpacity onPress={() => handleAddFriend(user.id)}>
+                  <Text>{user.user_name}</Text>
                 </TouchableOpacity>
               </View>
             );
           })}
         </ScrollView>
+        <Animated.View pointerEvents="box-none">
+          <Animated.View
+            style={[
+              styles.animatedViewContainer,
+              {
+                transform: [
+                  {
+                    scale: display,
+                  },
+                  {
+                    translateY: success,
+                  },
+                ],
+              },
+            ]}
+          >
+            <View style={styles.animatedViewContent}>
+              <Text>Friend Added!</Text>
+              <View style={styles.animatedViewContent}>
+                <TouchableOpacity
+                  onPress={() => {
+                    Animated.spring(animation, {
+                      toValue: 0,
+                      useNativeDriver: true,
+                    }).start();
+                  }}
+                >
+                  <Text style={styles.buttonClose}>Close</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Animated.View>
+        </Animated.View>
       </View>
     </View>
   );
@@ -105,6 +165,33 @@ const styles = StyleSheet.create({
     borderStyle: "solid",
     borderColor: "black",
     padding: 10,
+  },
+  buttonClose: {
+    color: "red",
+    fontSize: 14,
+    textAlign: "center",
+  },
+  animatedViewContainer: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: "white",
+    padding: 10,
+    margin: 10,
+    borderRadius: 5,
+    shadowColor: "black",
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    shadowOffset: {
+      width: 1,
+      height: 1,
+    },
+  },
+  animatedViewContent: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 

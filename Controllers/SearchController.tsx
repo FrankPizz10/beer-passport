@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { fetchFriends } from "../Models/Requests";
 
 type ItemWithName = {
   name?: string;

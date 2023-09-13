@@ -152,6 +152,7 @@ export const fetchFriends = async (): Promise<Friend[]> => {
     },
   });
   const friends = await response.json();
+  console.log(friends);
   return friends;
 };
 
