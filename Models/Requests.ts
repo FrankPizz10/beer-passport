@@ -152,7 +152,6 @@ export const fetchFriends = async (): Promise<Friend[]> => {
     },
   });
   const friends = await response.json();
-  console.log(friends);
   return friends;
 };
 
@@ -194,7 +193,6 @@ export const addFriend = async (user2: number): Promise<void> => {
     },
   });
   const friend = await response.json();
-  console.log(friend);
 };
 
 export const fetchUserById = async (userId: number): Promise<User> => {

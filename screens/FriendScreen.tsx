@@ -39,16 +39,16 @@ const FriendScreen = (props: FriendsProps) => {
   };
 
   return (
-    <SafeAreaView>
-      <Text style={styles.ScreenTitle}>My Friends</Text>
+    <SafeAreaView style={styles.root}>
+      <Text style={styles.screenTitle}>My Friends</Text>
       <AddFriendsButton
         navigation={navigation}
         user_id={props.route.params.user_id}
       />
-      <ScrollView>
+      <ScrollView style={styles.friendContainer}>
         {friends.map((friend) => {
           return (
-            <View key={friend.id} style={styles.beerCard}>
+            <View key={friend.id} style={styles.friendCard}>
               <TouchableOpacity onPress={() => handleFriendPress(friend.id)}>
                 <Text>{friend.user_name}</Text>
               </TouchableOpacity>
@@ -61,17 +61,32 @@ const FriendScreen = (props: FriendsProps) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
+  root: {
     flex: 1,
-    marginTop: 10,
+    backgroundColor: "white",
+    alignItems: "center",
   },
-  ScreenTitle: {
-    fontSize: 20,
+  titleContainer: {
+    height: 150,
+    width: 400,
+    alignItems: "center",
+    margin: 15,
+    padding: 15,
+  },
+  screenTitle: {
+    fontSize: 30,
     fontWeight: "bold",
     textAlign: "center",
     margin: 10,
   },
-  beerCard: {
+  friendContainer: {
+    flex: 1,
+    alignContent: "center",
+    height: 400,
+    width: 400,
+    marginBottom: 20,
+  },
+  friendCard: {
     backgroundColor: "lightblue",
     padding: 10,
     margin: 10,

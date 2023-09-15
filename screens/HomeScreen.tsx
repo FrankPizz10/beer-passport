@@ -56,7 +56,6 @@ const HomeScreen = (props: HomeProps) => {
         const url = `${API_URL}/api/userbyuid/${uid}`;
         async function getUserHelper(): Promise<User> {
           const token = await auth.currentUser?.getIdToken();
-          console.log("token", token);
           const response = await fetch(url, {
             headers: {
               Authorization: "Bearer " + token,
@@ -75,50 +74,44 @@ const HomeScreen = (props: HomeProps) => {
   }, []);
 
   return (
-    <SafeAreaView style={styles.screen}>
-      <View style={styles.container}>
+    <SafeAreaView style={styles.root}>
+      <View style={styles.titleContainer}>
         <Text style={styles.title}>Beer Passport</Text>
         <Text style={styles.welcome}>Welcome {user.user_name}</Text>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity onPress={handleSearchScreen} style={styles.button}>
-            <Text style={styles.buttonText}>Search Beers</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={handleCategoryScreen}
-            style={styles.button}
-          >
-            <Text style={styles.buttonText}>Find Beer By Category</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={handleYourBeersScreen}
-            style={styles.button}
-          >
-            <Text style={styles.buttonText}>My Beers</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={handleBadgesScreen} style={styles.button}>
-            <Text style={styles.buttonText}>My Badges</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={handleCollectionsScreen}
-            style={styles.button}
-          >
-            <Text style={styles.buttonText}>Collections</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("Friends", { user_id: user.id });
-            }}
-            style={styles.button}
-          >
-            <Text style={styles.buttonText}>My Friends</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={handleLogout} style={styles.button}>
-            <Text style={styles.buttonText}>Sign out</Text>
-          </TouchableOpacity>
-          <View>
-            <DeleteAccountButton navigation={navigation} user_id={user.id} />
-          </View>
-        </View>
+      </View>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity onPress={handleSearchScreen} style={styles.button}>
+          <Text style={styles.buttonText}>Search Beers</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleCategoryScreen} style={styles.button}>
+          <Text style={styles.buttonText}>Find Beer By Category</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleYourBeersScreen} style={styles.button}>
+          <Text style={styles.buttonText}>My Beers</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleBadgesScreen} style={styles.button}>
+          <Text style={styles.buttonText}>My Badges</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={handleCollectionsScreen}
+          style={styles.button}
+        >
+          <Text style={styles.buttonText}>Collections</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("Friends", { user_id: user.id });
+          }}
+          style={styles.button}
+        >
+          <Text style={styles.buttonText}>My Friends</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleLogout} style={styles.button}>
+          <Text style={styles.buttonText}>Sign out</Text>
+        </TouchableOpacity>
+        {/* <View>
+          <DeleteAccountButton navigation={navigation} user_id={user.id} />
+        </View> */}
       </View>
     </SafeAreaView>
   );
@@ -127,33 +120,37 @@ const HomeScreen = (props: HomeProps) => {
 export default HomeScreen;
 
 const styles = StyleSheet.create({
-  screen: {
+  root: {
     flex: 1,
-    backgroundColor: "#00A1E1",
+    backgroundColor: "white",
+    alignItems: "center",
   },
-  container: {
-    flex: 1,
-    marginTop: 10,
+  titleContainer: {
+    height: 150,
+    width: 400,
+    alignItems: "center",
+    margin: 15,
+    padding: 15,
   },
   title: {
     fontSize: 50,
-    height: 80,
     fontWeight: "bold",
-    marginTop: 30,
     textAlign: "center",
     color: TitleColor,
   },
   welcome: {
-    fontSize: 20,
+    fontSize: 30,
     fontWeight: "bold",
-    margin: 10,
-    height: 50,
     textAlign: "center",
     color: TitleColor,
+    paddingTop: 10,
   },
   buttonContainer: {
+    flex: 1,
     alignItems: "center",
-    justifyContent: "center",
+    height: 400,
+    width: 400,
+    marginBottom: 20,
   },
   button: {
     backgroundColor: ButtonColor,

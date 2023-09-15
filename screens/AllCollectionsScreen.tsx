@@ -63,14 +63,8 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 10,
   },
-  dropDown: {
-    backgroundColor: "white",
-    padding: 10,
-    margin: 10,
-    borderRadius: 5,
-  },
   ScreenTitle: {
-    fontSize: 20,
+    fontSize: 30,
     fontWeight: "bold",
     textAlign: "center",
     margin: 10,
@@ -87,14 +81,6 @@ const styles = StyleSheet.create({
       width: 1,
       height: 1,
     },
-  },
-  input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    borderStyle: "solid",
-    borderColor: "black",
-    padding: 10,
   },
   HomeButton: {
     alignItems: "flex-end",

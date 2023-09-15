@@ -11,28 +11,20 @@ const AddFriendsButton = (props: CommonNavButtonProps) => {
   };
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity style={styles.button} onPress={handleFriendScreen}>
-        <Text style={styles.text}>Add Friends</Text>
-      </TouchableOpacity>
-    </View>
+    <TouchableOpacity style={styles.button} onPress={handleFriendScreen}>
+      <Text style={styles.text}>Add Friends</Text>
+    </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
   button: {
     alignItems: "center",
     backgroundColor: "#3399FF",
     borderRadius: 5,
     padding: 10,
     width: 150,
-    marginTop: 16,
-    marginBottom: 16,
+    margin: 10,
   },
   text: {
     fontSize: 20,
