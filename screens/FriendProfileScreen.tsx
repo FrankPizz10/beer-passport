@@ -9,15 +9,18 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/core";
 import { FriendProfileProps } from "../props";
-import { Beer, User } from "../Models/SQLData";
+import { User } from "../Models/SQLData";
 import { fetchUserById } from "../Models/Requests";
 import { useYourBeers } from "../Controllers/YourBeersController";
+import { useYourBadges } from "../Controllers/YourBadgesController";
+import { decimalToPercent } from "../utils";
 
 const FriendProfileScreen = (props: FriendProfileProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
   const [friend, setFriend] = useState<User>({} as User);
-  const [tried, setTried] = useState(true);
-  const [liked, setLiked] = useState(false);
+  const [triedPressed, setTriedPressed] = useState(true);
+  const [likedPressed, setLikedPressed] = useState(false);
+  const [badgesPressed, setBadgesPressed] = useState(false);
 
   const handleBeerPress = (beerId: number) => {
     navigation.navigate("Beer", {
@@ -27,13 +30,21 @@ const FriendProfileScreen = (props: FriendProfileProps) => {
   };
 
   const handleTriedPress = () => {
-    setTried(true);
-    setLiked(false);
+    setTriedPressed(true);
+    setLikedPressed(false);
+    setBadgesPressed(false);
   };
 
   const handleLikedPress = () => {
-    setTried(false);
-    setLiked(true);
+    setTriedPressed(false);
+    setLikedPressed(true);
+    setBadgesPressed(false);
+  };
+
+  const handleBadgesPress = () => {
+    setTriedPressed(false);
+    setLikedPressed(false);
+    setBadgesPressed(true);
   };
 
   useEffect(() => {
@@ -46,12 +57,12 @@ const FriendProfileScreen = (props: FriendProfileProps) => {
 
   const { triedBeers, likedBeers } = useYourBeers(props.route.params.friend_id);
 
+  const badges = useYourBadges(props.route.params.friend_id);
+
   return (
     <SafeAreaView style={styles.root}>
       <View style={styles.detailsContainer}>
         <Text style={styles.friendName}>{friend.user_name}</Text>
-        <Text style={styles.details}>Email: {friend.email}</Text>
-        <Text style={styles.details}>Age: {friend.age}</Text>
       </View>
       <View style={styles.buttonAndItemsContainer}>
         <View style={styles.buttonContainer}>
@@ -61,9 +72,12 @@ const FriendProfileScreen = (props: FriendProfileProps) => {
           <TouchableOpacity style={styles.button} onPress={handleLikedPress}>
             <Text> Liked </Text>
           </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={handleBadgesPress}>
+            <Text> Badges </Text>
+          </TouchableOpacity>
         </View>
         <ScrollView style={styles.friendBeersContainer}>
-          {tried &&
+          {triedPressed &&
             triedBeers?.map((beer) => {
               return (
                 <View key={beer.id} style={styles.beerCard}>
@@ -73,7 +87,12 @@ const FriendProfileScreen = (props: FriendProfileProps) => {
                 </View>
               );
             })}
-          {liked &&
+          {triedPressed && triedBeers?.length === 0 && (
+            <View style={styles.beerCard}>
+              <Text>{friend.user_name} has no tried beers yet!</Text>
+            </View>
+          )}
+          {likedPressed &&
             likedBeers?.map((beer) => {
               return (
                 <View key={beer.id} style={styles.beerCard}>
@@ -83,6 +102,30 @@ const FriendProfileScreen = (props: FriendProfileProps) => {
                 </View>
               );
             })}
+          {likedPressed && likedBeers?.length === 0 && (
+            <View style={styles.beerCard}>
+              <Text>{friend.user_name} has no liked beers yet!</Text>
+            </View>
+          )}
+          {badgesPressed &&
+            badges &&
+            badges?.map((badge) => {
+              return (
+                <View key={badge.id} style={styles.badge}>
+                  <Text style={styles.badgeTitle}>
+                    {badge.collections.name.toUpperCase()}
+                  </Text>
+                  <Text>{badge.collections.description}</Text>
+                  <Text>Difficulty: {badge.collections.difficulty}</Text>
+                  <Text>Progress: {decimalToPercent(badge.progress)}</Text>
+                </View>
+              );
+            })}
+          {badgesPressed && badges?.length === 0 && (
+            <View style={styles.badge}>
+              <Text style={styles.badgeTitle}>No badges yet!</Text>
+            </View>
+          )}
         </ScrollView>
       </View>
     </SafeAreaView>
@@ -149,6 +192,21 @@ const styles = StyleSheet.create({
       width: 1,
       height: 1,
     },
+  },
+  badgeTitle: {
+    fontSize: 25,
+    fontWeight: "bold",
+    justifyContent: "center",
+    marginBottom: 10,
+  },
+  badge: {
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#ff5722",
+    borderRadius: 12,
+    margin: 5,
+    width: 350,
+    height: 150,
   },
 });
 

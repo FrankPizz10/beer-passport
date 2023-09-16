@@ -11,7 +11,7 @@ import {
 import { auth } from "../Models/firebase";
 
 export const fetchAllBeers = async (): Promise<Beer[]> => {
-  const url = `${API_URL}/api/beers`;
+  const url = `${API_URL}/api/beers/basic`;
   const token = await auth.currentUser?.getIdToken();
   const response = await fetch(url, {
     headers: {

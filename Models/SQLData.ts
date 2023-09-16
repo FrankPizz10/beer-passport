@@ -1,7 +1,10 @@
-export interface Beer {
+export type BasicBeer = {
   id: number;
-  brewery_id: number;
   name: string;
+};
+
+export interface Beer extends BasicBeer {
+  brewery_id: number;
   cat_id: number;
   style_id: number;
   abv: number;
@@ -53,9 +56,6 @@ export interface BeerId {
 
 export interface User {
   id: number;
-  uid: string;
-  email: string;
-  age: number;
   user_name: string;
   private: boolean;
 }

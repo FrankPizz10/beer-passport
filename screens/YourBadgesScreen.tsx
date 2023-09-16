@@ -16,7 +16,7 @@ import HomeButton from "./HomeButton";
 
 const YourBadgesScreen = (props: YourBadgesProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
-  const userBadges = useYourBadges(props.route.params.user_id);
+  const userBadges = useYourBadges();
 
   return (
     <SafeAreaView style={styles.root}>
@@ -39,6 +39,11 @@ const YourBadgesScreen = (props: YourBadgesProps) => {
             </View>
           );
         })}
+        {userBadges?.length === 0 && (
+          <View style={styles.badge}>
+            <Text style={styles.badgeTitle}>You have no badges yet!</Text>
+          </View>
+        )}
       </ScrollView>
     </SafeAreaView>
   );

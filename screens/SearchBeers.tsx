@@ -9,13 +9,13 @@ import {
 } from "react-native";
 import { SearchBeersProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
-import { Beer } from "../Models/SQLData";
+import { BasicBeer } from "../Models/SQLData";
 import { fetchAllBeers } from "../Models/Requests";
 import { useSearchFilter } from "../Controllers/SearchController";
 
 const SearchBeerScreen = (props: SearchBeersProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
-  const [beers, setBeers] = useState([] as Beer[]);
+  const [beers, setBeers] = useState([] as BasicBeer[]);
 
   useEffect(() => {
     const getBeersData = async () => {

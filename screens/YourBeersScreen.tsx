@@ -64,7 +64,13 @@ const YourBeersScreen = (props: YourBeersProps) => {
               </View>
             );
           })}
+        {tried && triedBeers?.length === 0 && (
+          <View style={styles.beerCard}>
+            <Text>You have no tried beers yet!</Text>
+          </View>
+        )}
         {liked &&
+          likedBeers &&
           likedBeers?.map((beer) => {
             return (
               <View key={beer.id} style={styles.beerCard}>
@@ -74,6 +80,11 @@ const YourBeersScreen = (props: YourBeersProps) => {
               </View>
             );
           })}
+        {liked && likedBeers?.length === 0 && (
+          <View style={styles.beerCard}>
+            <Text>You have no liked beers yet!</Text>
+          </View>
+        )}
       </ScrollView>
     </SafeAreaView>
   );
