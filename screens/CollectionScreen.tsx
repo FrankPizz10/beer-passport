@@ -15,7 +15,7 @@ import {
 } from "../Models/Requests";
 import { CollectionProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
-import HomeButton from "./HomeButton";
+// import HomeButton from "./HomeButton";
 
 const CollectionScreen = (props: CollectionProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
@@ -38,20 +38,19 @@ const CollectionScreen = (props: CollectionProps) => {
       });
     };
     getCollectionData();
-  }, [props.route.params.collection_id, props.route.params.user_id]);
+  }, [props.route.params.collection_id]);
 
   const handleBeerPress = (beerId: number) => {
     navigation.navigate("Beer", {
-      user_id: props.route.params.user_id,
       beer_id: beerId,
     });
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.HomeButton}>
+      {/* <View style={styles.HomeButton}>
         <HomeButton route={props.route} navigation={props.navigation} />
-      </View>
+      </View> */}
       <View style={styles.titleContainer}>
         <Text style={styles.CollectionTitle}>{collection?.name}</Text>
         <Text style={styles.CollectionDetails}>{collection?.description}</Text>

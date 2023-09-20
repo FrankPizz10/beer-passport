@@ -59,7 +59,6 @@ const CategoryScreen = (props: CategoryProps) => {
 
   const handleBeerPress = (beerId: number) => {
     navigation.navigate("Beer", {
-      user_id: props.route.params.user_id,
       beer_id: beerId,
     });
   };

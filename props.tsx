@@ -1,19 +1,21 @@
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import type { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
 
 export type RootStackParamList = {
   Home: undefined;
   Login: undefined;
-  Category: { user_id: number };
-  Beer: { user_id: number; beer_id: number };
+  Category: undefined;
+  Beer: { beer_id: number };
   CreateNewAccount: undefined;
-  YourBeers: { user_id: number };
-  SearchBeers: { user_id: number };
-  YourBadges: { user_id: number };
-  AllCollections: { user_id: number };
-  Collection: { user_id: number; collection_id: number };
-  Friends: { user_id: number };
-  AddFriends: { user_id: number };
-  FriendProfile: { user_id: number; friend_id: number };
+  YourBeers: undefined;
+  SearchBeers: undefined;
+  YourBadges: undefined;
+  AllCollections: undefined;
+  Collection: { collection_id: number };
+  Friends: undefined;
+  AddFriends: undefined;
+  FriendProfile: { friend_id: number };
+  BottomTabNavigator: undefined;
 };
 
 export interface CommonNavButtonProps {
@@ -21,7 +23,6 @@ export interface CommonNavButtonProps {
     RootStackParamList,
     "Home" | "Friends"
   >["navigation"];
-  user_id: number;
 }
 
 export type RouterProps =

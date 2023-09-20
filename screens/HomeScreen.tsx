@@ -30,23 +30,23 @@ const HomeScreen = (props: HomeProps) => {
   };
 
   const handleCategoryScreen = () => {
-    navigation.navigate("Category", { user_id: user.id });
+    navigation.navigate("Category");
   };
 
   const handleYourBeersScreen = () => {
-    navigation.navigate("YourBeers", { user_id: user.id });
+    navigation.navigate("YourBeers");
   };
 
   const handleSearchScreen = () => {
-    navigation.navigate("SearchBeers", { user_id: user.id });
+    navigation.navigate("SearchBeers");
   };
 
   const handleBadgesScreen = () => {
-    navigation.navigate("YourBadges", { user_id: user.id });
+    navigation.navigate("YourBadges");
   };
 
   const handleCollectionsScreen = () => {
-    navigation.navigate("AllCollections", { user_id: user.id });
+    navigation.navigate("AllCollections");
   };
 
   useEffect(() => {
@@ -76,7 +76,6 @@ const HomeScreen = (props: HomeProps) => {
   return (
     <SafeAreaView style={styles.root}>
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>Beer Passport</Text>
         <Text style={styles.welcome}>Welcome {user.user_name}</Text>
       </View>
       <View style={styles.buttonContainer}>
@@ -100,7 +99,7 @@ const HomeScreen = (props: HomeProps) => {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate("Friends", { user_id: user.id });
+            navigation.navigate("Friends");
           }}
           style={styles.button}
         >
@@ -126,7 +125,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   titleContainer: {
-    height: 150,
+    height: 100,
     width: 400,
     alignItems: "center",
     margin: 15,

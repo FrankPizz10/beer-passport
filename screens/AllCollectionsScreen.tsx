@@ -11,7 +11,7 @@ import { Collection } from "../Models/SQLData";
 import { fetchAllCollections } from "../Models/Requests";
 import { AllCollectionsProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
-import HomeButton from "./HomeButton";
+// import HomeButton from "./HomeButton";
 
 const AllCollectionsScreen = (props: AllCollectionsProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
@@ -19,7 +19,6 @@ const AllCollectionsScreen = (props: AllCollectionsProps) => {
 
   const handleCollectionPress = (collectionId: number) => {
     navigation.navigate("Collection", {
-      user_id: props.route.params.user_id,
       collection_id: collectionId,
     });
   };
@@ -35,9 +34,9 @@ const AllCollectionsScreen = (props: AllCollectionsProps) => {
 
   return (
     <SafeAreaView>
-      <View style={styles.HomeButton}>
+      {/* <View style={styles.HomeButton}>
         <HomeButton route={props.route} navigation={props.navigation} />
-      </View>
+      </View> */}
       <Text style={styles.ScreenTitle}>CollectionsScreen</Text>
       <ScrollView>
         {collections?.map((collection) => {

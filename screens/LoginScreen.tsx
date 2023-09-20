@@ -8,11 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { auth } from "../Models/firebase";
-import {
-  createUserWithEmailAndPassword,
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
+import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigation } from "@react-navigation/core";
 import { LoginProps } from "../props";
 
@@ -26,7 +22,7 @@ const LoginScreen = (props: LoginProps) => {
   useEffect(() => {
     const unsibscribe = onAuthStateChanged(auth, (user) => {
       if (user && loginPressed) {
-        navigation.replace("Home");
+        navigation.replace("BottomTabNavigator");
       }
     });
     return unsibscribe;

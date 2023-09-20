@@ -17,7 +17,7 @@ import {
   fetchUserBeer,
 } from "../Models/Requests";
 import { auth } from "../Models/firebase";
-import HomeButton from "./HomeButton";
+// import HomeButton from "./HomeButton";
 
 const BeerScreen = (props: BeerProps) => {
   const [beer, setBeer] = useState({} as Beer | undefined);
@@ -105,13 +105,13 @@ const BeerScreen = (props: BeerProps) => {
         });
     };
     getAllBeerData();
-  }, [tried, liked, props.route.params.beer_id, props.route.params.user_id]);
+  }, [tried, liked, props.route.params.beer_id]);
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.HomeButton}>
+      {/* <View style={styles.HomeButton}>
         <HomeButton route={props.route} navigation={props.navigation} />
-      </View>
+      </View> */}
       {beer && (
         <View>
           <View style={styles.titleContainer}>

@@ -33,7 +33,6 @@ const FriendScreen = (props: FriendsProps) => {
 
   const handleFriendPress = (friendId: number) => {
     navigation.navigate("FriendProfile", {
-      user_id: props.route.params.user_id,
       friend_id: friendId,
     });
   };
@@ -41,10 +40,7 @@ const FriendScreen = (props: FriendsProps) => {
   return (
     <SafeAreaView style={styles.root}>
       <Text style={styles.screenTitle}>My Friends</Text>
-      <AddFriendsButton
-        navigation={navigation}
-        user_id={props.route.params.user_id}
-      />
+      <AddFriendsButton navigation={navigation} />
       <ScrollView style={styles.friendContainer}>
         {friends.map((friend) => {
           return (

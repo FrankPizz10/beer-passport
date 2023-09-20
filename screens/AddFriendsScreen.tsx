@@ -15,10 +15,11 @@ import { AddFriendsProps } from "../props";
 import { User } from "../Models/SQLData";
 import { useSearchFilter } from "../Controllers/SearchController";
 import { addFriend, fetchAllUsers, fetchFriends } from "../Models/Requests";
+import { API_URL } from "@env";
+import { auth } from "../Models/firebase";
 
 const AddFriendsScreen = (props: AddFriendsProps) => {
-  const navigation = useNavigation<(typeof props)["navigation"]>();
-  const [users, setUsers] = useState([] as User[]);
+  const [notfriends, setNotFriends] = useState([] as User[]);
   const [animation] = useState(() => new Animated.Value(0));
   const [friendAdded, setFriendAdded] = useState(false);
 
@@ -38,22 +39,23 @@ const AddFriendsScreen = (props: AddFriendsProps) => {
 
   useEffect(() => {
     const getFriendScreenData = async () => {
-      const unfilteredUsers = await fetchAllUsers();
-      const friends = await fetchFriends();
-      const friendIds = friends.map((friend) => friend.user_2);
-      setUsers(
-        unfilteredUsers.filter(
-          (user) =>
-            !friendIds.includes(user.id) &&
-            user.id !== props.route.params.user_id
-        )
-      );
+      const url = `${API_URL}/api/notfriends/`;
+      const token = await auth.currentUser?.getIdToken();
+      const response = await fetch(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+      const notFriendsData = await response.json();
+      console.log(notFriendsData);
+      setNotFriends(notFriendsData);
     };
     getFriendScreenData();
   }, [friendAdded]);
 
   const { searchInput, setSearchInput, filteredList } = useSearchFilter({
-    initialList: users,
+    initialList: notfriends,
     nameKey: "user_name",
   });
 

@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   TextInput,
 } from "react-native";
-import { SearchBeersProps } from "../props";
+import { RouterProps, SearchBeersProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
 import { BasicBeer } from "../Models/SQLData";
 import { fetchAllBeers } from "../Models/Requests";
@@ -28,7 +28,6 @@ const SearchBeerScreen = (props: SearchBeersProps) => {
 
   const handleBeerPress = (beerId: number) => {
     navigation.navigate("Beer", {
-      user_id: props.route.params.user_id,
       beer_id: beerId,
     });
   };

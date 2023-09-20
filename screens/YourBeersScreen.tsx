@@ -11,18 +11,17 @@ import {
 import { YourBeersProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
 import { useYourBeers } from "../Controllers/YourBeersController";
-import HomeButton from "./HomeButton";
+// import HomeButton from "./HomeButton";
 
 const YourBeersScreen = (props: YourBeersProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
   const [tried, setTried] = useState(true);
   const [liked, setLiked] = useState(false);
 
-  const { triedBeers, likedBeers } = useYourBeers(props.route.params.user_id);
+  const { triedBeers, likedBeers } = useYourBeers(undefined);
 
   const handleBeerPress = (beerId: number) => {
     navigation.navigate("Beer", {
-      user_id: props.route.params.user_id,
       beer_id: beerId,
     });
   };
@@ -39,9 +38,9 @@ const YourBeersScreen = (props: YourBeersProps) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.HomeButton}>
+      {/* <View style={styles.HomeButton}>
         <HomeButton route={props.route} navigation={props.navigation} />
-      </View>
+      </View> */}
       <View style={styles.titleContainer}>
         <Text style={styles.title}> My Beers </Text>
       </View>

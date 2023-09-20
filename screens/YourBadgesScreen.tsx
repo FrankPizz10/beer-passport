@@ -12,7 +12,7 @@ import { YourBadgesProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
 import { useYourBadges } from "../Controllers/YourBadgesController";
 import { decimalToPercent } from "../utils";
-import HomeButton from "./HomeButton";
+// import HomeButton from "./HomeButton";
 
 const YourBadgesScreen = (props: YourBadgesProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
@@ -20,9 +20,9 @@ const YourBadgesScreen = (props: YourBadgesProps) => {
 
   return (
     <SafeAreaView style={styles.root}>
-      <View style={styles.HomeButton}>
+      {/* <View style={styles.HomeButton}>
         <HomeButton route={props.route} navigation={props.navigation} />
-      </View>
+      </View> */}
       <View style={styles.titleContainer}>
         <Text style={styles.pageTitle}> My Badges </Text>
       </View>

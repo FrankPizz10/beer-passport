@@ -3,7 +3,7 @@ import { Beer, BeerId, UserBeer } from "../Models/SQLData";
 import { API_URL } from "@env";
 import { auth } from "../Models/firebase";
 
-export const useYourBeers = (userId: number) => {
+export const useYourBeers = (userId: number | undefined) => {
   const [triedBeers, setTriedBeers] = useState([] as Beer[]);
   const [likedBeers, setLikedBeers] = useState([] as Beer[]);
 
