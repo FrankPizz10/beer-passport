@@ -29,7 +29,7 @@ const CreateNewAccount = (props: CreateAccountProps) => {
   useEffect(() => {
     const unsibscribe = onAuthStateChanged(auth, (user) => {
       if (user && accountVerified) {
-        navigation.replace("Home");
+        navigation.replace("BottomTabNavigator");
       } else if (user && deleteAccount) {
         user.delete();
       }

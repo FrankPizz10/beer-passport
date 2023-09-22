@@ -16,6 +16,7 @@ export type RootStackParamList = {
   AddFriends: undefined;
   FriendProfile: { friend_id: number };
   BottomTabNavigator: undefined;
+  Notifications: undefined;
 };
 
 export interface CommonNavButtonProps {
@@ -85,4 +86,9 @@ export type AddFriendsProps = NativeStackScreenProps<
 export type FriendProfileProps = NativeStackScreenProps<
   RootStackParamList,
   "FriendProfile"
+>;
+
+export type NotificationsScreenProps = NativeStackScreenProps<
+  RootStackParamList,
+  "Notifications"
 >;

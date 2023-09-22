@@ -97,3 +97,16 @@ export interface Friend {
   users_friends_user_1Tousers: User;
   users_friends_user_2Tousers: User;
 }
+
+export interface Notification {
+  id: number;
+  user_id: number;
+  type: NotificationType;
+  message: string;
+  viewed: boolean;
+}
+
+export enum NotificationType {
+  NEW_FRIEND = "NEW_FRIEND",
+  BADGE_EARNED = "BADGE_EARNED",
+}

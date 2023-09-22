@@ -9,6 +9,7 @@ import {
   UserBeer,
 } from "./SQLData";
 import { auth } from "../Models/firebase";
+import { Notification } from "./SQLData";
 
 export const fetchAllBeers = async (): Promise<Beer[]> => {
   const url = `${API_URL}/api/beers/basic`;
@@ -206,4 +207,17 @@ export const fetchUserById = async (userId: number): Promise<User> => {
   });
   const user = await response.json();
   return user;
+};
+
+export const fetchNotifications = async (): Promise<Notification[]> => {
+  const url = `${API_URL}/api/notifications`;
+  const token = await auth.currentUser?.getIdToken();
+  const response = await fetch(url, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+  });
+  const notifications = await response.json();
+  return notifications;
 };

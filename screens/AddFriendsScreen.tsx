@@ -48,7 +48,6 @@ const AddFriendsScreen = (props: AddFriendsProps) => {
         },
       });
       const notFriendsData = await response.json();
-      console.log(notFriendsData);
       setNotFriends(notFriendsData);
     };
     getFriendScreenData();
