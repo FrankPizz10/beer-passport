@@ -88,7 +88,7 @@ export type FriendProfileProps = NativeStackScreenProps<
   "FriendProfile"
 >;
 
-export type NotificationsScreenProps = NativeStackScreenProps<
+export type NotificationsProps = NativeStackScreenProps<
   RootStackParamList,
   "Notifications"
 >;

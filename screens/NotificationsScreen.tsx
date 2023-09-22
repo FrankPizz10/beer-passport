@@ -7,10 +7,13 @@ import {
   StyleSheet,
   SafeAreaView,
 } from "react-native";
-import { fetchNotifications } from "../Models/Requests";
+import { fetchNotifications, fetchUserByUserName } from "../Models/Requests";
 import { Notification } from "../Models/SQLData";
+import { NotificationsProps } from "../props";
+import { useNavigation } from "@react-navigation/core";
 
-const NotificationsScreen = () => {
+const NotificationsScreen = (props: NotificationsProps) => {
+  const navigation = useNavigation<(typeof props)["navigation"]>();
   const [notifications, setNotifications] = useState([] as Notification[]);
 
   useEffect(() => {
@@ -22,6 +25,19 @@ const NotificationsScreen = () => {
     getNotificationData();
   }, []);
 
+  const handleFriendPress = async (notificationId: number) => {
+    const notification = notifications.find(
+      (notification) => notification.id === notificationId
+    );
+    const user = await fetchUserByUserName(
+      notification?.message.split(" ")[0]!
+    );
+    console.log(user);
+    navigation.navigate("FriendProfile", {
+      friend_id: user.id,
+    });
+  };
+
   return (
     <SafeAreaView>
       <Text>NotificationsScreen</Text>
@@ -29,7 +45,9 @@ const NotificationsScreen = () => {
         {notifications?.map((notification) => {
           return (
             <View key={notification.id}>
-              <TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => handleFriendPress(notification.id)}
+              >
                 <Text>{notification.message}</Text>
               </TouchableOpacity>
             </View>

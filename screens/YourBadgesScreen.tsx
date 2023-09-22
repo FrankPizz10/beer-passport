@@ -18,6 +18,12 @@ const YourBadgesScreen = (props: YourBadgesProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
   const userBadges = useYourBadges();
 
+  const handleBadgePress = (collectionId: number) => {
+    navigation.navigate("Collection", {
+      collection_id: collectionId,
+    });
+  };
+
   return (
     <SafeAreaView style={styles.root}>
       {/* <View style={styles.HomeButton}>
@@ -29,14 +35,18 @@ const YourBadgesScreen = (props: YourBadgesProps) => {
       <ScrollView style={styles.badgeContainer}>
         {userBadges?.map((badge) => {
           return (
-            <View key={badge.id} style={styles.badge}>
+            <TouchableOpacity
+              key={badge.id}
+              style={styles.badge}
+              onPress={() => handleBadgePress(badge.collections.id)}
+            >
               <Text style={styles.badgeTitle}>
                 {badge.collections.name.toUpperCase()}
               </Text>
               <Text>{badge.collections.description}</Text>
               <Text>Difficulty: {badge.collections.difficulty}</Text>
               <Text>Progress: {decimalToPercent(badge.progress)}</Text>
-            </View>
+            </TouchableOpacity>
           );
         })}
         {userBadges?.length === 0 && (

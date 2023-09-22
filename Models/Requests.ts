@@ -221,3 +221,16 @@ export const fetchNotifications = async (): Promise<Notification[]> => {
   const notifications = await response.json();
   return notifications;
 };
+
+export const fetchUserByUserName = async (userName: string): Promise<User> => {
+  const url = `${API_URL}/api/userbyname/${userName}`;
+  const token = await auth.currentUser?.getIdToken();
+  const response = await fetch(url, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+  });
+  const user = await response.json();
+  return user;
+};
