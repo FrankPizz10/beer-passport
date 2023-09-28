@@ -59,18 +59,17 @@ const CategoryScreen = (props: CategoryProps) => {
 
   const handleBeerPress = (beerId: number) => {
     navigation.navigate("Beer", {
-      user_id: props.route.params.user_id,
       beer_id: beerId,
-      collection_id: 1,
     });
   };
 
   return (
-    <View>
+    <View style={styles.root}>
       <SelectList
         setSelected={handleSelected}
         data={categories}
         boxStyles={styles.dropDown}
+        placeholder="Select a category"
       />
       <ScrollView>
         {beersByCategory?.map((beer) => {
@@ -90,6 +89,10 @@ const CategoryScreen = (props: CategoryProps) => {
 export default CategoryScreen;
 
 const styles = StyleSheet.create({
+  root: {
+    backgroundColor: "white",
+    flex: 1,
+  },
   dropDown: {
     backgroundColor: "white",
     padding: 10,

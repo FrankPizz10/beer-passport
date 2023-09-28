@@ -11,7 +11,7 @@ import { Collection } from "../Models/SQLData";
 import { fetchAllCollections } from "../Models/Requests";
 import { AllCollectionsProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
-import HomeButton from "./HomeButton";
+// import HomeButton from "./HomeButton";
 
 const AllCollectionsScreen = (props: AllCollectionsProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
@@ -19,7 +19,6 @@ const AllCollectionsScreen = (props: AllCollectionsProps) => {
 
   const handleCollectionPress = (collectionId: number) => {
     navigation.navigate("Collection", {
-      user_id: props.route.params.user_id,
       collection_id: collectionId,
     });
   };
@@ -35,9 +34,9 @@ const AllCollectionsScreen = (props: AllCollectionsProps) => {
 
   return (
     <SafeAreaView>
-      <View style={styles.HomeButton}>
+      {/* <View style={styles.HomeButton}>
         <HomeButton route={props.route} navigation={props.navigation} />
-      </View>
+      </View> */}
       <Text style={styles.ScreenTitle}>CollectionsScreen</Text>
       <ScrollView>
         {collections?.map((collection) => {
@@ -63,14 +62,8 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 10,
   },
-  dropDown: {
-    backgroundColor: "white",
-    padding: 10,
-    margin: 10,
-    borderRadius: 5,
-  },
   ScreenTitle: {
-    fontSize: 20,
+    fontSize: 30,
     fontWeight: "bold",
     textAlign: "center",
     margin: 10,
@@ -87,14 +80,6 @@ const styles = StyleSheet.create({
       width: 1,
       height: 1,
     },
-  },
-  input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    borderStyle: "solid",
-    borderColor: "black",
-    padding: 10,
   },
   HomeButton: {
     alignItems: "flex-end",

@@ -12,33 +12,48 @@ import { YourBadgesProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
 import { useYourBadges } from "../Controllers/YourBadgesController";
 import { decimalToPercent } from "../utils";
-import HomeButton from "./HomeButton";
+// import HomeButton from "./HomeButton";
 
 const YourBadgesScreen = (props: YourBadgesProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
-  const userBadges = useYourBadges(props.route.params.user_id);
+  const userBadges = useYourBadges();
+
+  const handleBadgePress = (collectionId: number) => {
+    navigation.navigate("Collection", {
+      collection_id: collectionId,
+    });
+  };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.HomeButton}>
+    <SafeAreaView style={styles.root}>
+      {/* <View style={styles.HomeButton}>
         <HomeButton route={props.route} navigation={props.navigation} />
-      </View>
+      </View> */}
       <View style={styles.titleContainer}>
-        <Text style={styles.pageTitle}> Your Badges </Text>
+        <Text style={styles.pageTitle}> My Badges </Text>
       </View>
-      <ScrollView>
+      <ScrollView style={styles.badgeContainer}>
         {userBadges?.map((badge) => {
           return (
-            <View key={badge.id} style={styles.badge}>
+            <TouchableOpacity
+              key={badge.id}
+              style={styles.badge}
+              onPress={() => handleBadgePress(badge.collections.id)}
+            >
               <Text style={styles.badgeTitle}>
                 {badge.collections.name.toUpperCase()}
               </Text>
               <Text>{badge.collections.description}</Text>
               <Text>Difficulty: {badge.collections.difficulty}</Text>
               <Text>Progress: {decimalToPercent(badge.progress)}</Text>
-            </View>
+            </TouchableOpacity>
           );
         })}
+        {userBadges?.length === 0 && (
+          <View style={styles.badge}>
+            <Text style={styles.badgeTitle}>You have no badges yet!</Text>
+          </View>
+        )}
       </ScrollView>
     </SafeAreaView>
   );
@@ -47,8 +62,10 @@ const YourBadgesScreen = (props: YourBadgesProps) => {
 export default YourBadgesScreen;
 
 const styles = StyleSheet.create({
-  container: {
-    marginTop: 10,
+  root: {
+    flex: 1,
+    backgroundColor: "white",
+    alignItems: "center",
   },
   titleContainer: {
     alignItems: "center",
@@ -59,53 +76,25 @@ const styles = StyleSheet.create({
     fontSize: 50,
     fontWeight: "bold",
   },
+  badgeContainer: {
+    marginTop: 10,
+    marginBottom: 10,
+    alignContent: "center",
+  },
   badgeTitle: {
     fontSize: 25,
     fontWeight: "bold",
     justifyContent: "center",
-  },
-  buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-  },
-  button: {
-    backgroundColor: "#F6546A",
-    padding: 10,
-    margin: 10,
-    borderRadius: 5,
-    shadowColor: "black",
-    shadowOpacity: 0.5,
-    shadowRadius: 5,
-    shadowOffset: {
-      width: 1,
-      height: 1,
-    },
-  },
-  dropDown: {
-    backgroundColor: "white",
-    padding: 10,
-    margin: 10,
-    borderRadius: 5,
-  },
-  beerCard: {
-    backgroundColor: "lightblue",
-    padding: 10,
-    margin: 10,
-    borderRadius: 5,
-    shadowColor: "black",
-    shadowOpacity: 0.5,
-    shadowRadius: 5,
-    shadowOffset: {
-      width: 1,
-      height: 1,
-    },
+    marginBottom: 10,
   },
   badge: {
-    paddingVertical: 4,
-    paddingHorizontal: 8,
+    alignItems: "center",
+    justifyContent: "center",
     backgroundColor: "#ff5722",
     borderRadius: 12,
     margin: 5,
+    width: 350,
+    height: 150,
   },
   HomeButton: {
     alignItems: "flex-end",

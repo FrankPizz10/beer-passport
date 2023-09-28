@@ -1,10 +1,18 @@
 // This is develop branch
 import { API_URL } from "@env";
-import { Beer, Collection, CollectionBeer, UserBeer } from "./SQLData";
+import {
+  Beer,
+  Collection,
+  CollectionBeer,
+  Friend,
+  User,
+  UserBeer,
+} from "./SQLData";
 import { auth } from "../Models/firebase";
+import { Notification } from "./SQLData";
 
 export const fetchAllBeers = async (): Promise<Beer[]> => {
-  const url = `${API_URL}/api/beers`;
+  const url = `${API_URL}/api/beers/basic`;
   const token = await auth.currentUser?.getIdToken();
   const response = await fetch(url, {
     headers: {
@@ -35,11 +43,10 @@ export const fetchBeer = async (beer_id: number): Promise<Beer | undefined> => {
 };
 
 export const fetchUserBeer = async (
-  user_id: number,
   beer_id: number
 ): Promise<UserBeer | undefined> => {
   try {
-    const url = `${API_URL}/api/userbeer/${user_id}/${beer_id}`;
+    const url = `${API_URL}/api/userbeer/${beer_id}`;
     const token = await auth.currentUser?.getIdToken();
     const response = await fetch(url, {
       headers: {
@@ -134,4 +141,96 @@ export const fetchCollectionBeersByBeerId = async (
   });
   const collectionBeers = await response.json();
   return collectionBeers;
+};
+
+export const fetchFriends = async (): Promise<Friend[]> => {
+  const url = `${API_URL}/api/friends/`;
+  const token = await auth.currentUser?.getIdToken();
+  const response = await fetch(url, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+  });
+  const friends = await response.json();
+  return friends;
+};
+
+export const deleteAccount = async (): Promise<void> => {
+  const uid = auth.currentUser?.uid;
+  const url = `${API_URL}/api/users/${uid}`;
+  const token = await auth.currentUser?.getIdToken();
+  const response = await fetch(url, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+  });
+  await auth.currentUser?.delete();
+};
+
+export const fetchAllUsers = async (): Promise<User[]> => {
+  const url = `${API_URL}/api/users`;
+  const token = await auth.currentUser?.getIdToken();
+  const response = await fetch(url, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+  });
+  const users = await response.json();
+  return users;
+};
+
+export const addFriend = async (user2: number): Promise<void> => {
+  const url = `${API_URL}/api/friends/${user2}`;
+  const token = await auth.currentUser?.getIdToken();
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+  });
+  const friend = await response.json();
+};
+
+export const fetchUserById = async (userId: number): Promise<User> => {
+  const url = `${API_URL}/api/users/${userId}`;
+  const token = await auth.currentUser?.getIdToken();
+  const response = await fetch(url, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+  });
+  const user = await response.json();
+  return user;
+};
+
+export const fetchNotifications = async (): Promise<Notification[]> => {
+  const url = `${API_URL}/api/notifications`;
+  const token = await auth.currentUser?.getIdToken();
+  const response = await fetch(url, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+  });
+  const notifications = await response.json();
+  return notifications;
+};
+
+export const fetchUserByUserName = async (userName: string): Promise<User> => {
+  const url = `${API_URL}/api/userbyname/${userName}`;
+  const token = await auth.currentUser?.getIdToken();
+  const response = await fetch(url, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+  });
+  const user = await response.json();
+  return user;
 };

@@ -21,17 +21,21 @@ const CreateNewAccount = (props: CreateAccountProps) => {
   const [password, setPassword] = useState("");
   const [age, setAge] = useState("");
   const [username, setUsername] = useState("");
+  const [accountVerified, setAccountVerified] = useState(false);
+  const [deleteAccount, setDeleteAccount] = useState(false);
 
   const navigation = useNavigation<(typeof props)["navigation"]>();
 
   useEffect(() => {
     const unsibscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        navigation.replace("Home");
+      if (user && accountVerified) {
+        navigation.replace("BottomTabNavigator");
+      } else if (user && deleteAccount) {
+        user.delete();
       }
     });
     return unsibscribe;
-  }, []);
+  }, [accountVerified, deleteAccount]);
 
   const handleSignUp = async () => {
     try {
@@ -51,12 +55,17 @@ const CreateNewAccount = (props: CreateAccountProps) => {
           Authorization: "Bearer " + token,
         },
         body: JSON.stringify({
-          id: userUID,
-          username: username,
+          uid: userUID,
+          user_name: username,
           age: age,
           email: email,
         }),
       });
+      if (response.status === 200) {
+        setAccountVerified(true);
+      } else {
+        setDeleteAccount(true);
+      }
     } catch (error: any) {
       const errorCode = error.code;
       const errorMessage = error.message;

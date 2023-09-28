@@ -3,11 +3,13 @@ import { UserBadge } from "../Models/SQLData";
 import { API_URL } from "@env";
 import { auth } from "../Models/firebase";
 
-export const useYourBadges = (userId: number) => {
+export const useYourBadges = (userId?: number) => {
   const [badges, setBadges] = useState([] as UserBadge[]);
   const fetchBadges = async () => {
     try {
-      const badgesurl = `${API_URL}/api/userbadges/${userId}`;
+      const badgesurl = userId
+        ? `${API_URL}/api/userbadges/${userId}}`
+        : `${API_URL}/api/userbadges/`;
       const token = await auth.currentUser?.getIdToken();
       const response = await fetch(badgesurl, {
         headers: {

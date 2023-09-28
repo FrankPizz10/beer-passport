@@ -6,30 +6,28 @@ import {
   View,
   KeyboardAvoidingView,
   TouchableOpacity,
+  Dimensions,
 } from "react-native";
 import { auth } from "../Models/firebase";
-import {
-  createUserWithEmailAndPassword,
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
+import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigation } from "@react-navigation/core";
 import { LoginProps } from "../props";
 
 const LoginScreen = (props: LoginProps) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loginPressed, setLoginPressed] = useState(false);
 
   const navigation = useNavigation<(typeof props)["navigation"]>();
 
   useEffect(() => {
     const unsibscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        navigation.replace("Home");
+      if (user && loginPressed) {
+        navigation.replace("BottomTabNavigator");
       }
     });
     return unsibscribe;
-  }, []);
+  }, [loginPressed]);
 
   const handleSignUp = async () => {
     navigation.navigate("CreateNewAccount");
@@ -42,6 +40,7 @@ const LoginScreen = (props: LoginProps) => {
         email,
         password
       );
+      setLoginPressed(true);
       const user = userCredentials.user;
       console.log("Logged in with:", user.email);
     } catch (error: any) {
@@ -53,8 +52,10 @@ const LoginScreen = (props: LoginProps) => {
   };
 
   return (
-    <KeyboardAvoidingView style={styles.container} behavior="padding">
-      <Text style={styles.title}>Login Screen</Text>
+    <KeyboardAvoidingView style={styles.root} behavior="padding">
+      <View style={styles.title}>
+        <Text style={styles.title}>Login Screen</Text>
+      </View>
       <View style={styles.inputContainer}>
         <TextInput
           placeholder="Email"
@@ -70,7 +71,7 @@ const LoginScreen = (props: LoginProps) => {
           secureTextEntry
         />
       </View>
-      <View>
+      <View style={styles.buttonContainer}>
         <TouchableOpacity onPress={handleLogin} style={styles.button}>
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
@@ -84,19 +85,34 @@ const LoginScreen = (props: LoginProps) => {
 
 export default LoginScreen;
 
+const { width } = Dimensions.get("window");
+
 const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+    backgroundColor: "white",
+    alignItems: "center",
+    alignContent: "center",
+    justifyContent: "center",
+    margin: 10,
+    width: width,
+  },
   container: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    borderColor: "white",
+    borderWidth: 6,
   },
   title: {
-    fontSize: 40,
+    fontSize: width * 0.1,
     fontWeight: "bold",
-    marginBottom: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 10,
   },
   inputContainer: {
-    width: 300,
+    width: width * 0.9,
     borderWidth: 1,
     borderStyle: "solid",
     borderColor: "black",
@@ -109,6 +125,9 @@ const styles = StyleSheet.create({
     borderStyle: "solid",
     borderColor: "black",
     padding: 10,
+  },
+  buttonContainer: {
+    marginTop: 25,
   },
   button: {
     backgroundColor: "blue",

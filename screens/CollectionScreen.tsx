@@ -15,7 +15,7 @@ import {
 } from "../Models/Requests";
 import { CollectionProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
-import HomeButton from "./HomeButton";
+// import HomeButton from "./HomeButton";
 
 const CollectionScreen = (props: CollectionProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
@@ -38,25 +38,26 @@ const CollectionScreen = (props: CollectionProps) => {
       });
     };
     getCollectionData();
-  }, [props.route.params.collection_id, props.route.params.user_id]);
+  }, [props.route.params.collection_id]);
 
   const handleBeerPress = (beerId: number) => {
     navigation.navigate("Beer", {
-      user_id: props.route.params.user_id,
       beer_id: beerId,
     });
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.HomeButton}>
+      {/* <View style={styles.HomeButton}>
         <HomeButton route={props.route} navigation={props.navigation} />
+      </View> */}
+      <View style={styles.titleContainer}>
+        <Text style={styles.CollectionTitle}>{collection?.name}</Text>
+        <Text style={styles.CollectionDetails}>{collection?.description}</Text>
+        <Text style={styles.CollectionDetails}>
+          Difficulty: {collection?.difficulty}
+        </Text>
       </View>
-      <Text style={styles.CollectionTitle}>{collection?.name}</Text>
-      <Text style={styles.CollectionDetails}>{collection?.description}</Text>
-      <Text style={styles.CollectionDetails}>
-        Difficulty: {collection?.difficulty}
-      </Text>
       <ScrollView>
         {beers?.map((beer) => {
           return (
@@ -79,11 +80,10 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 10,
   },
-  dropDown: {
-    backgroundColor: "white",
-    padding: 10,
+  titleContainer: {
+    alignItems: "center",
+    justifyContent: "center",
     margin: 10,
-    borderRadius: 5,
   },
   beerCard: {
     backgroundColor: "lightblue",
@@ -98,21 +98,14 @@ const styles = StyleSheet.create({
       height: 1,
     },
   },
-  input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    borderStyle: "solid",
-    borderColor: "black",
-    padding: 10,
-  },
   CollectionTitle: {
-    fontSize: 30,
+    fontSize: 50,
+    fontWeight: "bold",
     textAlign: "center",
     margin: 10,
   },
   CollectionDetails: {
-    fontSize: 20,
+    fontSize: 22,
     textAlign: "center",
     margin: 10,
   },
