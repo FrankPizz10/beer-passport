@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
-  Modal,
   Animated,
   Dimensions,
 } from "react-native";
@@ -14,7 +13,7 @@ import { useNavigation } from "@react-navigation/core";
 import { AddFriendsProps } from "../props";
 import { User } from "../Models/SQLData";
 import { useSearchFilter } from "../Controllers/SearchController";
-import { addFriend, fetchAllUsers, fetchFriends } from "../Models/Requests";
+import { addFriend } from "../Models/Requests";
 import { API_URL } from "@env";
 import { auth } from "../Models/firebase";
 

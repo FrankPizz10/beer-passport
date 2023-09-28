@@ -64,7 +64,7 @@ const CategoryScreen = (props: CategoryProps) => {
   };
 
   return (
-    <View>
+    <View style={styles.root}>
       <SelectList
         setSelected={handleSelected}
         data={categories}
@@ -89,6 +89,10 @@ const CategoryScreen = (props: CategoryProps) => {
 export default CategoryScreen;
 
 const styles = StyleSheet.create({
+  root: {
+    backgroundColor: "white",
+    flex: 1,
+  },
   dropDown: {
     backgroundColor: "white",
     padding: 10,
