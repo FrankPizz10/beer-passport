@@ -17,7 +17,6 @@ import {
   fetchUserBeer,
 } from "../Models/Requests";
 import { auth } from "../Models/firebase";
-const { width } = Dimensions.get("window");
 
 const BeerScreen = (props: BeerProps) => {
   const [beer, setBeer] = useState({} as Beer | undefined);
@@ -169,9 +168,7 @@ export default BeerScreen;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     margin: 10,
-    width: width,
   },
   titleContainer: {
     alignItems: "center",
@@ -187,7 +184,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 20,
-    width: width * 0.9,
   },
   style: {
     fontSize: 30,

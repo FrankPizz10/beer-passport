@@ -85,8 +85,6 @@ const LoginScreen = (props: LoginProps) => {
 
 export default LoginScreen;
 
-const { width } = Dimensions.get("window");
-
 const styles = StyleSheet.create({
   root: {
     flex: 1,
@@ -95,7 +93,6 @@ const styles = StyleSheet.create({
     alignContent: "center",
     justifyContent: "center",
     margin: 10,
-    width: width,
   },
   container: {
     flex: 1,
@@ -105,18 +102,18 @@ const styles = StyleSheet.create({
     borderWidth: 6,
   },
   title: {
-    fontSize: width * 0.1,
     fontWeight: "bold",
     justifyContent: "center",
     alignItems: "center",
+    fontSize: 30,
     padding: 10,
   },
   inputContainer: {
-    width: width * 0.9,
     borderWidth: 1,
     borderStyle: "solid",
     borderColor: "black",
     padding: 10,
+    width: 300,
   },
   input: {
     height: 40,
