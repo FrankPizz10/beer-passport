@@ -168,7 +168,7 @@ export default BeerScreen;
 
 const styles = StyleSheet.create({
   container: {
-    margin: 10,
+    backgroundColor: "white",
   },
   titleContainer: {
     alignItems: "center",

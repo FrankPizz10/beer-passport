@@ -33,10 +33,7 @@ const AllCollectionsScreen = (props: AllCollectionsProps) => {
   }, []);
 
   return (
-    <SafeAreaView>
-      {/* <View style={styles.HomeButton}>
-        <HomeButton route={props.route} navigation={props.navigation} />
-      </View> */}
+    <SafeAreaView style={styles.container}>
       <Text style={styles.ScreenTitle}>CollectionsScreen</Text>
       <ScrollView>
         {collections?.map((collection) => {
@@ -60,7 +57,7 @@ export default AllCollectionsScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 10,
+    backgroundColor: "white",
   },
   ScreenTitle: {
     fontSize: 30,

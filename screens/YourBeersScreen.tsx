@@ -38,9 +38,6 @@ const YourBeersScreen = (props: YourBeersProps) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* <View style={styles.HomeButton}>
-        <HomeButton route={props.route} navigation={props.navigation} />
-      </View> */}
       <View style={styles.titleContainer}>
         <Text style={styles.title}> My Beers </Text>
       </View>
@@ -94,7 +91,7 @@ export default YourBeersScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 10,
+    backgroundColor: "white",
   },
   HomeButton: {
     alignItems: "flex-end",

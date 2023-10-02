@@ -38,7 +38,7 @@ const SearchBeerScreen = (props: SearchBeersProps) => {
   });
 
   return (
-    <View>
+    <View style={styles.container}>
       {/* Search Bar */}
       <TextInput
         style={styles.input}
@@ -64,6 +64,10 @@ const SearchBeerScreen = (props: SearchBeersProps) => {
 export default SearchBeerScreen;
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "white",
+  },
   dropDown: {
     backgroundColor: "white",
     padding: 10,

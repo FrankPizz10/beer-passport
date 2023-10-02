@@ -48,9 +48,6 @@ const CollectionScreen = (props: CollectionProps) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* <View style={styles.HomeButton}>
-        <HomeButton route={props.route} navigation={props.navigation} />
-      </View> */}
       <View style={styles.titleContainer}>
         <Text style={styles.CollectionTitle}>{collection?.name}</Text>
         <Text style={styles.CollectionDetails}>{collection?.description}</Text>
@@ -78,7 +75,7 @@ export default CollectionScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 10,
+    backgroundColor: "white",
   },
   titleContainer: {
     alignItems: "center",
