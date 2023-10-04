@@ -12,6 +12,7 @@ import { useNavigation } from "@react-navigation/core";
 import { BasicBeer } from "../Models/SQLData";
 import { fetchAllBeers } from "../Models/Requests";
 import { useSearchFilter } from "../Controllers/SearchController";
+import { BackgroundColor } from "./colors";
 
 const SearchBeerScreen = (props: SearchBeersProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
@@ -66,10 +67,10 @@ export default SearchBeerScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: BackgroundColor,
   },
   dropDown: {
-    backgroundColor: "white",
+    backgroundColor: BackgroundColor,
     padding: 10,
     margin: 10,
     borderRadius: 5,

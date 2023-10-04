@@ -11,6 +11,7 @@ import {
 import { YourBeersProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
 import { useYourBeers } from "../Controllers/YourBeersController";
+import { BackgroundColor } from "./colors";
 // import HomeButton from "./HomeButton";
 
 const YourBeersScreen = (props: YourBeersProps) => {
@@ -91,7 +92,7 @@ export default YourBeersScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: BackgroundColor,
   },
   HomeButton: {
     alignItems: "flex-end",
@@ -125,7 +126,7 @@ const styles = StyleSheet.create({
     },
   },
   dropDown: {
-    backgroundColor: "white",
+    backgroundColor: BackgroundColor,
     padding: 10,
     margin: 10,
     borderRadius: 5,

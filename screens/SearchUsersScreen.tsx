@@ -12,6 +12,7 @@ import { SearchUsersProps } from "../props";
 import { User } from "../Models/SQLData";
 import { useSearchFilter } from "../Controllers/SearchController";
 import { fetchAllUsers } from "../Models/Requests";
+import { BackgroundColor } from "./colors";
 
 const SearchUsersScreen = (props: SearchUsersProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
@@ -37,7 +38,7 @@ const SearchUsersScreen = (props: SearchUsersProps) => {
   };
 
   return (
-    <View>
+    <View style={styles.root}>
       <View style={styles.container}>
         <Text style={styles.ScreenTitle}>Find Users</Text>
       </View>
@@ -66,12 +67,15 @@ const SearchUsersScreen = (props: SearchUsersProps) => {
 };
 
 const styles = StyleSheet.create({
+  root: {
+    backgroundColor: BackgroundColor,
+  },
   container: {
     flex: 1,
     marginTop: 10,
   },
   ScreenTitle: {
-    fontSize: 20,
+    fontSize: 30,
     fontWeight: "bold",
     textAlign: "center",
     margin: 10,

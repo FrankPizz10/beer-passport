@@ -16,6 +16,7 @@ import { useSearchFilter } from "../Controllers/SearchController";
 import { addFriend } from "../Models/Requests";
 import { API_URL } from "@env";
 import { auth } from "../Models/firebase";
+import { BackgroundColor } from "./colors";
 
 const AddFriendsScreen = (props: AddFriendsProps) => {
   const [notfriends, setNotFriends] = useState([] as User[]);
@@ -140,7 +141,7 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   dropDown: {
-    backgroundColor: "white",
+    backgroundColor: BackgroundColor,
     padding: 10,
     margin: 10,
     borderRadius: 5,
@@ -176,7 +177,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: "white",
+    backgroundColor: BackgroundColor,
     padding: 10,
     margin: 10,
     borderRadius: 5,

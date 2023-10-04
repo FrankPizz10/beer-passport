@@ -11,7 +11,7 @@ import { useNavigation } from "@react-navigation/core";
 import { HomeProps } from "../props";
 import { User } from "../Models/SQLData";
 import { API_URL } from "@env";
-import { ButtonColor, TitleColor } from "./colors";
+import { BackgroundColor, ButtonColor, TitleColor } from "./colors";
 import { Ionicons } from "@expo/vector-icons";
 import DeleteAccountButton from "./DeleteAccountButton";
 
@@ -125,7 +125,7 @@ export default HomeScreen;
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: BackgroundColor,
     alignItems: "center",
   },
   titleContainer: {

@@ -13,6 +13,7 @@ import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigation } from "@react-navigation/core";
 import { LoginProps } from "../props";
 import { API_URL } from "@env";
+import { BackgroundColor } from "./colors";
 
 export const getErrorMessage = (errorCode: string) => {
   switch (errorCode) {
@@ -123,7 +124,7 @@ export default LoginScreen;
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: BackgroundColor,
     alignItems: "center",
     alignContent: "center",
     justifyContent: "center",

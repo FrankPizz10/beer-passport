@@ -15,6 +15,7 @@ import { useYourBeers } from "../Controllers/YourBeersController";
 import { useYourBadges } from "../Controllers/YourBadgesController";
 import { decimalToPercent } from "../utils";
 import { API_URL } from "@env";
+import { BackgroundColor } from "./colors";
 
 const OtherUserScreen = (props: FriendProfileProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
@@ -167,7 +168,7 @@ const OtherUserScreen = (props: FriendProfileProps) => {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: BackgroundColor,
     alignItems: "center",
   },
   detailsContainer: {

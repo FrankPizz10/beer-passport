@@ -17,6 +17,7 @@ import {
   fetchUserBeer,
 } from "../Models/Requests";
 import { auth } from "../Models/firebase";
+import { BackgroundColor } from "./colors";
 
 const BeerScreen = (props: BeerProps) => {
   const [beer, setBeer] = useState({} as Beer | undefined);
@@ -168,7 +169,7 @@ export default BeerScreen;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
+    backgroundColor: BackgroundColor,
   },
   titleContainer: {
     alignItems: "center",

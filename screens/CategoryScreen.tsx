@@ -13,6 +13,7 @@ import { Category } from "../Models/SQLData";
 import { API_URL } from "@env";
 import { useCategory } from "../Controllers/CategoryController";
 import { auth } from "../Models/firebase";
+import { BackgroundColor } from "./colors";
 
 interface CategoryMap {
   key: number;
@@ -90,11 +91,11 @@ export default CategoryScreen;
 
 const styles = StyleSheet.create({
   root: {
-    backgroundColor: "white",
+    backgroundColor: BackgroundColor,
     flex: 1,
   },
   dropDown: {
-    backgroundColor: "white",
+    backgroundColor: BackgroundColor,
     padding: 10,
     margin: 10,
     borderRadius: 5,

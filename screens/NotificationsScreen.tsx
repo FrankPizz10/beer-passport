@@ -10,6 +10,7 @@ import { fetchNotifications, fetchUserByUserName } from "../Models/Requests";
 import { Notification } from "../Models/SQLData";
 import { NotificationsProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
+import { BackgroundColor } from "./colors";
 
 const NotificationsScreen = (props: NotificationsProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
@@ -41,9 +42,7 @@ const NotificationsScreen = (props: NotificationsProps) => {
       <View style={styles.container}>
         <Text style={styles.ScreenTitle}>Notifications</Text>
       </View>
-      <ScrollView
-        contentContainerStyle={{ flexGrow: 1, backgroundColor: "white" }}
-      >
+      <ScrollView style={styles.notificationContainer}>
         {notifications?.map((notification) => {
           return (
             <TouchableOpacity
@@ -61,8 +60,12 @@ const NotificationsScreen = (props: NotificationsProps) => {
 };
 
 const styles = StyleSheet.create({
+  notificationContainer: {
+    flexGrow: 1,
+    backgroundColor: BackgroundColor,
+  },
   notification: {
-    backgroundColor: "white",
+    backgroundColor: BackgroundColor,
     padding: 10,
     margin: 10,
     borderWidth: 1,
@@ -72,7 +75,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   container: {
-    backgroundColor: "white",
+    backgroundColor: BackgroundColor,
     height: 80,
     justifyContent: "center",
   },

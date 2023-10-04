@@ -13,6 +13,7 @@ import { FriendsProps } from "../props";
 import SearchUsersButton from "./SearchUsersButton";
 import { useNavigation } from "@react-navigation/core";
 import { useFocusEffect } from "@react-navigation/native";
+import { BackgroundColor } from "./colors";
 
 const FriendScreen = (props: FriendsProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
@@ -59,7 +60,7 @@ const FriendScreen = (props: FriendsProps) => {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: BackgroundColor,
     alignItems: "center",
   },
   titleContainer: {

@@ -11,6 +11,7 @@ import { Collection } from "../Models/SQLData";
 import { fetchAllCollections } from "../Models/Requests";
 import { AllCollectionsProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
+import { BackgroundColor } from "./colors";
 // import HomeButton from "./HomeButton";
 
 const AllCollectionsScreen = (props: AllCollectionsProps) => {
@@ -57,7 +58,7 @@ export default AllCollectionsScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: BackgroundColor,
   },
   ScreenTitle: {
     fontSize: 30,
