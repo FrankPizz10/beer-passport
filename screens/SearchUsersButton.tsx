@@ -7,7 +7,7 @@ const SearchUsersButton = (props: CommonNavButtonProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
 
   const handleFriendScreen = () => {
-    navigation.navigate("AddFriends");
+    navigation.navigate("SearchUsers");
   };
 
   return (

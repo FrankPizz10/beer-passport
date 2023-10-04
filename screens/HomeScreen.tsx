@@ -12,6 +12,7 @@ import { HomeProps } from "../props";
 import { User } from "../Models/SQLData";
 import { API_URL } from "@env";
 import { ButtonColor, TitleColor } from "./colors";
+import { Ionicons } from "@expo/vector-icons";
 import DeleteAccountButton from "./DeleteAccountButton";
 
 const HomeScreen = (props: HomeProps) => {
@@ -78,6 +79,9 @@ const HomeScreen = (props: HomeProps) => {
       <View style={styles.titleContainer}>
         <Text style={styles.welcome}>Welcome {user.user_name}</Text>
       </View>
+      <View style={styles.iconContainer}>
+        <Ionicons name="ios-beer" size={30} color="blue" />
+      </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity onPress={handleSearchScreen} style={styles.button}>
           <Text style={styles.buttonText}>Search Beers</Text>
@@ -125,10 +129,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   titleContainer: {
-    height: 100,
     width: 400,
     alignItems: "center",
-    margin: 15,
+    marginTop: 15,
     padding: 15,
   },
   title: {
@@ -143,6 +146,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: TitleColor,
     paddingTop: 10,
+  },
+  iconContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 10,
   },
   buttonContainer: {
     flex: 1,
