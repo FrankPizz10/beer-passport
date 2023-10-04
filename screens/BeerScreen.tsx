@@ -174,11 +174,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 20,
+    marginTop: 10,
   },
   title: {
     fontSize: 40,
     fontWeight: "bold",
     alignItems: "center",
+    textAlign: "center",
   },
   styleContainer: {
     alignItems: "center",
@@ -240,6 +242,7 @@ const styles = StyleSheet.create({
   triedLiked: {
     fontSize: 20,
     fontWeight: "bold",
+    textAlign: "center",
   },
   HomeButton: {
     alignItems: "flex-end",

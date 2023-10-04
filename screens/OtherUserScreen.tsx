@@ -10,17 +10,19 @@ import {
 import { useNavigation } from "@react-navigation/core";
 import { FriendProfileProps } from "../props";
 import { User } from "../Models/SQLData";
-import { fetchUserById } from "../Models/Requests";
+import { addFriend, fetchUserById, removeFriend } from "../Models/Requests";
 import { useYourBeers } from "../Controllers/YourBeersController";
 import { useYourBadges } from "../Controllers/YourBadgesController";
 import { decimalToPercent } from "../utils";
+import { API_URL } from "@env";
 
-const FriendProfileScreen = (props: FriendProfileProps) => {
+const OtherUserScreen = (props: FriendProfileProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
-  const [friend, setFriend] = useState<User>({} as User);
+  const [user, setUser] = useState<User>({} as User);
   const [triedPressed, setTriedPressed] = useState(true);
   const [likedPressed, setLikedPressed] = useState(false);
   const [badgesPressed, setBadgesPressed] = useState(false);
+  const [isFriend, setIsFriend] = useState(false);
 
   const handleBeerPress = (beerId: number) => {
     navigation.navigate("Beer", {
@@ -47,21 +49,52 @@ const FriendProfileScreen = (props: FriendProfileProps) => {
   };
 
   useEffect(() => {
-    const getFriendData = async () => {
+    const getUserData = async () => {
       const friendData = await fetchUserById(props.route.params.friend_id);
-      setFriend(friendData);
+      setUser(friendData);
     };
-    getFriendData();
+    const getFriendshipStatus = async () => {
+      const response = await fetch(
+        `${API_URL}/api/friends/${props.route.params.friend_id}`
+      );
+      const data = await response.json();
+      data.length > 0 ? setIsFriend(true) : setIsFriend(false);
+    };
+    getUserData();
+    getFriendshipStatus();
   }, []);
 
   const { triedBeers, likedBeers } = useYourBeers(props.route.params.friend_id);
 
   const badges = useYourBadges(props.route.params.friend_id);
 
+  const handleAddFriend = async () => {
+    await addFriend(props.route.params.friend_id);
+    setIsFriend(true);
+  };
+
+  const handleRemoveFriend = async () => {
+    await removeFriend(props.route.params.friend_id);
+    setIsFriend(false);
+  };
+
   return (
     <SafeAreaView style={styles.root}>
+      {isFriend && (
+        <TouchableOpacity
+          onPress={handleRemoveFriend}
+          style={styles.friendButton}
+        >
+          <Text style={styles.friendButtonTitle}>Remove Friend</Text>
+        </TouchableOpacity>
+      )}
+      {!isFriend && (
+        <TouchableOpacity onPress={handleAddFriend} style={styles.friendButton}>
+          <Text style={styles.friendButtonTitle}>Add Friend</Text>
+        </TouchableOpacity>
+      )}
       <View style={styles.detailsContainer}>
-        <Text style={styles.friendName}>{friend.user_name}</Text>
+        <Text style={styles.friendName}>{user.user_name}</Text>
       </View>
       <View style={styles.buttonAndItemsContainer}>
         <View style={styles.buttonContainer}>
@@ -88,7 +121,7 @@ const FriendProfileScreen = (props: FriendProfileProps) => {
             })}
           {triedPressed && triedBeers?.length === 0 && (
             <View style={styles.beerCard}>
-              <Text>{friend.user_name} has no tried beers yet!</Text>
+              <Text>{user.user_name} has no tried beers yet!</Text>
             </View>
           )}
           {likedPressed &&
@@ -103,7 +136,7 @@ const FriendProfileScreen = (props: FriendProfileProps) => {
             })}
           {likedPressed && likedBeers?.length === 0 && (
             <View style={styles.beerCard}>
-              <Text>{friend.user_name} has no liked beers yet!</Text>
+              <Text>{user.user_name} has no liked beers yet!</Text>
             </View>
           )}
           {badgesPressed &&
@@ -145,6 +178,19 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: "bold",
     marginBottom: 5,
+  },
+  friendButton: {
+    alignItems: "center",
+    backgroundColor: "#3399FF",
+    borderRadius: 5,
+    padding: 10,
+    width: 150,
+    margin: 15,
+  },
+  friendButtonTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center",
   },
   details: {
     fontSize: 22,
@@ -208,4 +254,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default FriendProfileScreen;
+export default OtherUserScreen;

@@ -196,6 +196,18 @@ export const addFriend = async (user2: number): Promise<void> => {
   const friend = await response.json();
 };
 
+export const removeFriend = async (user2: number): Promise<void> => {
+  const url = `${API_URL}/api/friends/${user2}`;
+  const token = await auth.currentUser?.getIdToken();
+  const response = await fetch(url, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+  });
+};
+
 export const fetchUserById = async (userId: number): Promise<User> => {
   const url = `${API_URL}/api/users/${userId}`;
   const token = await auth.currentUser?.getIdToken();

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import {
   View,
   Text,
@@ -10,7 +10,7 @@ import {
 import { User } from "../Models/SQLData";
 import { fetchFriends } from "../Models/Requests";
 import { FriendsProps } from "../props";
-import AddFriendsButton from "./AddFriendsButton";
+import SearchUsersButton from "./SearchUsersButton";
 import { useNavigation } from "@react-navigation/core";
 import { useFocusEffect } from "@react-navigation/native";
 
@@ -19,7 +19,7 @@ const FriendScreen = (props: FriendsProps) => {
   const [friends, setFriends] = useState([] as User[]);
 
   useFocusEffect(
-    React.useCallback(() => {
+    useCallback(() => {
       const getFriendsData = async () => {
         const friendsData = await fetchFriends();
         const friends = friendsData.map((friend) => {
@@ -40,7 +40,7 @@ const FriendScreen = (props: FriendsProps) => {
   return (
     <SafeAreaView style={styles.root}>
       <Text style={styles.screenTitle}>My Friends</Text>
-      <AddFriendsButton navigation={navigation} />
+      <SearchUsersButton navigation={navigation} />
       <ScrollView style={styles.friendContainer}>
         {friends.map((friend) => {
           return (

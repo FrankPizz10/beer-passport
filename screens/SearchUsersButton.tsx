@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/core";
 import { CommonNavButtonProps } from "../props";
 
-const AddFriendsButton = (props: CommonNavButtonProps) => {
+const SearchUsersButton = (props: CommonNavButtonProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
 
   const handleFriendScreen = () => {
@@ -12,7 +12,7 @@ const AddFriendsButton = (props: CommonNavButtonProps) => {
 
   return (
     <TouchableOpacity style={styles.button} onPress={handleFriendScreen}>
-      <Text style={styles.text}>Add Friends</Text>
+      <Text style={styles.text}>Search Users</Text>
     </TouchableOpacity>
   );
 };
@@ -32,4 +32,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddFriendsButton;
+export default SearchUsersButton;

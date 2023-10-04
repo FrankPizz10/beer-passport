@@ -34,7 +34,7 @@ const AllCollectionsScreen = (props: AllCollectionsProps) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.ScreenTitle}>CollectionsScreen</Text>
+      <Text style={styles.ScreenTitle}>Collections</Text>
       <ScrollView>
         {collections?.map((collection) => {
           return (
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: "bold",
     textAlign: "center",
-    margin: 10,
+    margin: 20,
   },
   beerCard: {
     backgroundColor: "lightblue",

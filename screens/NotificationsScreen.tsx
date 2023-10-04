@@ -37,21 +37,26 @@ const NotificationsScreen = (props: NotificationsProps) => {
   };
 
   return (
-    <ScrollView
-      contentContainerStyle={{ flexGrow: 1, backgroundColor: "white" }}
-    >
-      {notifications?.map((notification) => {
-        return (
-          <TouchableOpacity
-            key={notification.id}
-            onPress={() => handleFriendPress(notification.id)}
-            style={styles.notification}
-          >
-            <Text>{notification.message}</Text>
-          </TouchableOpacity>
-        );
-      })}
-    </ScrollView>
+    <>
+      <View style={styles.container}>
+        <Text style={styles.ScreenTitle}>Notifications</Text>
+      </View>
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1, backgroundColor: "white" }}
+      >
+        {notifications?.map((notification) => {
+          return (
+            <TouchableOpacity
+              key={notification.id}
+              onPress={() => handleFriendPress(notification.id)}
+              style={styles.notification}
+            >
+              <Text>{notification.message}</Text>
+            </TouchableOpacity>
+          );
+        })}
+      </ScrollView>
+    </>
   );
 };
 
@@ -64,6 +69,18 @@ const styles = StyleSheet.create({
     borderColor: "black",
     height: 60,
     justifyContent: "center",
+    borderRadius: 5,
+  },
+  container: {
+    backgroundColor: "white",
+    height: 80,
+    justifyContent: "center",
+  },
+  ScreenTitle: {
+    fontSize: 30,
+    fontWeight: "bold",
+    textAlign: "center",
+    margin: 20,
   },
 });
 

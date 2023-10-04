@@ -12,13 +12,47 @@ import { auth } from "../Models/firebase";
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigation } from "@react-navigation/core";
 import { LoginProps } from "../props";
+import { API_URL } from "@env";
+
+export const getErrorMessage = (errorCode: string) => {
+  switch (errorCode) {
+    case "auth/invalid-email":
+      return "Invalid email address format.";
+    case "auth/user-disabled":
+      return "User account disabled.";
+    case "auth/user-not-found":
+      return "User account not found.";
+    case "auth/wrong-password":
+      return "Incorrect password.";
+    case "auth/missing-password":
+      return "Missing password.";
+    case "auth/weak-password":
+      return "Password is too weak. Must be at least 6 characters long.";
+    case "auth/email-already-exists":
+      return "Email address already in use.";
+    default:
+      return "Unknown error occurred.";
+  }
+};
 
 const LoginScreen = (props: LoginProps) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loginPressed, setLoginPressed] = useState(false);
+  const [serverConnected, setServerConnected] = useState(false);
 
   const navigation = useNavigation<(typeof props)["navigation"]>();
+
+  useEffect(() => {
+    const checkServerConnected = async () => {
+      const url = `${API_URL}/`;
+      const response = await fetch(url);
+      if (response.status === 200) {
+        setServerConnected(true);
+      }
+    };
+    checkServerConnected();
+  }, []);
 
   useEffect(() => {
     const unsibscribe = onAuthStateChanged(auth, (user) => {
@@ -35,51 +69,52 @@ const LoginScreen = (props: LoginProps) => {
 
   const handleLogin = async () => {
     try {
-      const userCredentials = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
+      await signInWithEmailAndPassword(auth, email, password);
       setLoginPressed(true);
-      const user = userCredentials.user;
-      console.log("Logged in with:", user.email);
     } catch (error: any) {
       const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log("Error Code: ", errorCode);
-      console.log("Error Message: ", errorMessage);
+      alert(getErrorMessage(errorCode));
     }
   };
 
   return (
-    <KeyboardAvoidingView style={styles.root} behavior="padding">
-      <View style={styles.title}>
-        <Text style={styles.title}>Login Screen</Text>
-      </View>
-      <View style={styles.inputContainer}>
-        <TextInput
-          placeholder="Email"
-          value={email}
-          onChangeText={(text) => setEmail(text)}
-          style={styles.input}
-        />
-        <TextInput
-          placeholder="Password"
-          value={password}
-          onChangeText={(text) => setPassword(text)}
-          style={styles.input}
-          secureTextEntry
-        />
-      </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={handleLogin} style={styles.button}>
-          <Text style={styles.buttonText}>Login</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={handleSignUp} style={styles.button}>
-          <Text style={styles.buttonText}>Register</Text>
-        </TouchableOpacity>
-      </View>
-    </KeyboardAvoidingView>
+    <>
+      {serverConnected && (
+        <KeyboardAvoidingView style={styles.root} behavior="padding">
+          <View style={styles.title}>
+            <Text style={styles.title}>Login Screen</Text>
+          </View>
+          <View style={styles.inputContainer}>
+            <TextInput
+              placeholder="Email"
+              value={email}
+              onChangeText={(text) => setEmail(text)}
+              style={styles.input}
+            />
+            <TextInput
+              placeholder="Password"
+              value={password}
+              onChangeText={(text) => setPassword(text)}
+              style={styles.input}
+              secureTextEntry
+            />
+          </View>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity onPress={handleLogin} style={styles.button}>
+              <Text style={styles.buttonText}>Login</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleSignUp} style={styles.button}>
+              <Text style={styles.buttonText}>Register</Text>
+            </TouchableOpacity>
+          </View>
+        </KeyboardAvoidingView>
+      )}
+      {!serverConnected && (
+        <View style={styles.failed}>
+          <Text style={styles.title}>Unable to connect to server</Text>
+        </View>
+      )}
+    </>
   );
 };
 
@@ -106,6 +141,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     fontSize: 30,
     padding: 10,
+    textAlign: "center",
   },
   inputContainer: {
     borderWidth: 1,
@@ -138,5 +174,12 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 20,
     fontWeight: "bold",
+  },
+  failed: {
+    flex: 1,
+    backgroundColor: "white",
+    alignItems: "center",
+    alignContent: "center",
+    justifyContent: "center",
   },
 });

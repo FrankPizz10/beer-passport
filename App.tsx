@@ -14,7 +14,7 @@ import AllCollectionsScreen from "./screens/AllCollectionsScreen";
 import CollectionScreen from "./screens/CollectionScreen";
 import FriendScreen from "./screens/FriendScreen";
 import AddFriendsScreen from "./screens/AddFriendsScreen";
-import FriendProfileScreen from "./screens/FriendProfileScreen";
+import OtherUserScreen from "./screens/OtherUserScreen";
 import { BottomTabNavigator } from "./screens/BottomTabNavigator";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -41,7 +41,7 @@ export default function App() {
         <Stack.Screen name="Collection" component={CollectionScreen} />
         <Stack.Screen name="Friends" component={FriendScreen} />
         <Stack.Screen name="AddFriends" component={AddFriendsScreen} />
-        <Stack.Screen name="FriendProfile" component={FriendProfileScreen} />
+        <Stack.Screen name="FriendProfile" component={OtherUserScreen} />
         <Stack.Screen
           name="BottomTabNavigator"
           component={BottomTabNavigator}
