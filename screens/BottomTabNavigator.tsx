@@ -7,6 +7,8 @@ import NotificationsScreen from "./NotificationsScreen";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Entypo } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
+import ProfileScreen from "./ProfileScreen";
 
 const Tab = createBottomTabNavigator<RootStackParamList>();
 
@@ -19,15 +21,13 @@ export const BottomTabNavigator = () => {
           if (route.name === "Home") {
             return <Entypo name="home" size={24} color={color} />;
           } else if (route.name === "SearchBeers") {
-            return <Ionicons name={"search"} size={24} color={color} />;
+            return <FontAwesome5 name="search" size={24} color={color} />;
           } else if (route.name === "Notifications") {
             return <Ionicons name="notifications" size={24} color={color} />;
-          } else if (route.name === "AllCollections") {
-            return <MaterialIcons name="menu-book" size={24} color={color} />;
+          } else if (route.name === "Profile") {
+            return <MaterialIcons name="person" size={28} color={color} />;
           }
         },
-        tabBarActiveTintColor: "tomato",
-        tabBarInactiveTintColor: "gray",
         tabBarLabel: () => null,
       })}
     >
@@ -47,8 +47,8 @@ export const BottomTabNavigator = () => {
         options={{ headerShown: false }}
       />
       <Tab.Screen
-        name="AllCollections"
-        component={AllCollectionsScreen}
+        name="Profile"
+        component={ProfileScreen}
         options={{ headerShown: false }}
       />
     </Tab.Navigator>

@@ -18,32 +18,12 @@ import DeleteAccountButton from "./DeleteAccountButton";
 const HomeScreen = (props: HomeProps) => {
   const [user, setUser] = useState({} as User);
   const navigation = useNavigation<(typeof props)["navigation"]>();
-
-  const handleLogout = () => {
-    auth
-      .signOut()
-      .then(() => {
-        navigation.replace("Login");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+  const [badgeCount, setBadgeCount] = useState(0);
+  const [likedCount, setLikedCount] = useState(0);
+  const [triedCount, setTriedCount] = useState(0);
 
   const handleCategoryScreen = () => {
     navigation.navigate("Category");
-  };
-
-  const handleYourBeersScreen = () => {
-    navigation.navigate("YourBeers");
-  };
-
-  const handleSearchScreen = () => {
-    navigation.navigate("SearchBeers");
-  };
-
-  const handleBadgesScreen = () => {
-    navigation.navigate("YourBadges");
   };
 
   const handleCollectionsScreen = () => {
@@ -53,8 +33,7 @@ const HomeScreen = (props: HomeProps) => {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const uid = auth.currentUser?.uid;
-        const url = `${API_URL}/api/userbyuid/${uid}`;
+        const url = `${API_URL}/api/userbyuid`;
         async function getUserHelper(): Promise<User> {
           const token = await auth.currentUser?.getIdToken();
           const response = await fetch(url, {
@@ -72,6 +51,39 @@ const HomeScreen = (props: HomeProps) => {
       }
     };
     getUser();
+    const getBadgeCount = async () => {
+      try {
+        const url = `${API_URL}/api/userbadges/count`;
+        const token = await auth.currentUser?.getIdToken();
+        const response = await fetch(url, {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        });
+        const { badgeCount } = await response.json();
+        setBadgeCount(badgeCount);
+      } catch (error) {
+        console.log("GetBadgeCountError", error);
+      }
+    };
+    getBadgeCount();
+    const getLikedAndTriedBeersCount = async () => {
+      try {
+        const url = `${API_URL}/api/userbeers/count`;
+        const token = await auth.currentUser?.getIdToken();
+        const response = await fetch(url, {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        });
+        const { likedBeersCount, triedBeersCount } = await response.json();
+        setLikedCount(likedBeersCount);
+        setTriedCount(triedBeersCount);
+      } catch (error) {
+        console.log("GetLikedAndTriedBeersCountError", error);
+      }
+    };
+    getLikedAndTriedBeersCount();
   }, []);
 
   return (
@@ -82,35 +94,27 @@ const HomeScreen = (props: HomeProps) => {
       <View style={styles.iconContainer}>
         <Ionicons name="ios-beer" size={30} color="blue" />
       </View>
+      <View style={styles.userDetailsContainer}>
+        <Text style={styles.userDetails}>
+          You have completed {badgeCount}{" "}
+          {badgeCount === 1 ? "badge" : "badges"}!
+        </Text>
+        <Text style={styles.userDetails}>
+          You have tried {triedCount} {triedCount === 1 ? "beer" : "beers"}!
+        </Text>
+        <Text style={styles.userDetails}>
+          You have liked {likedCount} {likedCount === 1 ? "beer" : "beers"}!
+        </Text>
+      </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={handleSearchScreen} style={styles.button}>
-          <Text style={styles.buttonText}>Search Beers</Text>
-        </TouchableOpacity>
         <TouchableOpacity onPress={handleCategoryScreen} style={styles.button}>
           <Text style={styles.buttonText}>Find Beer By Category</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={handleYourBeersScreen} style={styles.button}>
-          <Text style={styles.buttonText}>My Beers</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={handleBadgesScreen} style={styles.button}>
-          <Text style={styles.buttonText}>My Badges</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={handleCollectionsScreen}
           style={styles.button}
         >
           <Text style={styles.buttonText}>Collections</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate("Friends");
-          }}
-          style={styles.button}
-        >
-          <Text style={styles.buttonText}>My Friends</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={handleLogout} style={styles.button}>
-          <Text style={styles.buttonText}>Sign out</Text>
         </TouchableOpacity>
         {/* <View>
           <DeleteAccountButton navigation={navigation} user_id={user.id} />
@@ -145,6 +149,17 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     color: TitleColor,
+    paddingTop: 10,
+  },
+  userDetailsContainer: {
+    alignItems: "center",
+    padding: 15,
+  },
+  userDetails: {
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center",
+    color: "black",
     paddingTop: 10,
   },
   iconContainer: {

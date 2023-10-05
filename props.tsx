@@ -18,12 +18,14 @@ export type RootStackParamList = {
   BottomTabNavigator: undefined;
   Notifications: undefined;
   SearchUsers: undefined;
+  Profile: undefined;
+  Account: undefined;
 };
 
 export interface CommonNavButtonProps {
   navigation: NativeStackScreenProps<
     RootStackParamList,
-    "Home" | "Friends"
+    "Account"
   >["navigation"];
 }
 
@@ -97,4 +99,14 @@ export type NotificationsProps = NativeStackScreenProps<
 export type SearchUsersProps = NativeStackScreenProps<
   RootStackParamList,
   "SearchUsers"
+>;
+
+export type ProfileProps = NativeStackScreenProps<
+  RootStackParamList,
+  "Profile"
+>;
+
+export type AccountProps = NativeStackScreenProps<
+  RootStackParamList,
+  "Account"
 >;

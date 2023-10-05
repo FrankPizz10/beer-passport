@@ -16,6 +16,7 @@ import { useYourBadges } from "../Controllers/YourBadgesController";
 import { decimalToPercent } from "../utils";
 import { API_URL } from "@env";
 import { BackgroundColor } from "./colors";
+import { auth } from "../Models/firebase";
 
 const OtherUserScreen = (props: FriendProfileProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
@@ -55,9 +56,13 @@ const OtherUserScreen = (props: FriendProfileProps) => {
       setUser(friendData);
     };
     const getFriendshipStatus = async () => {
-      const response = await fetch(
-        `${API_URL}/api/friends/${props.route.params.friend_id}`
-      );
+      const url = `${API_URL}/api/friends/${props.route.params.friend_id}`;
+      const token = await auth.currentUser?.getIdToken();
+      const response = await fetch(url, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      });
       const data = await response.json();
       data.length > 0 ? setIsFriend(true) : setIsFriend(false);
     };
