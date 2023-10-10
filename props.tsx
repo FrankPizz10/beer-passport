@@ -25,7 +25,7 @@ export type RootStackParamList = {
 export interface CommonNavButtonProps {
   navigation: NativeStackScreenProps<
     RootStackParamList,
-    "Account"
+    "Account" | "Friends"
   >["navigation"];
 }
 

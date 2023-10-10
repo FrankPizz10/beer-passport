@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -13,10 +13,28 @@ import { User } from "../Models/SQLData";
 import { API_URL } from "@env";
 import { BackgroundColor, ButtonColor, TitleColor } from "./colors";
 import { Ionicons } from "@expo/vector-icons";
+import { useFocusEffect } from '@react-navigation/native';
 import DeleteAccountButton from "./DeleteAccountButton";
 
+export const getUser = async (): Promise<User | undefined> => {
+  try {
+    const url = `${API_URL}/api/userbyuid`;
+    const token = await auth.currentUser?.getIdToken();
+    const response = await fetch(url, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+    const cur_user = await response.json();
+    return cur_user;
+  }
+  catch (error) {
+    console.log("GetUserError", error);
+  }
+};
+
 const HomeScreen = (props: HomeProps) => {
-  const [user, setUser] = useState({} as User);
+  const [user, setUser] = useState({} as User | undefined);
   const navigation = useNavigation<(typeof props)["navigation"]>();
   const [badgeCount, setBadgeCount] = useState(0);
   const [likedCount, setLikedCount] = useState(0);
@@ -31,26 +49,14 @@ const HomeScreen = (props: HomeProps) => {
   };
 
   useEffect(() => {
-    const getUser = async () => {
-      try {
-        const url = `${API_URL}/api/userbyuid`;
-        async function getUserHelper(): Promise<User> {
-          const token = await auth.currentUser?.getIdToken();
-          const response = await fetch(url, {
-            headers: {
-              Authorization: "Bearer " + token,
-            },
-          });
-          const cur_user = await response.json();
-          return cur_user;
-        }
-        const cur_user = await getUserHelper();
-        setUser(cur_user);
-      } catch (error) {
-        console.log("GetUserError", error);
-      }
+    const getUserData = async () => {
+      const cur_user = await getUser();
+      setUser(cur_user);
     };
-    getUser();
+    getUserData();
+  }, []);
+
+  useFocusEffect(() => {
     const getBadgeCount = async () => {
       try {
         const url = `${API_URL}/api/userbadges/count`;
@@ -84,12 +90,12 @@ const HomeScreen = (props: HomeProps) => {
       }
     };
     getLikedAndTriedBeersCount();
-  }, []);
+  });
 
   return (
     <SafeAreaView style={styles.root}>
       <View style={styles.titleContainer}>
-        <Text style={styles.welcome}>Welcome {user.user_name}</Text>
+        <Text style={styles.welcome}>Welcome {user!.user_name}</Text>
       </View>
       <View style={styles.iconContainer}>
         <Ionicons name="ios-beer" size={30} color="blue" />

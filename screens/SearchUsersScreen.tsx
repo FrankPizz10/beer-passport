@@ -13,6 +13,7 @@ import { User } from "../Models/SQLData";
 import { useSearchFilter } from "../Controllers/SearchController";
 import { fetchAllUsers } from "../Models/Requests";
 import { BackgroundColor } from "./colors";
+import { getUser } from "./HomeScreen";
 
 const SearchUsersScreen = (props: SearchUsersProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
@@ -21,7 +22,8 @@ const SearchUsersScreen = (props: SearchUsersProps) => {
   useEffect(() => {
     const getAllUsers = async () => {
       const users = await fetchAllUsers();
-      setUsers(users);
+      const cur_user = await getUser();
+      setUsers(users.filter((user) => user.id !== cur_user?.id));
     };
     getAllUsers();
   }, []);
