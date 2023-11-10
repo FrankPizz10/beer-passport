@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   TextInput,
 } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RouterProps, SearchBeersProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
 import { BasicBeer } from "../Models/SQLData";
@@ -20,9 +21,20 @@ const SearchBeerScreen = (props: SearchBeersProps) => {
 
   useEffect(() => {
     const getBeersData = async () => {
-      await fetchAllBeers()
-        .then((data) => setBeers(data))
-        .catch((error) => console.log(error));
+      try {
+        const storedBeers = await AsyncStorage.getItem("beers");
+        if (storedBeers) {
+          setBeers(JSON.parse(storedBeers));
+        }
+        else {
+          const data = await fetchAllBeers()
+          setBeers(data)
+          await AsyncStorage.setItem("beers", JSON.stringify(data));
+        }
+      }
+      catch (error) {
+        console.log(error);
+      }
     };
     getBeersData();
   }, []);
