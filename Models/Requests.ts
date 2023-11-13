@@ -7,11 +7,12 @@ import {
   Friend,
   User,
   UserBeer,
+  BasicBeer,
 } from "./SQLData";
 import { auth } from "../Models/firebase";
 import { Notification } from "./SQLData";
 
-export const fetchAllBeers = async (): Promise<Beer[]> => {
+export const fetchAllBeers = async (): Promise<BasicBeer[]> => {
   const url = `${API_URL}/api/beers/basic`;
   const token = await auth.currentUser?.getIdToken();
   const response = await fetch(url, {
