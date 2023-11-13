@@ -18,6 +18,7 @@ import {
 } from "../Models/Requests";
 import { auth } from "../Models/firebase";
 import { BackgroundColor } from "./colors";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const BeerScreen = (props: BeerProps) => {
   const [beer, setBeer] = useState({} as Beer | undefined);
@@ -77,32 +78,66 @@ const BeerScreen = (props: BeerProps) => {
     }
   };
 
+  const updateCollectionNamesAndIds = (collectionBeers: CollectionBeer[]) => {
+    collectionBeers.forEach((collectionBeer: CollectionBeer) => {
+      fetchCollection(collectionBeer.collection_id).then((collection) => {
+        if (!collection) return;
+        setCollectionId(collection.id);
+        if (collectionNames.includes(collection.name)) return;
+        setCollectionNames((prevCollectionNames) => [
+          ...prevCollectionNames,
+          collection.name,
+        ]);
+      });
+    });
+  };
+
   useEffect(() => {
     const getAllBeerData = async () => {
-      await Promise.all([
-        fetchBeer(props.route.params.beer_id),
-        fetchUserBeer(props.route.params.beer_id),
-        fetchCollectionBeersByBeerId(props.route.params.beer_id),
-      ])
-        .then((results) => {
-          setBeer(results[0]);
-          setUserBeer(results[1]);
-          results[2].forEach((collectionBeer: CollectionBeer) => {
-            fetchCollection(collectionBeer.collection_id).then((collection) => {
-              if (!collection) return;
-              setCollectionId(collection.id);
-              if (collectionNames.includes(collection.name)) return;
-              setCollectionNames((prevCollectionNames) => [
-                ...prevCollectionNames,
-                collection.name,
-              ]);
-            });
-          });
-        })
-        .catch((error) => {
-          console.log("Error fetching data");
-          console.log(error);
-        });
+      try {
+        const storedBeer = await AsyncStorage.getItem("beer_" + props.route.params.beer_id);
+        const storedUserBeer = await AsyncStorage.getItem("userBeer_" + props.route.params.beer_id);
+        const storedCollectionBeers = await AsyncStorage.getItem("collectionBeers_" + props.route.params.beer_id);
+        const fetchPromises = [];
+        if (!storedBeer) {
+          fetchPromises.push(fetchBeer(props.route.params.beer_id));
+        }
+        else {
+          setBeer(JSON.parse(storedBeer));
+        }
+        if (!storedUserBeer) {
+          fetchPromises.push(fetchUserBeer(props.route.params.beer_id));
+        }
+        else {
+          setUserBeer(JSON.parse(storedUserBeer));
+        }
+        if (!storedCollectionBeers) {
+          fetchPromises.push(fetchCollectionBeersByBeerId(props.route.params.beer_id));
+        }
+        else {
+          updateCollectionNamesAndIds(JSON.parse(storedCollectionBeers));
+        }
+        if (fetchPromises.length > 0) {
+          const fetchedData = await Promise.all(fetchPromises);
+      
+          // Update AsyncStorage with the fetched data
+          if (!storedBeer) {
+            setBeer(fetchedData[0] as Beer);
+            await AsyncStorage.setItem("beer_" + props.route.params.beer_id, JSON.stringify(fetchedData[0]));
+          }
+          if (!storedUserBeer) {
+            setUserBeer(fetchedData[1] as UserBeer);
+            await AsyncStorage.setItem("userBeer_" + props.route.params.beer_id, JSON.stringify(fetchedData[1]));
+          }
+          if (!storedCollectionBeers) {
+            updateCollectionNamesAndIds(fetchedData[2] as CollectionBeer[]);
+            await AsyncStorage.setItem("collectionBeers_" + props.route.params.beer_id, JSON.stringify(fetchedData[2]));
+          }
+        }
+      }
+      catch (error) {
+        console.log(error);
+      }
     };
     getAllBeerData();
   }, [tried, liked, props.route.params.beer_id]);
