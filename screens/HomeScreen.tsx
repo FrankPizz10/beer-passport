@@ -15,8 +15,6 @@ import { BackgroundColor, ButtonColor, TitleColor } from "./colors";
 import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect } from '@react-navigation/native';
 import DeleteAccountButton from "./DeleteAccountButton";
-
-import { registerForPushNotificationsAsync } from "../App";
 import * as Notifications from 'expo-notifications';
 
 export const getUser = async (): Promise<User | undefined> => {
@@ -36,17 +34,42 @@ export const getUser = async (): Promise<User | undefined> => {
   }
 };
 
+async function registerForPushNotificationsAsync() {
+  const { status } = await Notifications.getPermissionsAsync();
+  if (status !== 'granted') {
+    const { status } = await Notifications.requestPermissionsAsync();
+    if (status !== 'granted') {
+      return;
+    }
+  }
+  const token = (await Notifications.getExpoPushTokenAsync()).data;
+  return token;
+}
+
+const sendPushTokenToServer = async (token: string) => {
+  try {
+    const url = `${API_URL}/api/send-notification`;
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+      body: JSON.stringify({ token }),
+    });
+    const data = await response.json();
+    console.log(data);
+  } catch (error) {
+    console.log("SendPushTokenToServerError", error);
+  }
+}
+
 const HomeScreen = (props: HomeProps) => {
   const [user, setUser] = useState({} as User | undefined);
   const navigation = useNavigation<(typeof props)["navigation"]>();
   const [badgeCount, setBadgeCount] = useState(0);
   const [likedCount, setLikedCount] = useState(0);
   const [triedCount, setTriedCount] = useState(0);
-
-  const [expoPushToken, setExpoPushToken] = useState('');
-  const [notification, setNotification] = useState(false);
-  const notificationListener = useRef();
-  const responseListener = useRef();
 
   const handleCategoryScreen = () => {
     navigation.navigate("Category");
@@ -62,23 +85,11 @@ const HomeScreen = (props: HomeProps) => {
       setUser(cur_user);
     };
     getUserData();
-  }, []);
-
-  useEffect(() => {
-    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
-
-    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-      setNotification(notification);
-    });
-
-    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-      console.log(response);
-    });
-
-    return () => {
-      Notifications.removeNotificationSubscription(notificationListener.current);
-      Notifications.removeNotificationSubscription(responseListener.current);
-    };
+    registerForPushNotificationsAsync()
+      .then(token => {
+        if (token) sendPushTokenToServer(token) 
+      })
+    .catch((error) => console.error('Error obtaining push token:', error));
   }, []);
 
   useFocusEffect(() => {
