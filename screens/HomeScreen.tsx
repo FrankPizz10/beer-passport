@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -15,6 +15,9 @@ import { BackgroundColor, ButtonColor, TitleColor } from "./colors";
 import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect } from '@react-navigation/native';
 import DeleteAccountButton from "./DeleteAccountButton";
+
+import { registerForPushNotificationsAsync } from "../App";
+import * as Notifications from 'expo-notifications';
 
 export const getUser = async (): Promise<User | undefined> => {
   try {
@@ -40,6 +43,11 @@ const HomeScreen = (props: HomeProps) => {
   const [likedCount, setLikedCount] = useState(0);
   const [triedCount, setTriedCount] = useState(0);
 
+  const [expoPushToken, setExpoPushToken] = useState('');
+  const [notification, setNotification] = useState(false);
+  const notificationListener = useRef();
+  const responseListener = useRef();
+
   const handleCategoryScreen = () => {
     navigation.navigate("Category");
   };
@@ -54,6 +62,23 @@ const HomeScreen = (props: HomeProps) => {
       setUser(cur_user);
     };
     getUserData();
+  }, []);
+
+  useEffect(() => {
+    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+
+    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+      setNotification(notification);
+    });
+
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+      console.log(response);
+    });
+
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener.current);
+      Notifications.removeNotificationSubscription(responseListener.current);
+    };
   }, []);
 
   useFocusEffect(() => {
