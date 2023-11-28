@@ -14,7 +14,6 @@ import { API_URL } from "@env";
 import { BackgroundColor, ButtonColor, TitleColor } from "./colors";
 import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect } from '@react-navigation/native';
-import DeleteAccountButton from "./DeleteAccountButton";
 import * as Notifications from 'expo-notifications';
 
 export const getUser = async (): Promise<User | undefined> => {
@@ -42,23 +41,25 @@ async function registerForPushNotificationsAsync() {
       return;
     }
   }
-  const token = (await Notifications.getExpoPushTokenAsync()).data;
+  const token = (await Notifications.getExpoPushTokenAsync({
+    experienceId: '@frank_pizz10/beer-passport',
+  })).data;
   return token;
 }
 
-const sendPushTokenToServer = async (token: string) => {
+const sendPushTokenToServer = async (notificationToken: string) => {
   try {
-    const url = `${API_URL}/api/send-notification`;
+    const url = `${API_URL}/api/notification-token`;
+    const token = await auth.currentUser?.getIdToken();
     const response = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
       },
-      body: JSON.stringify({ token }),
+      body: JSON.stringify({ pushToken: notificationToken }),
     });
     const data = await response.json();
-    console.log(data);
   } catch (error) {
     console.log("SendPushTokenToServerError", error);
   }

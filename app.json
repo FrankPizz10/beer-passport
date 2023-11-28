@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "beer-passport",
-    "slug": "beer-passport",
+    "slug": "beerpassport",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -25,6 +25,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "451c62c3-bd28-4fc1-8724-1571c640478c"
+      }
+    },
+    "owner": "frank_pizz10"
   }
 }
