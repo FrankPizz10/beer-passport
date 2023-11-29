@@ -110,3 +110,8 @@ export type AccountProps = NativeStackScreenProps<
   RootStackParamList,
   "Account"
 >;
+
+export type BottomTabNaviagtorProps = NativeStackScreenProps<
+  RootStackParamList,
+  "BottomTabNavigator"
+>;
