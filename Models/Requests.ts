@@ -25,6 +25,23 @@ export const fetchAllBeers = async (): Promise<BasicBeer[]> => {
   return beers;
 };
 
+export const fetchNewestBeer = async (): Promise<number | undefined> => {
+  try {
+    const url = `${API_URL}/api/beers/newest`;
+    const token = await auth.currentUser?.getIdToken();
+    const response = await fetch(url, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
+    const data = await response.json();
+    return data.lastMod;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export const fetchBeer = async (beer_id: number): Promise<Beer | undefined> => {
   try {
     const url = `${API_URL}/api/beers/${beer_id}`;

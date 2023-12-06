@@ -1,6 +1,7 @@
 export type BasicBeer = {
   id: number;
   name: string;
+  last_mod: number;
 };
 
 export interface Beer extends BasicBeer {
@@ -14,7 +15,6 @@ export interface Beer extends BasicBeer {
   filepath: string;
   descript: string;
   add_user: number;
-  last_mod: number;
   style?: Style;
   category?: Category;
   brewery?: Brewery;
