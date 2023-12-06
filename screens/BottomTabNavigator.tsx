@@ -30,8 +30,6 @@ export const BottomTabNavigator = () => {
           },
         });
         const { unViewedCount, unViewedIds } = await response.json();
-        console.log("unViewedCountRes", unViewedCount);
-        console.log("unViewedIdsRes", unViewedIds);
         setNotificationCount(unViewedCount);
         setNotificationIds(unViewedIds);
       } catch (error) {

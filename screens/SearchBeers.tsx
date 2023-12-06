@@ -21,7 +21,6 @@ const getNewestStoredBeer = async () => {
     if (storedData) {
         const storedBeers = JSON.parse(storedData) as BasicBeer[];
         const storedNewestBeer = storedBeers.reduce((prev, current) => (prev.id > current.id) ? prev : current);
-        console.log(storedNewestBeer);
         return storedNewestBeer.last_mod;
     }
     return undefined;

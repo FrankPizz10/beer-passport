@@ -12,30 +12,6 @@ export function useLocalStorage<T>(key: string, initialValue: T, fetchData: (() 
     await AsyncStorage.setItem(key, JSON.stringify(data));
   }
 
-//   useEffect(() => {
-//     const storeData = async (key: string) => {
-//         try {
-//             const fetchedVersion = await fetchVersion();
-//             if (!version || (fetchedVersion && version < fetchedVersion)) {
-//                 fetchAndStoreData(key, fetchData);
-//             }
-//             else {
-//                 const storedData = await AsyncStorage.getItem(key);
-//                 if (storedData) {
-//                     setValue(JSON.parse(storedData));
-//                 }
-//                 else {
-//                     fetchAndStoreData(key, fetchData);
-//                 }
-//             }
-//             setVersion(Date.now());
-//         }
-//         catch (error) {
-//             console.log(error);
-//         }
-//     }
-//     storeData(key);
-//   }, [])
   useEffect(() => {
     const storeData = async (key: string) => {
         try {
@@ -46,8 +22,6 @@ export function useLocalStorage<T>(key: string, initialValue: T, fetchData: (() 
             else {
                 const storedVersion = await fetchLocalVersion();
                 const fetchedVersion = await fetchServerVersion();
-                console.log("StoredVersion: ", storedVersion);
-                console.log("FetchedVersion: ", fetchedVersion);
                 if (!storedVersion || (fetchedVersion && storedVersion < fetchedVersion)) {
                     fetchAndStoreData(key, fetchData);
                 }
