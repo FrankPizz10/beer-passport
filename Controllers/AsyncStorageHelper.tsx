@@ -6,7 +6,6 @@ export function useLocalStorage<T>(key: string, initialValue: T, fetchData: (() 
   const [version, setVersion] = useState<number | null>(null);
 
   const fetchAndStoreData = async (key: string, fetchData: (() => Promise<any>)) => {
-    console.log("Fetching data");
     const data = await fetchData();
     setValue(data);
     await AsyncStorage.setItem(key, JSON.stringify(data));
@@ -16,7 +15,9 @@ export function useLocalStorage<T>(key: string, initialValue: T, fetchData: (() 
     const storeData = async (key: string) => {
         try {
             const storedData = await AsyncStorage.getItem(key);
+            console.log("Async storedData", storedData);
             if (!storedData) {
+                console.log("fetching data from server");
                 fetchAndStoreData(key, fetchData);
             }
             else {
