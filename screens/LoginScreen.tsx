@@ -88,12 +88,14 @@ const LoginScreen = (props: LoginProps) => {
           <View style={styles.inputContainer}>
             <TextInput
               placeholder="Email"
+              placeholderTextColor="gray"
               value={email}
               onChangeText={(text) => setEmail(text)}
               style={styles.input}
             />
             <TextInput
               placeholder="Password"
+              placeholderTextColor="gray"
               value={password}
               onChangeText={(text) => setPassword(text)}
               style={styles.input}

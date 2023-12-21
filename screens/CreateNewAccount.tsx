@@ -79,12 +79,14 @@ const CreateNewAccount = (props: CreateAccountProps) => {
       <View style={styles.inputContainer}>
         <TextInput
           placeholder="Email"
+          placeholderTextColor="gray"
           value={email}
           onChangeText={(text) => setEmail(text)}
           style={styles.input}
         />
         <TextInput
           placeholder="Password"
+          placeholderTextColor="gray"
           value={password}
           onChangeText={(text) => setPassword(text)}
           style={styles.input}
@@ -92,6 +94,7 @@ const CreateNewAccount = (props: CreateAccountProps) => {
         />
         <TextInput
           placeholder="Age"
+          placeholderTextColor="gray"
           keyboardType="numeric"
           value={age}
           onChangeText={(text) => setAge(text)}
@@ -99,6 +102,7 @@ const CreateNewAccount = (props: CreateAccountProps) => {
         />
         <TextInput
           placeholder="Username"
+          placeholderTextColor="gray"
           value={username}
           onChangeText={(text) => setUsername(text)}
           style={styles.input}

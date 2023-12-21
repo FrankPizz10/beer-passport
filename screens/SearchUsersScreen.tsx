@@ -51,6 +51,7 @@ const SearchUsersScreen = (props: SearchUsersProps) => {
           value={searchInput}
           onChangeText={(text) => setSearchInput(text)}
           placeholder="Search for a user"
+          placeholderTextColor="gray"
         />
         <ScrollView>
           {filteredList?.map((user) => {

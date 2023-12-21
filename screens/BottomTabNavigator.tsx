@@ -67,7 +67,7 @@ export const BottomTabNavigator = () => {
       } catch (error) {
         console.log("GetNotificationsError", error);
       }
-    }
+    };
     updateUnViewedNotifications();
   };
 
@@ -75,35 +75,37 @@ export const BottomTabNavigator = () => {
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
-          color = focused ? 'blue' : 'black';
-          if (route.name === 'Home') {
+          color = focused ? "blue" : "black";
+          if (route.name === "Home") {
             return <Entypo name="home" size={24} color={color} />;
-          } else if (route.name === 'SearchBeers') {
+          } else if (route.name === "SearchBeers") {
             return <FontAwesome5 name="search" size={24} color={color} />;
-          } else if (route.name === 'Notifications') {
+          } else if (route.name === "Notifications") {
             return (
               <>
                 <Ionicons name="notifications" size={24} color={color} />
                 {notificationCount > 0 && (
                   <View
                     style={{
-                      position: 'absolute',
-                      right: -5,
-                      top: -5,
-                      backgroundColor: 'red',
+                      position: "absolute",
+                      right: 30,
+                      top: 0,
+                      backgroundColor: "red",
                       borderRadius: 8,
                       width: 16,
                       height: 16,
-                      justifyContent: 'center',
-                      alignItems: 'center',
+                      justifyContent: "center",
+                      alignItems: "center",
                     }}
                   >
-                    <Text style={{ color: 'white', fontSize: 12 }}>{notificationCount}</Text>
+                    <Text style={{ color: "white", fontSize: 12 }}>
+                      {notificationCount}
+                    </Text>
                   </View>
                 )}
               </>
             );
-          } else if (route.name === 'Profile') {
+          } else if (route.name === "Profile") {
             return <MaterialIcons name="person" size={28} color={color} />;
           }
         },

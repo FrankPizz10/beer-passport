@@ -117,79 +117,18 @@ const BeerScreen = (props: BeerProps) => {
 
   useEffect(() => {
     const getAllBeerData = async () => {
-      try {
-        const storedBeer = await AsyncStorage.getItem(
-          "beer_" + props.route.params.beer_id
-        );
-        console.log("storedBeer", storedBeer);
-        const storedUserBeer = await AsyncStorage.getItem(
-          "userBeer_" + props.route.params.beer_id
-        );
-        console.log("storedUserBeer", storedUserBeer);
-        const storedCollectionBeers = await AsyncStorage.getItem(
-          "collectionBeers_" + props.route.params.beer_id
-        );
-        console.log("storedCollectionBeers", storedCollectionBeers);
-        const fetchPromises = [];
-        if (!storedBeer) {
-          fetchPromises.push(fetchBeer(props.route.params.beer_id));
-        } else {
-          setBeer(JSON.parse(storedBeer));
-        }
-        if (!storedUserBeer) {
-          fetchPromises.push(fetchUserBeer(props.route.params.beer_id));
-        } else {
-          setUserBeer(JSON.parse(storedUserBeer));
-          if (JSON.parse(storedUserBeer).liked) setLiked(true);
-          if (JSON.parse(storedUserBeer).id) setTried(true);
-        }
-        if (!storedCollectionBeers) {
-          fetchPromises.push(
-            fetchCollectionBeersByBeerId(props.route.params.beer_id)
-          );
-        } else {
-          const collectionBeers = JSON.parse(
-            storedCollectionBeers
-          ) as CollectionBeer[];
-          console.log("About to updateCollectionNamesAndIds", collectionBeers);
-          updateCollectionNamesAndIds(JSON.parse(storedCollectionBeers));
-        }
-        if (fetchPromises.length > 0) {
-          const fetchedData = await Promise.all(fetchPromises);
-
-          // Update AsyncStorage with the fetched data
-          if (!storedBeer) {
-            setBeer(fetchedData[0] as Beer);
-            if (!fetchedData[0]) return;
-            await AsyncStorage.setItem(
-              "beer_" + props.route.params.beer_id,
-              JSON.stringify(fetchedData[0])
-            );
-          }
-          if (!storedUserBeer) {
-            if (!fetchedData[1]) return;
-            const userBeer = fetchedData[1] as UserBeer;
-            setUserBeer(fetchedData[1] as UserBeer);
-            if (userBeer.liked) setLiked(true);
-            if (userBeer) setTried(true);
-            await AsyncStorage.setItem(
-              "userBeer_" + props.route.params.beer_id,
-              JSON.stringify(fetchedData[1])
-            );
-          }
-          if (!storedCollectionBeers) {
-            if (!fetchedData[2]) return;
-            updateCollectionNamesAndIds(fetchedData[2] as CollectionBeer[]);
-            await AsyncStorage.setItem(
-              "collectionBeers_" + props.route.params.beer_id,
-              JSON.stringify(fetchedData[2])
-            );
-          }
-        }
-      } catch (error) {
-        console.log("Error with async storage", error);
-      }
+      const beer = await fetchBeer(props.route.params.beer_id);
+      setBeer(beer);
+      const userBeer = await fetchUserBeer(props.route.params.beer_id);
+      setUserBeer(userBeer);
+      if (userBeer && userBeer.liked) setLiked(true);
+      if (userBeer && userBeer.id) setTried(true);
+      const collectionBeers = await fetchCollectionBeersByBeerId(
+        props.route.params.beer_id
+      );
+      updateCollectionNamesAndIds(collectionBeers);
     };
+
     getAllBeerData();
   }, [props.route.params.beer_id]);
 
