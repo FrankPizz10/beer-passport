@@ -7,11 +7,12 @@ import {
   Friend,
   User,
   UserBeer,
+  BasicBeer,
 } from "./SQLData";
 import { auth } from "../Models/firebase";
 import { Notification } from "./SQLData";
 
-export const fetchAllBeers = async (): Promise<Beer[]> => {
+export const fetchAllBeers = async (): Promise<BasicBeer[]> => {
   const url = `${API_URL}/api/beers/basic`;
   const token = await auth.currentUser?.getIdToken();
   const response = await fetch(url, {
@@ -23,6 +24,23 @@ export const fetchAllBeers = async (): Promise<Beer[]> => {
   const beers = await response.json();
   return beers;
 };
+
+export const fetchNewestBeer = async (): Promise<number | undefined> => {
+  try {
+    const url = `${API_URL}/api/beers/newest`;
+    const token = await auth.currentUser?.getIdToken();
+    const response = await fetch(url, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
+    const data = await response.json();
+    return data.lastMod;
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 export const fetchBeer = async (beer_id: number): Promise<Beer | undefined> => {
   try {
@@ -194,6 +212,18 @@ export const addFriend = async (user2: number): Promise<void> => {
     },
   });
   const friend = await response.json();
+};
+
+export const removeFriend = async (user2: number): Promise<void> => {
+  const url = `${API_URL}/api/friends/${user2}`;
+  const token = await auth.currentUser?.getIdToken();
+  const response = await fetch(url, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+  });
 };
 
 export const fetchUserById = async (userId: number): Promise<User> => {

@@ -5,7 +5,6 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Dimensions,
 } from "react-native";
 import { API_URL } from "@env";
 import { Beer, CollectionBeer, UserBeer } from "../Models/SQLData";
@@ -17,6 +16,8 @@ import {
   fetchUserBeer,
 } from "../Models/Requests";
 import { auth } from "../Models/firebase";
+import { BackgroundColor } from "./colors";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const BeerScreen = (props: BeerProps) => {
   const [beer, setBeer] = useState({} as Beer | undefined);
@@ -76,35 +77,124 @@ const BeerScreen = (props: BeerProps) => {
     }
   };
 
+  const handleUnLikedPress = async () => {
+    try {
+      const url = `${API_URL}/api/userbeers/`;
+      const token = await auth.currentUser?.getIdToken();
+      const response = await fetch(url, {
+        method: "POST",
+        body: JSON.stringify({
+          beer_id: props.route.params.beer_id,
+          liked: false,
+          collection_id: collectionId,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+      const newUserBeer = await response.json();
+      setUserBeer(newUserBeer);
+      setLiked(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const updateCollectionNamesAndIds = (collectionBeers: CollectionBeer[]) => {
+    collectionBeers.forEach((collectionBeer: CollectionBeer) => {
+      fetchCollection(collectionBeer.collection_id).then((collection) => {
+        if (!collection) return;
+        setCollectionId(collection.id);
+        if (collectionNames.includes(collection.name)) return;
+        setCollectionNames((prevCollectionNames) => [
+          ...prevCollectionNames,
+          collection.name,
+        ]);
+      });
+    });
+  };
+
   useEffect(() => {
     const getAllBeerData = async () => {
-      await Promise.all([
-        fetchBeer(props.route.params.beer_id),
-        fetchUserBeer(props.route.params.beer_id),
-        fetchCollectionBeersByBeerId(props.route.params.beer_id),
-      ])
-        .then((results) => {
-          setBeer(results[0]);
-          setUserBeer(results[1]);
-          results[2].forEach((collectionBeer: CollectionBeer) => {
-            fetchCollection(collectionBeer.collection_id).then((collection) => {
-              if (!collection) return;
-              setCollectionId(collection.id);
-              if (collectionNames.includes(collection.name)) return;
-              setCollectionNames((prevCollectionNames) => [
-                ...prevCollectionNames,
-                collection.name,
-              ]);
-            });
-          });
-        })
-        .catch((error) => {
-          console.log("Error fetching data");
-          console.log(error);
-        });
+      try {
+        const storedBeer = await AsyncStorage.getItem(
+          "beer_" + props.route.params.beer_id
+        );
+        console.log("storedBeer", storedBeer);
+        const storedUserBeer = await AsyncStorage.getItem(
+          "userBeer_" + props.route.params.beer_id
+        );
+        console.log("storedUserBeer", storedUserBeer);
+        const storedCollectionBeers = await AsyncStorage.getItem(
+          "collectionBeers_" + props.route.params.beer_id
+        );
+        console.log("storedCollectionBeers", storedCollectionBeers);
+        const fetchPromises = [];
+        if (!storedBeer) {
+          fetchPromises.push(fetchBeer(props.route.params.beer_id));
+        } else {
+          setBeer(JSON.parse(storedBeer));
+        }
+        if (!storedUserBeer) {
+          fetchPromises.push(fetchUserBeer(props.route.params.beer_id));
+        } else {
+          setUserBeer(JSON.parse(storedUserBeer));
+          if (JSON.parse(storedUserBeer).liked) setLiked(true);
+          if (JSON.parse(storedUserBeer).id) setTried(true);
+        }
+        if (!storedCollectionBeers) {
+          fetchPromises.push(
+            fetchCollectionBeersByBeerId(props.route.params.beer_id)
+          );
+        } else {
+          const collectionBeers = JSON.parse(
+            storedCollectionBeers
+          ) as CollectionBeer[];
+          console.log("About to updateCollectionNamesAndIds", collectionBeers);
+          updateCollectionNamesAndIds(JSON.parse(storedCollectionBeers));
+        }
+        if (fetchPromises.length > 0) {
+          const fetchedData = await Promise.all(fetchPromises);
+
+          // Update AsyncStorage with the fetched data
+          if (!storedBeer) {
+            console.log("Maybe stored beer update", fetchedData[0]);
+            setBeer(fetchedData[0] as Beer);
+            if (!fetchedData[0]) return;
+            await AsyncStorage.setItem(
+              "beer_" + props.route.params.beer_id,
+              JSON.stringify(fetchedData[0])
+            );
+          }
+          if (!storedUserBeer) {
+            console.log("Maybe stored user beer update", fetchedData[1]);
+            if (!fetchedData[1]) return;
+            const userBeer = fetchedData[1] as UserBeer;
+            setUserBeer(fetchedData[1] as UserBeer);
+            if (userBeer.liked) setLiked(true);
+            if (userBeer) setTried(true);
+            await AsyncStorage.setItem(
+              "userBeer_" + props.route.params.beer_id,
+              JSON.stringify(fetchedData[1])
+            );
+          }
+          if (!storedCollectionBeers) {
+            console.log("Maybe stored collection beers update", fetchedData[2]);
+            if (!fetchedData[2]) return;
+            updateCollectionNamesAndIds(fetchedData[2] as CollectionBeer[]);
+            await AsyncStorage.setItem(
+              "collectionBeers_" + props.route.params.beer_id,
+              JSON.stringify(fetchedData[2])
+            );
+          }
+        }
+      } catch (error) {
+        console.log("Error with async storage", error);
+      }
     };
     getAllBeerData();
-  }, [tried, liked, props.route.params.beer_id]);
+  }, [props.route.params.beer_id]);
 
   return (
     <ScrollView style={styles.container}>
@@ -151,12 +241,30 @@ const BeerScreen = (props: BeerProps) => {
             )}
           </View>
           <View>
-            <TouchableOpacity style={styles.button} onPress={handleTriedPress}>
-              <Text> Tried </Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={handleLikedPress}>
-              <Text> Liked </Text>
-            </TouchableOpacity>
+            {!tried && (
+              <TouchableOpacity
+                style={styles.button}
+                onPress={handleTriedPress}
+              >
+                <Text> Tried </Text>
+              </TouchableOpacity>
+            )}
+            {!liked && (
+              <TouchableOpacity
+                style={styles.button}
+                onPress={handleLikedPress}
+              >
+                <Text> Liked </Text>
+              </TouchableOpacity>
+            )}
+            {liked && (
+              <TouchableOpacity
+                style={styles.button}
+                onPress={handleUnLikedPress}
+              >
+                <Text> Un Like </Text>
+              </TouchableOpacity>
+            )}
           </View>
         </View>
       )}
@@ -168,17 +276,19 @@ export default BeerScreen;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
+    backgroundColor: BackgroundColor,
   },
   titleContainer: {
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 20,
+    marginTop: 10,
   },
   title: {
     fontSize: 40,
     fontWeight: "bold",
     alignItems: "center",
+    textAlign: "center",
   },
   styleContainer: {
     alignItems: "center",
@@ -240,6 +350,7 @@ const styles = StyleSheet.create({
   triedLiked: {
     fontSize: 20,
     fontWeight: "bold",
+    textAlign: "center",
   },
   HomeButton: {
     alignItems: "flex-end",

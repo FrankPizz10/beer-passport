@@ -14,8 +14,23 @@ import AllCollectionsScreen from "./screens/AllCollectionsScreen";
 import CollectionScreen from "./screens/CollectionScreen";
 import FriendScreen from "./screens/FriendScreen";
 import AddFriendsScreen from "./screens/AddFriendsScreen";
-import FriendProfileScreen from "./screens/FriendProfileScreen";
+import OtherUserScreen from "./screens/OtherUserScreen";
 import { BottomTabNavigator } from "./screens/BottomTabNavigator";
+import SearchUsersScreen from "./screens/SearchUsersScreen";
+import ProfileScreen from "./screens/ProfileScreen";
+import AccountScreen from "./screens/AccountScreen";
+import * as Device from 'expo-device';
+import * as Notifications from 'expo-notifications';
+import Constants from 'expo-constants';
+import { Text, View, Button, Platform } from 'react-native';
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -40,8 +55,12 @@ export default function App() {
         <Stack.Screen name="YourBadges" component={YourBadgesScreen} />
         <Stack.Screen name="Collection" component={CollectionScreen} />
         <Stack.Screen name="Friends" component={FriendScreen} />
-        <Stack.Screen name="AddFriends" component={AddFriendsScreen} />
-        <Stack.Screen name="FriendProfile" component={FriendProfileScreen} />
+        {/* <Stack.Screen name="AddFriends" component={AddFriendsScreen} /> */}
+        <Stack.Screen name="SearchUsers" component={SearchUsersScreen} />
+        <Stack.Screen name="FriendProfile" component={OtherUserScreen} />
+        <Stack.Screen name="Profile" component={ProfileScreen} />
+        <Stack.Screen name="AllCollections" component={AllCollectionsScreen} />
+        <Stack.Screen name="Account" component={AccountScreen} />
         <Stack.Screen
           name="BottomTabNavigator"
           component={BottomTabNavigator}

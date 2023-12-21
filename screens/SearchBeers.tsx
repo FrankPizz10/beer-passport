@@ -7,24 +7,28 @@ import {
   TouchableOpacity,
   TextInput,
 } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RouterProps, SearchBeersProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
-import { BasicBeer } from "../Models/SQLData";
-import { fetchAllBeers } from "../Models/Requests";
+import { BasicBeer, Beer } from "../Models/SQLData";
+import { fetchAllBeers, fetchNewestBeer } from "../Models/Requests";
 import { useSearchFilter } from "../Controllers/SearchController";
+import { BackgroundColor } from "./colors";
+import { useLocalStorage } from "../Controllers/AsyncStorageHelper";
+
+const getNewestStoredBeer = async () => {
+    const storedData = await AsyncStorage.getItem("beers");
+    if (storedData) {
+        const storedBeers = JSON.parse(storedData) as BasicBeer[];
+        const storedNewestBeer = storedBeers.reduce((prev, current) => (prev.id > current.id) ? prev : current);
+        return storedNewestBeer.last_mod;
+    }
+    return undefined;
+}
 
 const SearchBeerScreen = (props: SearchBeersProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
-  const [beers, setBeers] = useState([] as BasicBeer[]);
-
-  useEffect(() => {
-    const getBeersData = async () => {
-      await fetchAllBeers()
-        .then((data) => setBeers(data))
-        .catch((error) => console.log(error));
-    };
-    getBeersData();
-  }, []);
+  const [beers, setBeers] = useLocalStorage<BasicBeer[]>("beers", [] as BasicBeer[], fetchAllBeers, fetchNewestBeer, getNewestStoredBeer);
 
   const handleBeerPress = (beerId: number) => {
     navigation.navigate("Beer", {
@@ -66,10 +70,10 @@ export default SearchBeerScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: BackgroundColor,
   },
   dropDown: {
-    backgroundColor: "white",
+    backgroundColor: BackgroundColor,
     padding: 10,
     margin: 10,
     borderRadius: 5,

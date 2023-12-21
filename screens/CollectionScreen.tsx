@@ -15,6 +15,7 @@ import {
 } from "../Models/Requests";
 import { CollectionProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
+import { BackgroundColor } from "./colors";
 // import HomeButton from "./HomeButton";
 
 const CollectionScreen = (props: CollectionProps) => {
@@ -75,7 +76,7 @@ export default CollectionScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: BackgroundColor,
   },
   titleContainer: {
     alignItems: "center",

@@ -12,6 +12,7 @@ import { YourBadgesProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
 import { useYourBadges } from "../Controllers/YourBadgesController";
 import { decimalToPercent } from "../utils";
+import { BackgroundColor } from "./colors";
 // import HomeButton from "./HomeButton";
 
 const YourBadgesScreen = (props: YourBadgesProps) => {
@@ -64,7 +65,7 @@ export default YourBadgesScreen;
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: BackgroundColor,
     alignItems: "center",
   },
   titleContainer: {

@@ -15,6 +15,7 @@ import {
 } from "react-native";
 import { auth } from "../Models/firebase";
 import { API_URL } from "@env";
+import { getErrorMessage } from "./LoginScreen";
 
 const CreateNewAccount = (props: CreateAccountProps) => {
   const [email, setEmail] = useState("");
@@ -68,9 +69,7 @@ const CreateNewAccount = (props: CreateAccountProps) => {
       }
     } catch (error: any) {
       const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log("Error Code: ", errorCode);
-      console.log("Error Message: ", errorMessage);
+      alert(getErrorMessage(errorCode));
     }
   };
 

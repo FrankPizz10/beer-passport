@@ -17,12 +17,15 @@ export type RootStackParamList = {
   FriendProfile: { friend_id: number };
   BottomTabNavigator: undefined;
   Notifications: undefined;
+  SearchUsers: undefined;
+  Profile: undefined;
+  Account: undefined;
 };
 
 export interface CommonNavButtonProps {
   navigation: NativeStackScreenProps<
     RootStackParamList,
-    "Home" | "Friends"
+    "Account" | "Friends"
   >["navigation"];
 }
 
@@ -91,4 +94,24 @@ export type FriendProfileProps = NativeStackScreenProps<
 export type NotificationsProps = NativeStackScreenProps<
   RootStackParamList,
   "Notifications"
+>;
+
+export type SearchUsersProps = NativeStackScreenProps<
+  RootStackParamList,
+  "SearchUsers"
+>;
+
+export type ProfileProps = NativeStackScreenProps<
+  RootStackParamList,
+  "Profile"
+>;
+
+export type AccountProps = NativeStackScreenProps<
+  RootStackParamList,
+  "Account"
+>;
+
+export type BottomTabNaviagtorProps = NativeStackScreenProps<
+  RootStackParamList,
+  "BottomTabNavigator"
 >;

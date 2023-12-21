@@ -11,6 +11,7 @@ import { Collection } from "../Models/SQLData";
 import { fetchAllCollections } from "../Models/Requests";
 import { AllCollectionsProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
+import { BackgroundColor } from "./colors";
 // import HomeButton from "./HomeButton";
 
 const AllCollectionsScreen = (props: AllCollectionsProps) => {
@@ -34,7 +35,7 @@ const AllCollectionsScreen = (props: AllCollectionsProps) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.ScreenTitle}>CollectionsScreen</Text>
+      <Text style={styles.ScreenTitle}>Collections</Text>
       <ScrollView>
         {collections?.map((collection) => {
           return (
@@ -57,13 +58,13 @@ export default AllCollectionsScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: BackgroundColor,
   },
   ScreenTitle: {
     fontSize: 30,
     fontWeight: "bold",
     textAlign: "center",
-    margin: 10,
+    margin: 20,
   },
   beerCard: {
     backgroundColor: "lightblue",
