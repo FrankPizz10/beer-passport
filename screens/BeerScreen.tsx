@@ -5,7 +5,6 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Dimensions,
 } from "react-native";
 import { API_URL } from "@env";
 import { Beer, CollectionBeer, UserBeer } from "../Models/SQLData";
@@ -78,6 +77,30 @@ const BeerScreen = (props: BeerProps) => {
     }
   };
 
+  const handleUnLikedPress = async () => {
+    try {
+      const url = `${API_URL}/api/userbeers/`;
+      const token = await auth.currentUser?.getIdToken();
+      const response = await fetch(url, {
+        method: "POST",
+        body: JSON.stringify({
+          beer_id: props.route.params.beer_id,
+          liked: false,
+          collection_id: collectionId,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+      const newUserBeer = await response.json();
+      setUserBeer(newUserBeer);
+      setLiked(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const updateCollectionNamesAndIds = (collectionBeers: CollectionBeer[]) => {
     collectionBeers.forEach((collectionBeer: CollectionBeer) => {
       fetchCollection(collectionBeer.collection_id).then((collection) => {
@@ -95,44 +118,54 @@ const BeerScreen = (props: BeerProps) => {
   useEffect(() => {
     const getAllBeerData = async () => {
       try {
-        const storedBeer = await AsyncStorage.getItem("beer_" + props.route.params.beer_id);
+        const storedBeer = await AsyncStorage.getItem(
+          "beer_" + props.route.params.beer_id
+        );
         console.log("storedBeer", storedBeer);
-        const storedUserBeer = await AsyncStorage.getItem("userBeer_" + props.route.params.beer_id);
+        const storedUserBeer = await AsyncStorage.getItem(
+          "userBeer_" + props.route.params.beer_id
+        );
         console.log("storedUserBeer", storedUserBeer);
-        const storedCollectionBeers = await AsyncStorage.getItem("collectionBeers_" + props.route.params.beer_id);
+        const storedCollectionBeers = await AsyncStorage.getItem(
+          "collectionBeers_" + props.route.params.beer_id
+        );
         console.log("storedCollectionBeers", storedCollectionBeers);
         const fetchPromises = [];
         if (!storedBeer) {
           fetchPromises.push(fetchBeer(props.route.params.beer_id));
-        }
-        else {
+        } else {
           setBeer(JSON.parse(storedBeer));
         }
         if (!storedUserBeer) {
           fetchPromises.push(fetchUserBeer(props.route.params.beer_id));
-        }
-        else {
+        } else {
           setUserBeer(JSON.parse(storedUserBeer));
           if (JSON.parse(storedUserBeer).liked) setLiked(true);
           if (JSON.parse(storedUserBeer).id) setTried(true);
         }
         if (!storedCollectionBeers) {
-          fetchPromises.push(fetchCollectionBeersByBeerId(props.route.params.beer_id));
-        }
-        else {
-          const collectionBeers = JSON.parse(storedCollectionBeers) as CollectionBeer[];
+          fetchPromises.push(
+            fetchCollectionBeersByBeerId(props.route.params.beer_id)
+          );
+        } else {
+          const collectionBeers = JSON.parse(
+            storedCollectionBeers
+          ) as CollectionBeer[];
           console.log("About to updateCollectionNamesAndIds", collectionBeers);
           updateCollectionNamesAndIds(JSON.parse(storedCollectionBeers));
         }
         if (fetchPromises.length > 0) {
           const fetchedData = await Promise.all(fetchPromises);
-      
+
           // Update AsyncStorage with the fetched data
           if (!storedBeer) {
             console.log("Maybe stored beer update", fetchedData[0]);
             setBeer(fetchedData[0] as Beer);
             if (!fetchedData[0]) return;
-            await AsyncStorage.setItem("beer_" + props.route.params.beer_id, JSON.stringify(fetchedData[0]));
+            await AsyncStorage.setItem(
+              "beer_" + props.route.params.beer_id,
+              JSON.stringify(fetchedData[0])
+            );
           }
           if (!storedUserBeer) {
             console.log("Maybe stored user beer update", fetchedData[1]);
@@ -141,17 +174,22 @@ const BeerScreen = (props: BeerProps) => {
             setUserBeer(fetchedData[1] as UserBeer);
             if (userBeer.liked) setLiked(true);
             if (userBeer) setTried(true);
-            await AsyncStorage.setItem("userBeer_" + props.route.params.beer_id, JSON.stringify(fetchedData[1]));
+            await AsyncStorage.setItem(
+              "userBeer_" + props.route.params.beer_id,
+              JSON.stringify(fetchedData[1])
+            );
           }
           if (!storedCollectionBeers) {
             console.log("Maybe stored collection beers update", fetchedData[2]);
             if (!fetchedData[2]) return;
             updateCollectionNamesAndIds(fetchedData[2] as CollectionBeer[]);
-            await AsyncStorage.setItem("collectionBeers_" + props.route.params.beer_id, JSON.stringify(fetchedData[2]));
+            await AsyncStorage.setItem(
+              "collectionBeers_" + props.route.params.beer_id,
+              JSON.stringify(fetchedData[2])
+            );
           }
         }
-      }
-      catch (error) {
+      } catch (error) {
         console.log("Error with async storage", error);
       }
     };
@@ -204,13 +242,27 @@ const BeerScreen = (props: BeerProps) => {
           </View>
           <View>
             {!tried && (
-              <TouchableOpacity style={styles.button} onPress={handleTriedPress}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={handleTriedPress}
+              >
                 <Text> Tried </Text>
               </TouchableOpacity>
             )}
             {!liked && (
-              <TouchableOpacity style={styles.button} onPress={handleLikedPress}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={handleLikedPress}
+              >
                 <Text> Liked </Text>
+              </TouchableOpacity>
+            )}
+            {liked && (
+              <TouchableOpacity
+                style={styles.button}
+                onPress={handleUnLikedPress}
+              >
+                <Text> Un Like </Text>
               </TouchableOpacity>
             )}
           </View>
