@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import DeleteAccountButton from "./DeleteAccountButton";
 import { auth } from "../Models/firebase";
@@ -8,6 +8,7 @@ import { BackgroundColor, ButtonColor, TitleColor } from "./colors";
 
 const AccountScreen = (props: AccountProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
+  const [deleteAccount, setDeleteAccount] = useState(false);
 
   const handleLogout = () => {
     auth
@@ -29,9 +30,22 @@ const AccountScreen = (props: AccountProps) => {
         <TouchableOpacity onPress={handleLogout} style={styles.button}>
           <Text style={styles.buttonText}>Sign out</Text>
         </TouchableOpacity>
-        <View>
-          <DeleteAccountButton navigation={navigation} />
-        </View>
+        {!deleteAccount && (
+          <TouchableOpacity
+            onPress={() => setDeleteAccount(!deleteAccount)}
+            style={styles.button}
+          >
+            <Text style={styles.buttonText}>Delete Account</Text>
+          </TouchableOpacity>
+        )}
+        {deleteAccount && (
+          <View>
+            <Text style={styles.deleteAccountText}>
+              Are you sure you want to delete your account?
+            </Text>
+            <DeleteAccountButton navigation={navigation} />
+          </View>
+        )}
       </View>
     </View>
   );
@@ -58,9 +72,8 @@ const styles = StyleSheet.create({
     color: TitleColor,
   },
   buttonContainer: {
-    flex: 1,
     alignItems: "center",
-    height: 400,
+    height: 200,
     width: 400,
     marginBottom: 20,
   },
@@ -79,5 +92,12 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 20,
     fontWeight: "bold",
+  },
+  deleteAccountText: {
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center",
+    width: 300,
+    marginTop: 20,
   },
 });

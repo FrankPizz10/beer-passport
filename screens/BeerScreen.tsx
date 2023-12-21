@@ -159,7 +159,6 @@ const BeerScreen = (props: BeerProps) => {
 
           // Update AsyncStorage with the fetched data
           if (!storedBeer) {
-            console.log("Maybe stored beer update", fetchedData[0]);
             setBeer(fetchedData[0] as Beer);
             if (!fetchedData[0]) return;
             await AsyncStorage.setItem(
@@ -168,7 +167,6 @@ const BeerScreen = (props: BeerProps) => {
             );
           }
           if (!storedUserBeer) {
-            console.log("Maybe stored user beer update", fetchedData[1]);
             if (!fetchedData[1]) return;
             const userBeer = fetchedData[1] as UserBeer;
             setUserBeer(fetchedData[1] as UserBeer);
@@ -180,7 +178,6 @@ const BeerScreen = (props: BeerProps) => {
             );
           }
           if (!storedCollectionBeers) {
-            console.log("Maybe stored collection beers update", fetchedData[2]);
             if (!fetchedData[2]) return;
             updateCollectionNamesAndIds(fetchedData[2] as CollectionBeer[]);
             await AsyncStorage.setItem(

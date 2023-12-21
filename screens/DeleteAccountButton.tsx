@@ -16,7 +16,7 @@ const DeleteAccountButton = (props: CommonNavButtonProps) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.button} onPress={handleDeleteAccount}>
-        <Text style={styles.buttonText}>Delete Account</Text>
+        <Text style={styles.buttonText}>Confirm Delete</Text>
       </TouchableOpacity>
     </View>
   );
@@ -33,7 +33,6 @@ const styles = StyleSheet.create({
     color: "white",
     height: 50,
     padding: 10,
-    margin: 10,
     width: 300,
     borderRadius: 5,
     alignItems: "center",
