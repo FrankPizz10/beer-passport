@@ -5,26 +5,25 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
+  SafeAreaView,
+  StatusBar,
 } from "react-native";
 import { YourBeersProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
 import { useYourBeers } from "../Controllers/YourBeersController";
+import { BackgroundColor } from "./colors";
+// import HomeButton from "./HomeButton";
 
 const YourBeersScreen = (props: YourBeersProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
   const [tried, setTried] = useState(true);
   const [liked, setLiked] = useState(false);
 
-  const { triedBeers, likedBeers } = useYourBeers(props.route.params.user_id);
+  const { triedBeers, likedBeers } = useYourBeers(undefined);
 
-  const handleBeerPress = (
-    beerId: number,
-    collectionId: number | undefined
-  ) => {
+  const handleBeerPress = (beerId: number) => {
     navigation.navigate("Beer", {
-      user_id: props.route.params.user_id,
       beer_id: beerId,
-      collection_id: collectionId,
     });
   };
 
@@ -39,9 +38,9 @@ const YourBeersScreen = (props: YourBeersProps) => {
   };
 
   return (
-    <View>
+    <SafeAreaView style={styles.container}>
       <View style={styles.titleContainer}>
-        <Text style={styles.title}> Your Beers </Text>
+        <Text style={styles.title}> My Beers </Text>
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={handleTriedPress}>
@@ -56,30 +55,51 @@ const YourBeersScreen = (props: YourBeersProps) => {
           triedBeers?.map((beer) => {
             return (
               <View key={beer.id} style={styles.beerCard}>
-                <TouchableOpacity onPress={() => handleBeerPress(beer.id, 1)}>
+                <TouchableOpacity onPress={() => handleBeerPress(beer.id)}>
                   <Text>{beer.name}</Text>
                 </TouchableOpacity>
               </View>
             );
           })}
+        {tried && triedBeers?.length === 0 && (
+          <View style={styles.beerCard}>
+            <Text>You have no tried beers yet!</Text>
+          </View>
+        )}
         {liked &&
+          likedBeers &&
           likedBeers?.map((beer) => {
             return (
               <View key={beer.id} style={styles.beerCard}>
-                <TouchableOpacity onPress={() => handleBeerPress(beer.id, 1)}>
+                <TouchableOpacity onPress={() => handleBeerPress(beer.id)}>
                   <Text>{beer.name}</Text>
                 </TouchableOpacity>
               </View>
             );
           })}
+        {liked && likedBeers?.length === 0 && (
+          <View style={styles.beerCard}>
+            <Text>You have no liked beers yet!</Text>
+          </View>
+        )}
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 
 export default YourBeersScreen;
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: BackgroundColor,
+  },
+  HomeButton: {
+    alignItems: "flex-end",
+    justifyContent: "flex-end",
+    marginRight: 15,
+    height: 80,
+  },
   titleContainer: {
     alignItems: "center",
     justifyContent: "center",
@@ -106,7 +126,7 @@ const styles = StyleSheet.create({
     },
   },
   dropDown: {
-    backgroundColor: "white",
+    backgroundColor: BackgroundColor,
     padding: 10,
     margin: 10,
     borderRadius: 5,

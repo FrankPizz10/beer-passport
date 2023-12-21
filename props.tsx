@@ -1,15 +1,46 @@
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import type { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
 
 export type RootStackParamList = {
   Home: undefined;
   Login: undefined;
-  Category: { user_id: number };
-  Beer: { user_id: number; beer_id: number; collection_id: number | undefined };
+  Category: undefined;
+  Beer: { beer_id: number };
   CreateNewAccount: undefined;
-  YourBeers: { user_id: number };
-  SearchBeers: { user_id: number };
-  YourBadges: { user_id: number };
+  YourBeers: undefined;
+  SearchBeers: undefined;
+  YourBadges: undefined;
+  AllCollections: undefined;
+  Collection: { collection_id: number };
+  Friends: undefined;
+  AddFriends: undefined;
+  FriendProfile: { friend_id: number };
+  BottomTabNavigator: undefined;
+  Notifications: undefined;
+  SearchUsers: undefined;
+  Profile: undefined;
+  Account: undefined;
 };
+
+export interface CommonNavButtonProps {
+  navigation: NativeStackScreenProps<
+    RootStackParamList,
+    "Account" | "Friends"
+  >["navigation"];
+}
+
+export type RouterProps =
+  | LoginProps
+  | HomeProps
+  | CategoryProps
+  | BeerProps
+  | CreateAccountProps
+  | YourBeersProps
+  | SearchBeersProps
+  | YourBadgesProps
+  | AllCollectionsProps
+  | CollectionProps
+  | FriendsProps;
 
 export type LoginProps = NativeStackScreenProps<RootStackParamList, "Login">;
 export type HomeProps = NativeStackScreenProps<RootStackParamList, "Home">;
@@ -33,4 +64,54 @@ export type SearchBeersProps = NativeStackScreenProps<
 export type YourBadgesProps = NativeStackScreenProps<
   RootStackParamList,
   "YourBadges"
+>;
+
+export type AllCollectionsProps = NativeStackScreenProps<
+  RootStackParamList,
+  "AllCollections"
+>;
+
+export type CollectionProps = NativeStackScreenProps<
+  RootStackParamList,
+  "Collection"
+>;
+
+export type FriendsProps = NativeStackScreenProps<
+  RootStackParamList,
+  "Friends"
+>;
+
+export type AddFriendsProps = NativeStackScreenProps<
+  RootStackParamList,
+  "AddFriends"
+>;
+
+export type FriendProfileProps = NativeStackScreenProps<
+  RootStackParamList,
+  "FriendProfile"
+>;
+
+export type NotificationsProps = NativeStackScreenProps<
+  RootStackParamList,
+  "Notifications"
+>;
+
+export type SearchUsersProps = NativeStackScreenProps<
+  RootStackParamList,
+  "SearchUsers"
+>;
+
+export type ProfileProps = NativeStackScreenProps<
+  RootStackParamList,
+  "Profile"
+>;
+
+export type AccountProps = NativeStackScreenProps<
+  RootStackParamList,
+  "Account"
+>;
+
+export type BottomTabNaviagtorProps = NativeStackScreenProps<
+  RootStackParamList,
+  "BottomTabNavigator"
 >;

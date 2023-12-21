@@ -15,23 +15,28 @@ import {
 } from "react-native";
 import { auth } from "../Models/firebase";
 import { API_URL } from "@env";
+import { getErrorMessage } from "./LoginScreen";
 
 const CreateNewAccount = (props: CreateAccountProps) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [age, setAge] = useState("");
   const [username, setUsername] = useState("");
+  const [accountVerified, setAccountVerified] = useState(false);
+  const [deleteAccount, setDeleteAccount] = useState(false);
 
   const navigation = useNavigation<(typeof props)["navigation"]>();
 
   useEffect(() => {
     const unsibscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        navigation.replace("Home");
+      if (user && accountVerified) {
+        navigation.replace("BottomTabNavigator");
+      } else if (user && deleteAccount) {
+        user.delete();
       }
     });
     return unsibscribe;
-  }, []);
+  }, [accountVerified, deleteAccount]);
 
   const handleSignUp = async () => {
     try {
@@ -42,24 +47,29 @@ const CreateNewAccount = (props: CreateAccountProps) => {
       );
       const userUID = userCredentials.user.uid;
       const url = `${API_URL}/api/users/`;
+      const token = await auth.currentUser?.getIdToken();
       const response = await fetch(url, {
         method: "POST",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
         },
         body: JSON.stringify({
-          id: userUID,
-          username: username,
+          uid: userUID,
+          user_name: username,
           age: age,
           email: email,
         }),
       });
+      if (response.status === 200) {
+        setAccountVerified(true);
+      } else {
+        setDeleteAccount(true);
+      }
     } catch (error: any) {
       const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log("Error Code: ", errorCode);
-      console.log("Error Message: ", errorMessage);
+      alert(getErrorMessage(errorCode));
     }
   };
 

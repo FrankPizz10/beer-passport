@@ -12,6 +12,8 @@ import { SelectList } from "react-native-dropdown-select-list";
 import { Category } from "../Models/SQLData";
 import { API_URL } from "@env";
 import { useCategory } from "../Controllers/CategoryController";
+import { auth } from "../Models/firebase";
+import { BackgroundColor } from "./colors";
 
 interface CategoryMap {
   key: number;
@@ -30,7 +32,12 @@ const CategoryScreen = (props: CategoryProps) => {
       try {
         const url = `${API_URL}/api/categories`;
         async function fetchCategoriesHelper(): Promise<CategoryMap[]> {
-          const response = await fetch(url);
+          const token = await auth.currentUser?.getIdToken();
+          const response = await fetch(url, {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          });
           const data = await response.json();
           const categories: CategoryMap[] = data.map((item: Category) => {
             return { key: item.id, value: item.cat_name };
@@ -53,17 +60,17 @@ const CategoryScreen = (props: CategoryProps) => {
 
   const handleBeerPress = (beerId: number) => {
     navigation.navigate("Beer", {
-      user_id: props.route.params.user_id,
       beer_id: beerId,
     });
   };
 
   return (
-    <View>
+    <View style={styles.root}>
       <SelectList
         setSelected={handleSelected}
         data={categories}
         boxStyles={styles.dropDown}
+        placeholder="Select a category"
       />
       <ScrollView>
         {beersByCategory?.map((beer) => {
@@ -83,8 +90,12 @@ const CategoryScreen = (props: CategoryProps) => {
 export default CategoryScreen;
 
 const styles = StyleSheet.create({
+  root: {
+    backgroundColor: BackgroundColor,
+    flex: 1,
+  },
   dropDown: {
-    backgroundColor: "white",
+    backgroundColor: BackgroundColor,
     padding: 10,
     margin: 10,
     borderRadius: 5,

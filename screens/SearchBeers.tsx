@@ -7,72 +7,54 @@ import {
   TouchableOpacity,
   TextInput,
 } from "react-native";
-import { SearchBeersProps } from "../props";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { RouterProps, SearchBeersProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
-import { SelectList } from "react-native-dropdown-select-list";
-import { Beer, Category } from "../Models/SQLData";
-import { API_URL } from "@env";
-import { useCategory } from "../Controllers/CategoryController";
+import { BasicBeer, Beer } from "../Models/SQLData";
+import { fetchAllBeers, fetchNewestBeer } from "../Models/Requests";
+import { useSearchFilter } from "../Controllers/SearchController";
+import { BackgroundColor } from "./colors";
+import { useLocalStorage } from "../Controllers/AsyncStorageHelper";
 
-const useSearchFilter = (initialList: Beer[]) => {
-  const [searchInput, setSearchInput] = useState("");
-
-  const filteredList = useMemo(() => {
-    return initialList
-      .filter((beer) =>
-        beer.name.toLowerCase().includes(searchInput.toLowerCase())
-      )
-      .slice(0, 20)
-      .sort((a, b) => a.name.localeCompare(b.name));
-  }, [searchInput, initialList]);
-
-  return {
-    searchInput,
-    setSearchInput,
-    filteredList,
-  };
-};
+const getNewestStoredBeer = async () => {
+    const storedData = await AsyncStorage.getItem("beers");
+    if (storedData) {
+        const storedBeers = JSON.parse(storedData) as BasicBeer[];
+        const storedNewestBeer = storedBeers.reduce((prev, current) => (prev.id > current.id) ? prev : current);
+        return storedNewestBeer.last_mod;
+    }
+    return undefined;
+}
 
 const SearchBeerScreen = (props: SearchBeersProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
-  const [beers, setBeers] = useState([] as Beer[]);
+  const [beers, setBeers] = useLocalStorage<BasicBeer[]>("beers", [] as BasicBeer[], fetchAllBeers, fetchNewestBeer, getNewestStoredBeer);
 
-  useEffect(() => {
-    const fetchBeers = async () => {
-      const url = `${API_URL}/api/beers`;
-      const response = await fetch(url);
-      const beers = await response.json();
-      setBeers(beers);
-    };
-    fetchBeers();
-  }, []);
-
-  const handleBeerPress = (
-    beerId: number,
-    collectionId: number | undefined
-  ) => {
+  const handleBeerPress = (beerId: number) => {
     navigation.navigate("Beer", {
-      user_id: props.route.params.user_id,
       beer_id: beerId,
-      collection_id: collectionId,
     });
   };
 
-  const { searchInput, setSearchInput, filteredList } = useSearchFilter(beers);
+  const { searchInput, setSearchInput, filteredList } = useSearchFilter({
+    initialList: beers,
+    nameKey: "name",
+  });
 
   return (
-    <View>
+    <View style={styles.container}>
       {/* Search Bar */}
       <TextInput
         style={styles.input}
         value={searchInput}
         onChangeText={(text) => setSearchInput(text)}
+        placeholder="Search for a beer"
       />
       <ScrollView>
         {filteredList?.map((beer) => {
           return (
             <View key={beer.id} style={styles.beerCard}>
-              <TouchableOpacity onPress={() => handleBeerPress(beer.id, 1)}>
+              <TouchableOpacity onPress={() => handleBeerPress(beer.id)}>
                 <Text>{beer.name}</Text>
               </TouchableOpacity>
             </View>
@@ -86,8 +68,12 @@ const SearchBeerScreen = (props: SearchBeersProps) => {
 export default SearchBeerScreen;
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: BackgroundColor,
+  },
   dropDown: {
-    backgroundColor: "white",
+    backgroundColor: BackgroundColor,
     padding: 10,
     margin: 10,
     borderRadius: 5,

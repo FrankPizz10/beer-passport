@@ -1,13 +1,13 @@
 {
   "expo": {
     "name": "beer-passport",
-    "slug": "beer-passport",
+    "slug": "beerpassport",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "dark",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/BeerLogo3.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -24,7 +24,13 @@
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
-    }
+      "favicon": "./assets/BeerLogo1.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "451c62c3-bd28-4fc1-8724-1571c640478c"
+      }
+    },
+    "owner": "frank_pizz10"
   }
 }

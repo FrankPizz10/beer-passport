@@ -1,7 +1,11 @@
-export interface Beer {
+export type BasicBeer = {
   id: number;
-  brewery_id: number;
   name: string;
+  last_mod: number;
+};
+
+export interface Beer extends BasicBeer {
+  brewery_id: number;
   cat_id: number;
   style_id: number;
   abv: number;
@@ -11,7 +15,6 @@ export interface Beer {
   filepath: string;
   descript: string;
   add_user: number;
-  last_mod: number;
   style?: Style;
   category?: Category;
   brewery?: Brewery;
@@ -53,10 +56,8 @@ export interface BeerId {
 
 export interface User {
   id: number;
-  uid: string;
-  email: string;
-  age: number;
   user_name: string;
+  private: boolean;
 }
 
 export interface UserBeer {
@@ -87,4 +88,25 @@ export interface CollectionBeer {
   id: number;
   collection_id: number;
   beer_id: number;
+}
+
+export interface Friend {
+  id: number;
+  user_1: number;
+  user_2: number;
+  users_friends_user_1Tousers: User;
+  users_friends_user_2Tousers: User;
+}
+
+export interface Notification {
+  id: number;
+  user_id: number;
+  type: NotificationType;
+  message: string;
+  viewed: boolean;
+}
+
+export enum NotificationType {
+  NEW_FRIEND = "NEW_FRIEND",
+  BADGE_EARNED = "BADGE_EARNED",
 }
