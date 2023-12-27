@@ -13,7 +13,8 @@ import { FriendsProps } from "../props";
 import SearchUsersButton from "./SearchUsersButton";
 import { useNavigation } from "@react-navigation/core";
 import { useFocusEffect } from "@react-navigation/native";
-import { BackgroundColor } from "./colors";
+import { BackgroundColor } from "../Styles/colors";
+import { standardStyles } from "../Styles/styles";
 
 const FriendScreen = (props: FriendsProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
@@ -45,9 +46,11 @@ const FriendScreen = (props: FriendsProps) => {
       <ScrollView style={styles.friendContainer}>
         {friends.map((friend) => {
           return (
-            <View key={friend.id} style={styles.friendCard}>
+            <View key={friend.id} style={standardStyles.basicCard}>
               <TouchableOpacity onPress={() => handleFriendPress(friend.id)}>
-                <Text>{friend.user_name}</Text>
+                <Text style={standardStyles.basicCardText}>
+                  {friend.user_name}
+                </Text>
               </TouchableOpacity>
             </View>
           );
@@ -71,7 +74,7 @@ const styles = StyleSheet.create({
     padding: 15,
   },
   screenTitle: {
-    fontSize: 30,
+    fontSize: 40,
     fontWeight: "bold",
     textAlign: "center",
     margin: 10,
@@ -82,19 +85,6 @@ const styles = StyleSheet.create({
     height: 400,
     width: 400,
     marginBottom: 20,
-  },
-  friendCard: {
-    backgroundColor: "lightblue",
-    padding: 10,
-    margin: 10,
-    borderRadius: 5,
-    shadowColor: "black",
-    shadowOpacity: 0.5,
-    shadowRadius: 5,
-    shadowOffset: {
-      width: 1,
-      height: 1,
-    },
   },
 });
 

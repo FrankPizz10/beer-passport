@@ -15,8 +15,9 @@ import { useYourBeers } from "../Controllers/YourBeersController";
 import { useYourBadges } from "../Controllers/YourBadgesController";
 import { decimalToPercent } from "../utils";
 import { API_URL } from "@env";
-import { BackgroundColor } from "./colors";
+import { BackgroundColor } from "../Styles/colors";
 import { auth } from "../Models/firebase";
+import { standardStyles } from "../Styles/styles";
 
 const OtherUserScreen = (props: FriendProfileProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
@@ -118,7 +119,7 @@ const OtherUserScreen = (props: FriendProfileProps) => {
           {triedPressed &&
             triedBeers?.map((beer) => {
               return (
-                <View key={beer.id} style={styles.beerCard}>
+                <View key={beer.id} style={standardStyles.basicCard}>
                   <TouchableOpacity onPress={() => handleBeerPress(beer.id)}>
                     <Text>{beer.name}</Text>
                   </TouchableOpacity>
@@ -126,14 +127,14 @@ const OtherUserScreen = (props: FriendProfileProps) => {
               );
             })}
           {triedPressed && triedBeers?.length === 0 && (
-            <View style={styles.beerCard}>
+            <View style={standardStyles.basicCard}>
               <Text>{user.user_name} has no tried beers yet!</Text>
             </View>
           )}
           {likedPressed &&
             likedBeers?.map((beer) => {
               return (
-                <View key={beer.id} style={styles.beerCard}>
+                <View key={beer.id} style={standardStyles.basicCard}>
                   <TouchableOpacity onPress={() => handleBeerPress(beer.id)}>
                     <Text>{beer.name}</Text>
                   </TouchableOpacity>
@@ -141,7 +142,7 @@ const OtherUserScreen = (props: FriendProfileProps) => {
               );
             })}
           {likedPressed && likedBeers?.length === 0 && (
-            <View style={styles.beerCard}>
+            <View style={standardStyles.basicCard}>
               <Text>{user.user_name} has no liked beers yet!</Text>
             </View>
           )}
@@ -212,19 +213,6 @@ const styles = StyleSheet.create({
     height: 400,
     width: 400,
     marginBottom: 20,
-  },
-  beerCard: {
-    backgroundColor: "lightblue",
-    padding: 10,
-    margin: 10,
-    borderRadius: 5,
-    shadowColor: "black",
-    shadowOpacity: 0.5,
-    shadowRadius: 5,
-    shadowOffset: {
-      width: 1,
-      height: 1,
-    },
   },
   buttonContainer: {
     flexDirection: "row",

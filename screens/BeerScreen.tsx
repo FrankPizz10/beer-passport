@@ -16,8 +16,13 @@ import {
   fetchUserBeer,
 } from "../Models/Requests";
 import { auth } from "../Models/firebase";
-import { BackgroundColor } from "./colors";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import {
+  BackgroundColor,
+  MainHighlightColor,
+  TryLikeButtonColor,
+} from "../Styles/colors";
+import { Entypo } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 
 const BeerScreen = (props: BeerProps) => {
   const [beer, setBeer] = useState({} as Beer | undefined);
@@ -72,6 +77,7 @@ const BeerScreen = (props: BeerProps) => {
       const newUserBeer = await response.json();
       setUserBeer(newUserBeer);
       setLiked(true);
+      setTried(true);
     } catch (error) {
       console.log(error);
     }
@@ -95,6 +101,25 @@ const BeerScreen = (props: BeerProps) => {
       });
       const newUserBeer = await response.json();
       setUserBeer(newUserBeer);
+      setLiked(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleUnTriedPress = async () => {
+    try {
+      const url = `${API_URL}/api/userbeers/${userBeer?.id}}`;
+      const token = await auth.currentUser?.getIdToken();
+      const response = await fetch(url, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+      setUserBeer({} as UserBeer);
+      setTried(false);
       setLiked(false);
     } catch (error) {
       console.log(error);
@@ -139,6 +164,52 @@ const BeerScreen = (props: BeerProps) => {
           <View style={styles.titleContainer}>
             <Text style={styles.title}>{beer.name}</Text>
           </View>
+          <View>
+            {!tried && (
+              <TouchableOpacity
+                style={styles.button}
+                onPress={handleTriedPress}
+              >
+                <Ionicons
+                  name="checkbox-outline"
+                  size={24}
+                  color={MainHighlightColor}
+                />
+                <Text style={styles.buttonText}> Try </Text>
+              </TouchableOpacity>
+            )}
+            {!liked && (
+              <TouchableOpacity
+                style={styles.button}
+                onPress={handleLikedPress}
+              >
+                <Entypo name="star-outlined" size={24} color="gold" />
+                <Text style={styles.buttonText}> Like </Text>
+              </TouchableOpacity>
+            )}
+            {tried && (
+              <TouchableOpacity
+                style={styles.button}
+                onPress={handleUnTriedPress}
+              >
+                <Ionicons
+                  name="checkbox"
+                  size={24}
+                  color={MainHighlightColor}
+                />
+                <Text style={styles.buttonText}> Un Try </Text>
+              </TouchableOpacity>
+            )}
+            {liked && (
+              <TouchableOpacity
+                style={styles.button}
+                onPress={handleUnLikedPress}
+              >
+                <Entypo name="star" size={24} color="gold" />
+                <Text style={styles.buttonText}> Un Like </Text>
+              </TouchableOpacity>
+            )}
+          </View>
           <View style={styles.styleContainer}>
             {beer.style && (
               <Text style={styles.style}>Style: {beer.style.style_name}</Text>
@@ -166,40 +237,6 @@ const BeerScreen = (props: BeerProps) => {
               <Text style={styles.brewery}>
                 Collections: {collectionNames.join(", ")}
               </Text>
-            )}
-          </View>
-          <View style={styles.triedLikedContainer}>
-            {userBeer && userBeer.id && (
-              <Text style={styles.triedLiked}>You tried this beer!</Text>
-            )}
-            {userBeer && userBeer.liked && (
-              <Text style={styles.triedLiked}>You liked this beer!</Text>
-            )}
-          </View>
-          <View>
-            {!tried && (
-              <TouchableOpacity
-                style={styles.button}
-                onPress={handleTriedPress}
-              >
-                <Text> Tried </Text>
-              </TouchableOpacity>
-            )}
-            {!liked && (
-              <TouchableOpacity
-                style={styles.button}
-                onPress={handleLikedPress}
-              >
-                <Text> Liked </Text>
-              </TouchableOpacity>
-            )}
-            {liked && (
-              <TouchableOpacity
-                style={styles.button}
-                onPress={handleUnLikedPress}
-              >
-                <Text> Un Like </Text>
-              </TouchableOpacity>
             )}
           </View>
         </View>
@@ -268,7 +305,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
   },
   button: {
-    backgroundColor: "#b266b2",
+    backgroundColor: TryLikeButtonColor,
     padding: 10,
     margin: 10,
     borderRadius: 5,
@@ -279,6 +316,13 @@ const styles = StyleSheet.create({
       width: 1,
       height: 1,
     },
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  buttonText: {
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center",
   },
   triedLikedContainer: {
     marginBottom: 20,

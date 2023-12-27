@@ -1,4 +1,7 @@
-import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import type {
+  NativeStackNavigationProp,
+  NativeStackScreenProps,
+} from "@react-navigation/native-stack";
 import type { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
 
 export type RootStackParamList = {
@@ -28,19 +31,6 @@ export interface CommonNavButtonProps {
     "Account" | "Friends"
   >["navigation"];
 }
-
-export type RouterProps =
-  | LoginProps
-  | HomeProps
-  | CategoryProps
-  | BeerProps
-  | CreateAccountProps
-  | YourBeersProps
-  | SearchBeersProps
-  | YourBadgesProps
-  | AllCollectionsProps
-  | CollectionProps
-  | FriendsProps;
 
 export type LoginProps = NativeStackScreenProps<RootStackParamList, "Login">;
 export type HomeProps = NativeStackScreenProps<RootStackParamList, "Home">;

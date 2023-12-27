@@ -10,7 +10,7 @@ import { fetchNotifications, fetchUserByUserName } from "../Models/Requests";
 import { Notification } from "../Models/SQLData";
 import { NotificationsProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
-import { BackgroundColor } from "./colors";
+import { BackgroundColor } from "../Styles/colors";
 
 const NotificationsScreen = (props: NotificationsProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();

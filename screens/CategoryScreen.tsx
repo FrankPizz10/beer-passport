@@ -13,7 +13,7 @@ import { Category } from "../Models/SQLData";
 import { API_URL } from "@env";
 import { useCategory } from "../Controllers/CategoryController";
 import { auth } from "../Models/firebase";
-import { BackgroundColor } from "./colors";
+import { BackgroundColor } from "../Styles/colors";
 
 interface CategoryMap {
   key: number;

@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/core";
 import { CommonNavButtonProps } from "../props";
+import { MainHighlightColor } from "../Styles/colors";
 
 const SearchUsersButton = (props: CommonNavButtonProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
@@ -20,7 +21,7 @@ const SearchUsersButton = (props: CommonNavButtonProps) => {
 const styles = StyleSheet.create({
   button: {
     alignItems: "center",
-    backgroundColor: "#3399FF",
+    backgroundColor: MainHighlightColor,
     borderRadius: 5,
     padding: 10,
     width: 150,
@@ -29,6 +30,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 20,
     fontWeight: "bold",
+    color: "white",
   },
 });
 

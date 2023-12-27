@@ -11,8 +11,8 @@ import { Collection } from "../Models/SQLData";
 import { fetchAllCollections } from "../Models/Requests";
 import { AllCollectionsProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
-import { BackgroundColor } from "./colors";
-// import HomeButton from "./HomeButton";
+import { BackgroundColor } from "../Styles/colors";
+import { standardStyles } from "../Styles/styles";
 
 const AllCollectionsScreen = (props: AllCollectionsProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
@@ -39,11 +39,13 @@ const AllCollectionsScreen = (props: AllCollectionsProps) => {
       <ScrollView>
         {collections?.map((collection) => {
           return (
-            <View key={collection.id} style={styles.beerCard}>
+            <View key={collection.id} style={standardStyles.basicCard}>
               <TouchableOpacity
                 onPress={() => handleCollectionPress(collection.id)}
               >
-                <Text>{collection.name}</Text>
+                <Text style={standardStyles.basicCardText}>
+                  {collection.name}
+                </Text>
               </TouchableOpacity>
             </View>
           );
@@ -65,19 +67,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     margin: 20,
-  },
-  beerCard: {
-    backgroundColor: "lightblue",
-    padding: 10,
-    margin: 10,
-    borderRadius: 5,
-    shadowColor: "black",
-    shadowOpacity: 0.5,
-    shadowRadius: 5,
-    shadowOffset: {
-      width: 1,
-      height: 1,
-    },
   },
   HomeButton: {
     alignItems: "flex-end",

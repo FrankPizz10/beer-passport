@@ -4,7 +4,13 @@ import DeleteAccountButton from "./DeleteAccountButton";
 import { auth } from "../Models/firebase";
 import { useNavigation } from "@react-navigation/core";
 import { AccountProps } from "../props";
-import { BackgroundColor, ButtonColor, TitleColor } from "./colors";
+import {
+  BackgroundColor,
+  ButtonColor,
+  MainButtonColor,
+  MainHighlightColor,
+  TitleColor,
+} from "../Styles/colors";
 
 const AccountScreen = (props: AccountProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
@@ -69,7 +75,7 @@ const styles = StyleSheet.create({
     fontSize: 50,
     fontWeight: "bold",
     textAlign: "center",
-    color: TitleColor,
+    color: "black",
   },
   buttonContainer: {
     alignItems: "center",
@@ -78,7 +84,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   button: {
-    backgroundColor: ButtonColor,
+    backgroundColor: MainHighlightColor,
     color: "white",
     height: 50,
     padding: 10,

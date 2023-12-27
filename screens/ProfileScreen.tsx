@@ -1,6 +1,10 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { BackgroundColor, ButtonColor } from "./colors";
+import {
+  BackgroundColor,
+  ButtonColor,
+  MainButtonColor,
+} from "../Styles/colors";
 import { ProfileProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
 import { auth } from "../Models/firebase";
@@ -76,7 +80,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   button: {
-    backgroundColor: ButtonColor,
+    backgroundColor: MainButtonColor,
     color: "white",
     height: 50,
     padding: 10,
@@ -87,7 +91,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   buttonText: {
-    color: "white",
+    color: "black",
     fontSize: 20,
     fontWeight: "bold",
   },

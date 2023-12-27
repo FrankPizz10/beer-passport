@@ -11,8 +11,12 @@ import {
 import { YourBeersProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
 import { useYourBeers } from "../Controllers/YourBeersController";
-import { BackgroundColor } from "./colors";
-// import HomeButton from "./HomeButton";
+import {
+  BackgroundColor,
+  MainButtonColor,
+  MainHighlightColor,
+} from "../Styles/colors";
+import { standardStyles } from "../Styles/styles";
 
 const YourBeersScreen = (props: YourBeersProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
@@ -44,25 +48,25 @@ const YourBeersScreen = (props: YourBeersProps) => {
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={handleTriedPress}>
-          <Text> Tried </Text>
+          <Text style={styles.buttonText}> Tried </Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={handleLikedPress}>
-          <Text> Liked </Text>
+          <Text style={styles.buttonText}> Liked </Text>
         </TouchableOpacity>
       </View>
       <ScrollView>
         {tried &&
           triedBeers?.map((beer) => {
             return (
-              <View key={beer.id} style={styles.beerCard}>
+              <View key={beer.id} style={standardStyles.basicCard}>
                 <TouchableOpacity onPress={() => handleBeerPress(beer.id)}>
-                  <Text>{beer.name}</Text>
+                  <Text style={standardStyles.basicCardText}>{beer.name}</Text>
                 </TouchableOpacity>
               </View>
             );
           })}
         {tried && triedBeers?.length === 0 && (
-          <View style={styles.beerCard}>
+          <View style={standardStyles.basicCard}>
             <Text>You have no tried beers yet!</Text>
           </View>
         )}
@@ -70,15 +74,15 @@ const YourBeersScreen = (props: YourBeersProps) => {
           likedBeers &&
           likedBeers?.map((beer) => {
             return (
-              <View key={beer.id} style={styles.beerCard}>
+              <View key={beer.id} style={standardStyles.basicCard}>
                 <TouchableOpacity onPress={() => handleBeerPress(beer.id)}>
-                  <Text>{beer.name}</Text>
+                  <Text style={standardStyles.basicCardText}>{beer.name}</Text>
                 </TouchableOpacity>
               </View>
             );
           })}
         {liked && likedBeers?.length === 0 && (
-          <View style={styles.beerCard}>
+          <View style={standardStyles.basicCard}>
             <Text>You have no liked beers yet!</Text>
           </View>
         )}
@@ -113,7 +117,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
   },
   button: {
-    backgroundColor: "#b266b2",
+    backgroundColor: MainHighlightColor,
     padding: 10,
     margin: 10,
     borderRadius: 5,
@@ -124,24 +128,17 @@ const styles = StyleSheet.create({
       width: 1,
       height: 1,
     },
+    justifyContent: "center",
+  },
+  buttonText: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "white",
   },
   dropDown: {
     backgroundColor: BackgroundColor,
     padding: 10,
     margin: 10,
     borderRadius: 5,
-  },
-  beerCard: {
-    backgroundColor: "lightblue",
-    padding: 10,
-    margin: 10,
-    borderRadius: 5,
-    shadowColor: "black",
-    shadowOpacity: 0.5,
-    shadowRadius: 5,
-    shadowOffset: {
-      width: 1,
-      height: 1,
-    },
   },
 });
