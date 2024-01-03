@@ -6,7 +6,8 @@
     "start": "npx tsc && npx expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "lint": "eslint ."
   },
   "dependencies": {
     "@expo/webpack-config": "^18.1.2",
@@ -14,12 +15,15 @@
     "@react-navigation/bottom-tabs": "^6.5.8",
     "@react-navigation/native-stack": "^6.9.12",
     "@types/react-native": "^0.72.6",
+    "eslint": "^8.56.0",
+    "eslint-config-universe": "^12.0.0",
     "expo": "~48.0.11",
     "expo-constants": "~14.2.1",
     "expo-device": "~5.2.1",
     "expo-notifications": "~0.18.1",
     "expo-status-bar": "~1.4.4",
     "firebase": "^9.20.0",
+    "prettier": "^3.1.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "0.71.14",
