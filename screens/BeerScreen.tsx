@@ -109,7 +109,7 @@ const BeerScreen = (props: BeerProps) => {
 
   const handleUnTriedPress = async () => {
     try {
-      const url = `${API_URL}/api/userbeers/${userBeer?.id}}`;
+      const url = `${API_URL}/api/userbeers/${userBeer?.beer_id}`;
       const token = await auth.currentUser?.getIdToken();
       const response = await fetch(url, {
         method: "DELETE",
@@ -163,6 +163,7 @@ const BeerScreen = (props: BeerProps) => {
         <View>
           <View style={styles.titleContainer}>
             <Text style={styles.title}>{beer.name}</Text>
+            <Text style={styles.breweryTitle}>{beer?.brewery?.name}</Text>
           </View>
           <View>
             {!tried && (
@@ -228,11 +229,6 @@ const BeerScreen = (props: BeerProps) => {
             </View>
           )}
           <View style={styles.breweryContainer}>
-            {beer.brewery && (
-              <Text style={styles.brewery}>Brewery: {beer.brewery.name}</Text>
-            )}
-          </View>
-          <View style={styles.breweryContainer}>
             {collectionNames.length > 0 && (
               <Text style={styles.brewery}>
                 Collections: {collectionNames.join(", ")}
@@ -262,6 +258,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     alignItems: "center",
     textAlign: "center",
+  },
+  breweryTitle: {
+    fontSize: 30,
+    alignItems: "center",
+    textAlign: "center",
+    marginTop: 10,
   },
   styleContainer: {
     alignItems: "center",

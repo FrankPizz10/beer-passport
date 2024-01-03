@@ -13,7 +13,9 @@ import { Category } from "../Models/SQLData";
 import { API_URL } from "@env";
 import { useCategory } from "../Controllers/CategoryController";
 import { auth } from "../Models/firebase";
-import { BackgroundColor } from "../Styles/colors";
+import { BackgroundColor, MainButtonColor, MainHighlightColor } from "../Styles/colors";
+import { Dropdown } from 'react-native-element-dropdown';
+import { standardStyles } from "../Styles/styles";
 
 interface CategoryMap {
   key: number;
@@ -66,18 +68,25 @@ const CategoryScreen = (props: CategoryProps) => {
 
   return (
     <View style={styles.root}>
-      <SelectList
-        setSelected={handleSelected}
-        data={categories}
-        boxStyles={styles.dropDown}
-        placeholder="Select a category"
-      />
+      <View style={styles.container}>
+        <Dropdown
+          placeholder="Select a category"
+          placeholderStyle={styles.placeholder}
+          data={categories}
+          onChange={(item) => handleSelected(item.key)}
+          selectedTextStyle={styles.placeholder}
+          containerStyle={styles.dropDown}
+          labelField="value"
+          valueField="key"
+          mode="modal"
+        />
+      </View>
       <ScrollView>
         {beersByCategory?.map((beer) => {
           return (
-            <View key={beer.id} style={styles.beerCard}>
+            <View key={beer.id} style={standardStyles.basicCard}>
               <TouchableOpacity onPress={() => handleBeerPress(beer.id)}>
-                <Text>{beer.name}</Text>
+                <Text style={standardStyles.basicCardText}>{beer.name}</Text>
               </TouchableOpacity>
             </View>
           );
@@ -94,23 +103,19 @@ const styles = StyleSheet.create({
     backgroundColor: BackgroundColor,
     flex: 1,
   },
+  container: {
+    padding: 16,
+  },
+  placeholder: {
+    color: "black",
+    fontWeight: "bold",
+    fontSize: 30,
+  },
   dropDown: {
     backgroundColor: BackgroundColor,
     padding: 10,
     margin: 10,
     borderRadius: 5,
-  },
-  beerCard: {
-    backgroundColor: "lightblue",
-    padding: 10,
-    margin: 10,
-    borderRadius: 5,
-    shadowColor: "black",
-    shadowOpacity: 0.5,
-    shadowRadius: 5,
-    shadowOffset: {
-      width: 1,
-      height: 1,
-    },
+    justifyContent: "center",
   },
 });

@@ -29,6 +29,7 @@ import {
   StyleSheet,
   SafeAreaView,
   TouchableOpacity,
+  Dimensions,
 } from "react-native";
 
 Notifications.setNotificationHandler({
@@ -40,8 +41,10 @@ Notifications.setNotificationHandler({
 });
 
 const CustomHeader = () => {
+  const screenHeight = Dimensions.get('window').height;
+  const headerHeight = screenHeight * 0.155;
   return (
-    <SafeAreaView style={styles.headerContainer}>
+    <SafeAreaView style={{...styles.headerContainer, height: headerHeight}}>
       <Text style={styles.headerTitle}>BEER PASSPORT</Text>
     </SafeAreaView>
   );
@@ -49,16 +52,21 @@ const CustomHeader = () => {
 
 const CustomHeaderWithBack = () => {
   const navigation = useNavigation();
+  const screenWidth = Dimensions.get('window').width;
+  const screenHeight = Dimensions.get('window').height;
+  const backButtonPositionTop = screenHeight * 0.095;
+  const backButtonPositionLeft = screenWidth * 0.03;
+  const headerHeight = screenHeight * 0.155;
   return (
-    <SafeAreaView style={styles.headerContainer}>
+    <SafeAreaView style={{...styles.headerContainer, height: headerHeight}}>
       <TouchableOpacity
         onPress={() => {
           navigation.goBack();
         }}
-        style={{ position: "relative", left: -20 }}
+        style={{ position: "absolute", left: backButtonPositionLeft, top: backButtonPositionTop }}
       >
         <AntDesign name="left" size={30} color="white" />
-        <Text style={{ color: "white", fontSize: 20 }}>Back</Text>
+        <Text style={{ color: "white", fontSize: 16 }}>Back</Text>
       </TouchableOpacity>
       <Text style={styles.headerTitle}>BEER PASSPORT</Text>
     </SafeAreaView>
@@ -71,7 +79,6 @@ const styles = StyleSheet.create({
     padding: 10,
     alignItems: "center",
     justifyContent: "center",
-    height: 150,
     flexDirection: "row",
   },
   headerTitle: {
