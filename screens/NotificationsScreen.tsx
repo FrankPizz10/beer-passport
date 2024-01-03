@@ -27,10 +27,10 @@ const NotificationsScreen = (props: NotificationsProps) => {
 
   const handleFriendPress = async (notificationId: number) => {
     const notification = notifications.find(
-      (notification) => notification.id === notificationId
+      (notification) => notification.id === notificationId,
     );
     const user = await fetchUserByUserName(
-      notification?.message.split(" ")[0]!
+      notification?.message.split(" ")[0]!,
     );
     navigation.navigate("FriendProfile", {
       friend_id: user.id,

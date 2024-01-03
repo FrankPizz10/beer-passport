@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -9,7 +9,6 @@ import {
   Animated,
   Dimensions,
 } from "react-native";
-import { useNavigation } from "@react-navigation/core";
 import { AddFriendsProps } from "../props";
 import { User } from "../Models/SQLData";
 import { useSearchFilter } from "../Controllers/SearchController";

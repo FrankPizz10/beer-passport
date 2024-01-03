@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React from "react";
 import {
   StyleSheet,
   Text,
@@ -10,7 +10,7 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SearchBeersProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
-import { BasicBeer, Beer } from "../Models/SQLData";
+import { BasicBeer } from "../Models/SQLData";
 import { fetchAllBeers, fetchNewestBeer } from "../Models/Requests";
 import { useSearchFilter } from "../Controllers/SearchController";
 import { BackgroundColor } from "../Styles/colors";
@@ -22,7 +22,7 @@ const getNewestStoredBeer = async () => {
   if (storedData) {
     const storedBeers = JSON.parse(storedData) as BasicBeer[];
     const storedNewestBeer = storedBeers.reduce((prev, current) =>
-      prev.id > current.id ? prev : current
+      prev.id > current.id ? prev : current,
     );
     return storedNewestBeer.last_mod;
   }
@@ -36,7 +36,7 @@ const SearchBeerScreen = (props: SearchBeersProps) => {
     [] as BasicBeer[],
     fetchAllBeers,
     fetchNewestBeer,
-    getNewestStoredBeer
+    getNewestStoredBeer,
   );
 
   const handleBeerPress = (beerId: number) => {

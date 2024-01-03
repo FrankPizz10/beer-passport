@@ -20,7 +20,7 @@ export const useCategory = (cat: string) => {
               Authorization: "Bearer " + token,
             },
             body: JSON.stringify({
-              cat: cat,
+              cat,
             }),
           });
           const beers = await response.json();

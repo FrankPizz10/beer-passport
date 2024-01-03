@@ -6,7 +6,6 @@ import {
   View,
   KeyboardAvoidingView,
   TouchableOpacity,
-  Dimensions,
 } from "react-native";
 import { auth } from "../Models/firebase";
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";

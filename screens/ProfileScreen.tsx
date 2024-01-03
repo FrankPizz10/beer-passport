@@ -1,13 +1,8 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import {
-  BackgroundColor,
-  ButtonColor,
-  MainButtonColor,
-} from "../Styles/colors";
+import { BackgroundColor, MainButtonColor } from "../Styles/colors";
 import { ProfileProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
-import { auth } from "../Models/firebase";
 
 const ProfileScreen = (props: ProfileProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();

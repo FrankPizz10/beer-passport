@@ -30,7 +30,7 @@ const FriendScreen = (props: FriendsProps) => {
         setFriends(friends);
       };
       getFriendsData();
-    }, [])
+    }, []),
   );
 
   const handleFriendPress = (friendId: number) => {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -6,16 +6,11 @@ import {
   ScrollView,
   TouchableOpacity,
   SafeAreaView,
-  StatusBar,
 } from "react-native";
 import { YourBeersProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
 import { useYourBeers } from "../Controllers/YourBeersController";
-import {
-  BackgroundColor,
-  MainButtonColor,
-  MainHighlightColor,
-} from "../Styles/colors";
+import { BackgroundColor, MainHighlightColor } from "../Styles/colors";
 import { standardStyles } from "../Styles/styles";
 
 const YourBeersScreen = (props: YourBeersProps) => {
@@ -67,7 +62,7 @@ const YourBeersScreen = (props: YourBeersProps) => {
           })}
         {tried && triedBeers?.length === 0 && (
           <View style={standardStyles.basicCard}>
-            <Text>You have no tried beers yet!</Text>
+            <Text style={standardStyles.basicCardText}>You have no tried beers yet!</Text>
           </View>
         )}
         {liked &&
@@ -83,7 +78,7 @@ const YourBeersScreen = (props: YourBeersProps) => {
           })}
         {liked && likedBeers?.length === 0 && (
           <View style={standardStyles.basicCard}>
-            <Text>You have no liked beers yet!</Text>
+            <Text style={standardStyles.basicCardText}>You have no liked beers yet!</Text>
           </View>
         )}
       </ScrollView>

@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/core";
 import { CommonNavButtonProps } from "../props";
 import { MainHighlightColor } from "../Styles/colors";

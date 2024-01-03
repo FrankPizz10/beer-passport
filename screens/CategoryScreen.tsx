@@ -12,8 +12,8 @@ import { Category } from "../Models/SQLData";
 import { API_URL } from "@env";
 import { useCategory } from "../Controllers/CategoryController";
 import { auth } from "../Models/firebase";
-import { BackgroundColor, MainButtonColor, MainHighlightColor } from "../Styles/colors";
-import { Dropdown } from 'react-native-element-dropdown';
+import { BackgroundColor } from "../Styles/colors";
+import { Dropdown } from "react-native-element-dropdown";
 import { standardStyles } from "../Styles/styles";
 
 interface CategoryMap {

@@ -44,7 +44,7 @@ const CreateNewAccount = (props: CreateAccountProps) => {
       const userCredentials = await createUserWithEmailAndPassword(
         auth,
         email,
-        password
+        password,
       );
       const userUID = userCredentials.user.uid;
       const url = `${API_URL}/api/users/`;
@@ -59,8 +59,8 @@ const CreateNewAccount = (props: CreateAccountProps) => {
         body: JSON.stringify({
           uid: userUID,
           user_name: username,
-          age: age,
-          email: email,
+          age,
+          email,
         }),
       });
       if (response.status === 200) {

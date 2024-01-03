@@ -1,19 +1,16 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import HomeScreen from "./screens/HomeScreen";
 import LoginScreen from "./screens/LoginScreen";
 import CategoryScreen from "./screens/CategoryScreen";
 import BeerScreen from "./screens/BeerScreen";
 import CreatNewAccount from "./screens/CreateNewAccount";
 import { RootStackParamList } from "./props";
 import YourBeersScreen from "./screens/YourBeersScreen";
-import SearchBeers from "./screens/SearchBeers";
 import YourBadgesScreen from "./screens/YourBadgesScreen";
 import AllCollectionsScreen from "./screens/AllCollectionsScreen";
 import CollectionScreen from "./screens/CollectionScreen";
 import FriendScreen from "./screens/FriendScreen";
-import AddFriendsScreen from "./screens/AddFriendsScreen";
 import OtherUserScreen from "./screens/OtherUserScreen";
 import { BottomTabNavigator } from "./screens/BottomTabNavigator";
 import SearchUsersScreen from "./screens/SearchUsersScreen";
@@ -25,7 +22,6 @@ import { useNavigation } from "@react-navigation/core";
 import { MainHighlightColor } from "./Styles/colors";
 import {
   Text,
-  View,
   StyleSheet,
   SafeAreaView,
   TouchableOpacity,
@@ -41,10 +37,10 @@ Notifications.setNotificationHandler({
 });
 
 const CustomHeader = () => {
-  const screenHeight = Dimensions.get('window').height;
+  const screenHeight = Dimensions.get("window").height;
   const headerHeight = screenHeight * 0.155;
   return (
-    <SafeAreaView style={{...styles.headerContainer, height: headerHeight}}>
+    <SafeAreaView style={{ ...styles.headerContainer, height: headerHeight }}>
       <Text style={styles.headerTitle}>BEER PASSPORT</Text>
     </SafeAreaView>
   );
@@ -52,18 +48,22 @@ const CustomHeader = () => {
 
 const CustomHeaderWithBack = () => {
   const navigation = useNavigation();
-  const screenWidth = Dimensions.get('window').width;
-  const screenHeight = Dimensions.get('window').height;
+  const screenWidth = Dimensions.get("window").width;
+  const screenHeight = Dimensions.get("window").height;
   const backButtonPositionTop = screenHeight * 0.095;
   const backButtonPositionLeft = screenWidth * 0.03;
   const headerHeight = screenHeight * 0.155;
   return (
-    <SafeAreaView style={{...styles.headerContainer, height: headerHeight}}>
+    <SafeAreaView style={{ ...styles.headerContainer, height: headerHeight }}>
       <TouchableOpacity
         onPress={() => {
           navigation.goBack();
         }}
-        style={{ position: "absolute", left: backButtonPositionLeft, top: backButtonPositionTop }}
+        style={{
+          position: "absolute",
+          left: backButtonPositionLeft,
+          top: backButtonPositionTop,
+        }}
       >
         <AntDesign name="left" size={30} color="white" />
         <Text style={{ color: "white", fontSize: 16 }}>Back</Text>

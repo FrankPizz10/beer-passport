@@ -1,8 +1,4 @@
-import type {
-  NativeStackNavigationProp,
-  NativeStackScreenProps,
-} from "@react-navigation/native-stack";
-import type { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 export type RootStackParamList = {
   Home: undefined;

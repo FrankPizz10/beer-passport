@@ -4,13 +4,7 @@ import DeleteAccountButton from "./DeleteAccountButton";
 import { auth } from "../Models/firebase";
 import { useNavigation } from "@react-navigation/core";
 import { AccountProps } from "../props";
-import {
-  BackgroundColor,
-  ButtonColor,
-  MainButtonColor,
-  MainHighlightColor,
-  TitleColor,
-} from "../Styles/colors";
+import { BackgroundColor, MainHighlightColor } from "../Styles/colors";
 
 const AccountScreen = (props: AccountProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();

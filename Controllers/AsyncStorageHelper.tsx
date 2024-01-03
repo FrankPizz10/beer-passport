@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export function useLocalStorage<T>(
@@ -6,14 +6,13 @@ export function useLocalStorage<T>(
   initialValue: T,
   fetchData: () => Promise<T>,
   fetchServerVersion: () => Promise<number | undefined>,
-  fetchLocalVersion: () => Promise<number | undefined>
+  fetchLocalVersion: () => Promise<number | undefined>,
 ) {
   const [value, setValue] = useState<T>(initialValue);
-  const [version, setVersion] = useState<number | null>(null);
 
   const fetchAndStoreData = async (
     key: string,
-    fetchData: () => Promise<any>
+    fetchData: () => Promise<any>,
   ) => {
     const data = await fetchData();
     setValue(data);

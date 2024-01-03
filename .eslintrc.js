@@ -1,45 +1,31 @@
 module.exports = {
+  extends: [
+    "universe",
 
-    extends: [
-  
-      'universe',
-  
-      'universe/native',
-  
-      'universe/web',
-  
-      'universe/shared/typescript-analysis',
-  
-    ],
-  
-    overrides: [
-  
-      {
-  
-        files: ['*.ts', '*.tsx', '*.d.ts'],
-  
-        parserOptions: {
-  
-          project: './tsconfig.json',
-  
-        },
-  
+    "universe/native",
+
+    "universe/web",
+
+    "universe/shared/typescript-analysis",
+  ],
+
+  overrides: [
+    {
+      files: ["*.ts", "*.tsx", "*.d.ts"],
+
+      parserOptions: {
+        project: "./tsconfig.json",
       },
-  
-    ],
-  
-    plugins: ['react-hooks'],
-  
-    rules: {
-  
-      'import/order': 'off',
-  
     },
-  
-    env: {
-  
-      node: true,
-  
-    },
-  
-  };
+  ],
+
+  plugins: ["react-hooks"],
+
+  rules: {
+    "import/order": "off",
+  },
+
+  env: {
+    node: true,
+  },
+};

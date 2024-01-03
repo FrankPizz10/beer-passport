@@ -21,14 +21,13 @@ import {
   MainHighlightColor,
   TryLikeButtonColor,
 } from "../Styles/colors";
-import { Entypo } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
+import { Entypo, Ionicons } from "@expo/vector-icons";
 
 const BeerScreen = (props: BeerProps) => {
   const [beer, setBeer] = useState({} as Beer | undefined);
   const [userBeer, setUserBeer] = useState({} as UserBeer | undefined);
   const [collectionId, setCollectionId] = useState<number | undefined>(
-    undefined
+    undefined,
   );
   const [tried, setTried] = useState(false);
   const [liked, setLiked] = useState(false);
@@ -111,7 +110,7 @@ const BeerScreen = (props: BeerProps) => {
     try {
       const url = `${API_URL}/api/userbeers/${userBeer?.beer_id}`;
       const token = await auth.currentUser?.getIdToken();
-      const response = await fetch(url, {
+      await fetch(url, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -147,9 +146,9 @@ const BeerScreen = (props: BeerProps) => {
       const userBeer = await fetchUserBeer(props.route.params.beer_id);
       setUserBeer(userBeer);
       if (userBeer && userBeer.liked) setLiked(true);
-      if (userBeer && userBeer.id) setTried(true);
+      if (userBeer?.id) setTried(true);
       const collectionBeers = await fetchCollectionBeersByBeerId(
-        props.route.params.beer_id
+        props.route.params.beer_id,
       );
       updateCollectionNamesAndIds(collectionBeers);
     };

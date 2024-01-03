@@ -15,7 +15,11 @@ import { useYourBeers } from "../Controllers/YourBeersController";
 import { useYourBadges } from "../Controllers/YourBadgesController";
 import { decimalToPercent } from "../utils";
 import { API_URL } from "@env";
-import { BackgroundColor, MainButtonColor, MainHighlightColor } from "../Styles/colors";
+import {
+  BackgroundColor,
+  MainButtonColor,
+  MainHighlightColor,
+} from "../Styles/colors";
 import { auth } from "../Models/firebase";
 import { standardStyles } from "../Styles/styles";
 
@@ -65,7 +69,11 @@ const OtherUserScreen = (props: FriendProfileProps) => {
         },
       });
       const data = await response.json();
-      data.length > 0 ? setIsFriend(true) : setIsFriend(false);
+      if (data.length > 0) {
+        setIsFriend(true);
+      } else {
+        setIsFriend(false);
+      }
     };
     getUserData();
     getFriendshipStatus();
@@ -128,7 +136,7 @@ const OtherUserScreen = (props: FriendProfileProps) => {
             })}
           {triedPressed && triedBeers?.length === 0 && (
             <View style={standardStyles.basicCard}>
-              <Text>{user.user_name} has no tried beers yet!</Text>
+              <Text style={standardStyles.basicCardText}>{user.user_name} has no tried beers yet!</Text>
             </View>
           )}
           {likedPressed &&
@@ -143,7 +151,7 @@ const OtherUserScreen = (props: FriendProfileProps) => {
             })}
           {likedPressed && likedBeers?.length === 0 && (
             <View style={standardStyles.basicCard}>
-              <Text>{user.user_name} has no liked beers yet!</Text>
+              <Text style={standardStyles.basicCardText}>{user.user_name} has no liked beers yet!</Text>
             </View>
           )}
           {badgesPressed &&

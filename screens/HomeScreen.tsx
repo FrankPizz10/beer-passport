@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -11,13 +11,7 @@ import { useNavigation } from "@react-navigation/core";
 import { HomeProps } from "../props";
 import { User } from "../Models/SQLData";
 import { API_URL } from "@env";
-import {
-  BackgroundColor,
-  ButtonColor,
-  MainButtonColor,
-  MainHighlightColor,
-  TitleColor,
-} from "../Styles/colors";
+import { BackgroundColor, MainButtonColor, TitleColor } from "../Styles/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect } from "@react-navigation/native";
 import * as Notifications from "expo-notifications";
@@ -67,7 +61,7 @@ const sendPushTokenToServer = async (notificationToken: string) => {
       },
       body: JSON.stringify({ pushToken: notificationToken }),
     });
-    const data = await response.json();
+    await response.json();
   } catch (error) {
     console.log("SendPushTokenToServerError", error);
   }
