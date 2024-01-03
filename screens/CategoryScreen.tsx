@@ -8,7 +8,6 @@ import {
 } from "react-native";
 import { CategoryProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
-import { SelectList } from "react-native-dropdown-select-list";
 import { Category } from "../Models/SQLData";
 import { API_URL } from "@env";
 import { useCategory } from "../Controllers/CategoryController";
