@@ -16,14 +16,18 @@ import {
   fetchUserBeer,
 } from "../Models/Requests";
 import { auth } from "../Models/firebase";
-import { BackgroundColor } from "./colors";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import {
+  BackgroundColor,
+  MainHighlightColor,
+  TryLikeButtonColor,
+} from "../Styles/colors";
+import { Entypo, Ionicons } from "@expo/vector-icons";
 
 const BeerScreen = (props: BeerProps) => {
   const [beer, setBeer] = useState({} as Beer | undefined);
   const [userBeer, setUserBeer] = useState({} as UserBeer | undefined);
   const [collectionId, setCollectionId] = useState<number | undefined>(
-    undefined
+    undefined,
   );
   const [tried, setTried] = useState(false);
   const [liked, setLiked] = useState(false);
@@ -72,6 +76,7 @@ const BeerScreen = (props: BeerProps) => {
       const newUserBeer = await response.json();
       setUserBeer(newUserBeer);
       setLiked(true);
+      setTried(true);
     } catch (error) {
       console.log(error);
     }
@@ -101,6 +106,25 @@ const BeerScreen = (props: BeerProps) => {
     }
   };
 
+  const handleUnTriedPress = async () => {
+    try {
+      const url = `${API_URL}/api/userbeers/${userBeer?.beer_id}`;
+      const token = await auth.currentUser?.getIdToken();
+      await fetch(url, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+      setUserBeer({} as UserBeer);
+      setTried(false);
+      setLiked(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const updateCollectionNamesAndIds = (collectionBeers: CollectionBeer[]) => {
     collectionBeers.forEach((collectionBeer: CollectionBeer) => {
       fetchCollection(collectionBeer.collection_id).then((collection) => {
@@ -122,9 +146,9 @@ const BeerScreen = (props: BeerProps) => {
       const userBeer = await fetchUserBeer(props.route.params.beer_id);
       setUserBeer(userBeer);
       if (userBeer && userBeer.liked) setLiked(true);
-      if (userBeer && userBeer.id) setTried(true);
+      if (userBeer?.id) setTried(true);
       const collectionBeers = await fetchCollectionBeersByBeerId(
-        props.route.params.beer_id
+        props.route.params.beer_id,
       );
       updateCollectionNamesAndIds(collectionBeers);
     };
@@ -138,6 +162,53 @@ const BeerScreen = (props: BeerProps) => {
         <View>
           <View style={styles.titleContainer}>
             <Text style={styles.title}>{beer.name}</Text>
+            <Text style={styles.breweryTitle}>{beer?.brewery?.name}</Text>
+          </View>
+          <View>
+            {!tried && (
+              <TouchableOpacity
+                style={styles.button}
+                onPress={handleTriedPress}
+              >
+                <Ionicons
+                  name="checkbox-outline"
+                  size={24}
+                  color={MainHighlightColor}
+                />
+                <Text style={styles.buttonText}> Try </Text>
+              </TouchableOpacity>
+            )}
+            {!liked && (
+              <TouchableOpacity
+                style={styles.button}
+                onPress={handleLikedPress}
+              >
+                <Entypo name="star-outlined" size={24} color="gold" />
+                <Text style={styles.buttonText}> Like </Text>
+              </TouchableOpacity>
+            )}
+            {tried && (
+              <TouchableOpacity
+                style={styles.button}
+                onPress={handleUnTriedPress}
+              >
+                <Ionicons
+                  name="checkbox"
+                  size={24}
+                  color={MainHighlightColor}
+                />
+                <Text style={styles.buttonText}> Un Try </Text>
+              </TouchableOpacity>
+            )}
+            {liked && (
+              <TouchableOpacity
+                style={styles.button}
+                onPress={handleUnLikedPress}
+              >
+                <Entypo name="star" size={24} color="gold" />
+                <Text style={styles.buttonText}> Un Like </Text>
+              </TouchableOpacity>
+            )}
           </View>
           <View style={styles.styleContainer}>
             {beer.style && (
@@ -157,49 +228,10 @@ const BeerScreen = (props: BeerProps) => {
             </View>
           )}
           <View style={styles.breweryContainer}>
-            {beer.brewery && (
-              <Text style={styles.brewery}>Brewery: {beer.brewery.name}</Text>
-            )}
-          </View>
-          <View style={styles.breweryContainer}>
             {collectionNames.length > 0 && (
               <Text style={styles.brewery}>
                 Collections: {collectionNames.join(", ")}
               </Text>
-            )}
-          </View>
-          <View style={styles.triedLikedContainer}>
-            {userBeer && userBeer.id && (
-              <Text style={styles.triedLiked}>You tried this beer!</Text>
-            )}
-            {userBeer && userBeer.liked && (
-              <Text style={styles.triedLiked}>You liked this beer!</Text>
-            )}
-          </View>
-          <View>
-            {!tried && (
-              <TouchableOpacity
-                style={styles.button}
-                onPress={handleTriedPress}
-              >
-                <Text> Tried </Text>
-              </TouchableOpacity>
-            )}
-            {!liked && (
-              <TouchableOpacity
-                style={styles.button}
-                onPress={handleLikedPress}
-              >
-                <Text> Liked </Text>
-              </TouchableOpacity>
-            )}
-            {liked && (
-              <TouchableOpacity
-                style={styles.button}
-                onPress={handleUnLikedPress}
-              >
-                <Text> Un Like </Text>
-              </TouchableOpacity>
             )}
           </View>
         </View>
@@ -225,6 +257,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     alignItems: "center",
     textAlign: "center",
+  },
+  breweryTitle: {
+    fontSize: 30,
+    alignItems: "center",
+    textAlign: "center",
+    marginTop: 10,
   },
   styleContainer: {
     alignItems: "center",
@@ -268,7 +306,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
   },
   button: {
-    backgroundColor: "#b266b2",
+    backgroundColor: TryLikeButtonColor,
     padding: 10,
     margin: 10,
     borderRadius: 5,
@@ -279,6 +317,13 @@ const styles = StyleSheet.create({
       width: 1,
       height: 1,
     },
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  buttonText: {
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center",
   },
   triedLikedContainer: {
     marginBottom: 20,

@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -11,11 +11,11 @@ import { useNavigation } from "@react-navigation/core";
 import { HomeProps } from "../props";
 import { User } from "../Models/SQLData";
 import { API_URL } from "@env";
-import { BackgroundColor, ButtonColor, TitleColor } from "./colors";
+import { BackgroundColor, MainButtonColor, TitleColor } from "../Styles/colors";
 import { Ionicons } from "@expo/vector-icons";
-import { useFocusEffect } from '@react-navigation/native';
-import * as Notifications from 'expo-notifications';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from "@react-navigation/native";
+import * as Notifications from "expo-notifications";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const getUser = async (): Promise<User | undefined> => {
   try {
@@ -28,23 +28,24 @@ export const getUser = async (): Promise<User | undefined> => {
     });
     const cur_user = await response.json();
     return cur_user;
-  }
-  catch (error) {
+  } catch (error) {
     console.log("GetUserError", error);
   }
 };
 
 async function registerForPushNotificationsAsync() {
   const { status } = await Notifications.getPermissionsAsync();
-  if (status !== 'granted') {
+  if (status !== "granted") {
     const { status } = await Notifications.requestPermissionsAsync();
-    if (status !== 'granted') {
+    if (status !== "granted") {
       return;
     }
   }
-  const token = (await Notifications.getExpoPushTokenAsync({
-    experienceId: '@frank_pizz10/beer-passport',
-  })).data;
+  const token = (
+    await Notifications.getExpoPushTokenAsync({
+      experienceId: "@frank_pizz10/beer-passport",
+    })
+  ).data;
   return token;
 }
 
@@ -60,11 +61,11 @@ const sendPushTokenToServer = async (notificationToken: string) => {
       },
       body: JSON.stringify({ pushToken: notificationToken }),
     });
-    const data = await response.json();
+    await response.json();
   } catch (error) {
     console.log("SendPushTokenToServerError", error);
   }
-}
+};
 
 const HomeScreen = (props: HomeProps) => {
   const [user, setUser] = useState({} as User | undefined);
@@ -88,10 +89,10 @@ const HomeScreen = (props: HomeProps) => {
     };
     getUserData();
     registerForPushNotificationsAsync()
-      .then(token => {
-        if (token) sendPushTokenToServer(token) 
+      .then((token) => {
+        if (token) sendPushTokenToServer(token);
       })
-    .catch((error) => console.error('Error obtaining push token:', error));
+      .catch((error) => console.error("Error obtaining push token:", error));
     AsyncStorage.clear();
   }, []);
 
@@ -137,7 +138,7 @@ const HomeScreen = (props: HomeProps) => {
         <Text style={styles.welcome}>Welcome {user!.user_name}</Text>
       </View>
       <View style={styles.iconContainer}>
-        <Ionicons name="ios-beer" size={30} color="blue" />
+        <Ionicons name="ios-beer" size={80} color="gold" />
       </View>
       <View style={styles.userDetailsContainer}>
         <Text style={styles.userDetails}>
@@ -161,9 +162,6 @@ const HomeScreen = (props: HomeProps) => {
         >
           <Text style={styles.buttonText}>Collections</Text>
         </TouchableOpacity>
-        {/* <View>
-          <DeleteAccountButton navigation={navigation} user_id={user.id} />
-        </View> */}
       </View>
     </SafeAreaView>
   );
@@ -190,7 +188,7 @@ const styles = StyleSheet.create({
     color: TitleColor,
   },
   welcome: {
-    fontSize: 30,
+    fontSize: 40,
     fontWeight: "bold",
     textAlign: "center",
     color: TitleColor,
@@ -220,7 +218,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   button: {
-    backgroundColor: ButtonColor,
+    backgroundColor: MainButtonColor,
     color: "white",
     height: 50,
     padding: 10,
@@ -231,7 +229,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   buttonText: {
-    color: "white",
+    color: "black",
     fontSize: 20,
     fontWeight: "bold",
   },

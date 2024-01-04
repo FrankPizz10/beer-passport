@@ -6,14 +6,13 @@ import {
   View,
   KeyboardAvoidingView,
   TouchableOpacity,
-  Dimensions,
 } from "react-native";
 import { auth } from "../Models/firebase";
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigation } from "@react-navigation/core";
 import { LoginProps } from "../props";
 import { API_URL } from "@env";
-import { BackgroundColor } from "./colors";
+import { BackgroundColor, MainHighlightColor } from "../Styles/colors";
 
 export const getErrorMessage = (errorCode: string) => {
   switch (errorCode) {
@@ -83,7 +82,7 @@ const LoginScreen = (props: LoginProps) => {
       {serverConnected && (
         <KeyboardAvoidingView style={styles.root} behavior="padding">
           <View style={styles.title}>
-            <Text style={styles.title}>Login Screen</Text>
+            <Text style={styles.title}>Login</Text>
           </View>
           <View style={styles.inputContainer}>
             <TextInput
@@ -142,7 +141,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     justifyContent: "center",
     alignItems: "center",
-    fontSize: 30,
+    fontSize: 40,
     padding: 10,
     textAlign: "center",
   },
@@ -165,7 +164,7 @@ const styles = StyleSheet.create({
     marginTop: 25,
   },
   button: {
-    backgroundColor: "blue",
+    backgroundColor: MainHighlightColor,
     color: "white",
     padding: 10,
     margin: 10,

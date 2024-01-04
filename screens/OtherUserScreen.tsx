@@ -15,8 +15,13 @@ import { useYourBeers } from "../Controllers/YourBeersController";
 import { useYourBadges } from "../Controllers/YourBadgesController";
 import { decimalToPercent } from "../utils";
 import { API_URL } from "@env";
-import { BackgroundColor } from "./colors";
+import {
+  BackgroundColor,
+  MainButtonColor,
+  MainHighlightColor,
+} from "../Styles/colors";
 import { auth } from "../Models/firebase";
+import { standardStyles } from "../Styles/styles";
 
 const OtherUserScreen = (props: FriendProfileProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
@@ -64,7 +69,11 @@ const OtherUserScreen = (props: FriendProfileProps) => {
         },
       });
       const data = await response.json();
-      data.length > 0 ? setIsFriend(true) : setIsFriend(false);
+      if (data.length > 0) {
+        setIsFriend(true);
+      } else {
+        setIsFriend(false);
+      }
     };
     getUserData();
     getFriendshipStatus();
@@ -86,6 +95,9 @@ const OtherUserScreen = (props: FriendProfileProps) => {
 
   return (
     <SafeAreaView style={styles.root}>
+      <View style={styles.detailsContainer}>
+        <Text style={styles.friendName}>{user.user_name}</Text>
+      </View>
       {isFriend && (
         <TouchableOpacity
           onPress={handleRemoveFriend}
@@ -99,26 +111,23 @@ const OtherUserScreen = (props: FriendProfileProps) => {
           <Text style={styles.friendButtonTitle}>Add Friend</Text>
         </TouchableOpacity>
       )}
-      <View style={styles.detailsContainer}>
-        <Text style={styles.friendName}>{user.user_name}</Text>
-      </View>
       <View style={styles.buttonAndItemsContainer}>
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={handleTriedPress}>
-            <Text> Tried </Text>
+            <Text style={styles.friendButtonTitle}> Tried </Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={handleLikedPress}>
-            <Text> Liked </Text>
+            <Text style={styles.friendButtonTitle}> Liked </Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={handleBadgesPress}>
-            <Text> Badges </Text>
+            <Text style={styles.friendButtonTitle}> Badges </Text>
           </TouchableOpacity>
         </View>
         <ScrollView style={styles.friendBeersContainer}>
           {triedPressed &&
             triedBeers?.map((beer) => {
               return (
-                <View key={beer.id} style={styles.beerCard}>
+                <View key={beer.id} style={standardStyles.basicCard}>
                   <TouchableOpacity onPress={() => handleBeerPress(beer.id)}>
                     <Text>{beer.name}</Text>
                   </TouchableOpacity>
@@ -126,14 +135,14 @@ const OtherUserScreen = (props: FriendProfileProps) => {
               );
             })}
           {triedPressed && triedBeers?.length === 0 && (
-            <View style={styles.beerCard}>
-              <Text>{user.user_name} has no tried beers yet!</Text>
+            <View style={standardStyles.basicCard}>
+              <Text style={standardStyles.basicCardText}>{user.user_name} has no tried beers yet!</Text>
             </View>
           )}
           {likedPressed &&
             likedBeers?.map((beer) => {
               return (
-                <View key={beer.id} style={styles.beerCard}>
+                <View key={beer.id} style={standardStyles.basicCard}>
                   <TouchableOpacity onPress={() => handleBeerPress(beer.id)}>
                     <Text>{beer.name}</Text>
                   </TouchableOpacity>
@@ -141,8 +150,8 @@ const OtherUserScreen = (props: FriendProfileProps) => {
               );
             })}
           {likedPressed && likedBeers?.length === 0 && (
-            <View style={styles.beerCard}>
-              <Text>{user.user_name} has no liked beers yet!</Text>
+            <View style={standardStyles.basicCard}>
+              <Text style={standardStyles.basicCardText}>{user.user_name} has no liked beers yet!</Text>
             </View>
           )}
           {badgesPressed &&
@@ -178,25 +187,34 @@ const styles = StyleSheet.create({
   },
   detailsContainer: {
     alignItems: "center",
-    margin: 20,
+    justifyContent: "center",
+    marginTop: 15,
+    padding: 15,
   },
   friendName: {
-    fontSize: 30,
+    fontSize: 45,
     fontWeight: "bold",
-    marginBottom: 5,
   },
   friendButton: {
     alignItems: "center",
-    backgroundColor: "#3399FF",
+    backgroundColor: MainHighlightColor,
     borderRadius: 5,
     padding: 10,
     width: 150,
     margin: 15,
+    shadowColor: "black",
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    shadowOffset: {
+      width: 1,
+      height: 1,
+    },
   },
   friendButtonTitle: {
     fontSize: 20,
     fontWeight: "bold",
     textAlign: "center",
+    color: "white",
   },
   details: {
     fontSize: 22,
@@ -213,11 +231,10 @@ const styles = StyleSheet.create({
     width: 400,
     marginBottom: 20,
   },
-  beerCard: {
-    backgroundColor: "lightblue",
-    padding: 10,
-    margin: 10,
-    borderRadius: 5,
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    marginBottom: 15,
     shadowColor: "black",
     shadowOpacity: 0.5,
     shadowRadius: 5,
@@ -226,13 +243,8 @@ const styles = StyleSheet.create({
       height: 1,
     },
   },
-  buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    marginBottom: 15,
-  },
   button: {
-    backgroundColor: "#b266b2",
+    backgroundColor: MainHighlightColor,
     padding: 10,
     margin: 10,
     borderRadius: 5,
@@ -253,7 +265,7 @@ const styles = StyleSheet.create({
   badge: {
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#ff5722",
+    backgroundColor: MainButtonColor,
     borderRadius: 12,
     margin: 10,
     height: 150,

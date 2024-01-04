@@ -4,14 +4,12 @@ import HomeScreen from "./HomeScreen";
 import SearchBeers from "./SearchBeers";
 import NotificationsScreen from "./NotificationsScreen";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { Entypo } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
-import { FontAwesome5 } from "@expo/vector-icons";
+import { Entypo, MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
 import ProfileScreen from "./ProfileScreen";
 import { useState, useEffect } from "react";
 import { auth } from "../Models/firebase";
 import { API_URL } from "@env";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text } from "react-native";
 
 const Tab = createBottomTabNavigator<RootStackParamList>();
 
@@ -59,7 +57,7 @@ export const BottomTabNavigator = () => {
             "Content-Type": "application/json",
             Authorization: "Bearer " + token,
           },
-          body: JSON.stringify({ notificationIds: notificationIds }),
+          body: JSON.stringify({ notificationIds }),
         });
         if (response.status === 200) {
           setNotificationCount(0);
@@ -127,7 +125,7 @@ export const BottomTabNavigator = () => {
         component={NotificationsScreen}
         options={{ headerShown: false }}
         listeners={{
-          tabPress: (e) => {
+          tabPress: () => {
             handleNotificationsPress();
           },
         }}

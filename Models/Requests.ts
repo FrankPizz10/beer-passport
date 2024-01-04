@@ -8,9 +8,9 @@ import {
   User,
   UserBeer,
   BasicBeer,
+  Notification,
 } from "./SQLData";
 import { auth } from "../Models/firebase";
-import { Notification } from "./SQLData";
 
 export const fetchAllBeers = async (): Promise<BasicBeer[]> => {
   const url = `${API_URL}/api/beers/basic`;
@@ -40,11 +40,11 @@ export const fetchNewestBeer = async (): Promise<number | undefined> => {
   } catch (error) {
     console.log(error);
   }
-}
+};
 
 export const fetchBeer = async (beer_id: number): Promise<Beer | undefined> => {
   try {
-    const url = `${API_URL}/api/beers/${beer_id}`;
+    const url = `${API_URL}/api/beers/${beer_id}/?includeBrewery=true`;
     const token = await auth.currentUser?.getIdToken();
     const response = await fetch(url, {
       headers: {
@@ -61,7 +61,7 @@ export const fetchBeer = async (beer_id: number): Promise<Beer | undefined> => {
 };
 
 export const fetchUserBeer = async (
-  beer_id: number
+  beer_id: number,
 ): Promise<UserBeer | undefined> => {
   try {
     const url = `${API_URL}/api/userbeer/${beer_id}`;
@@ -82,7 +82,7 @@ export const fetchUserBeer = async (
 
 export const fetchCollectionBeer = async (
   beer_id: number,
-  collection_id?: number
+  collection_id?: number,
 ): Promise<CollectionBeer | undefined> => {
   if (!collection_id) return;
   try {
@@ -116,7 +116,7 @@ export const fetchAllCollections = async (): Promise<Collection[]> => {
 };
 
 export const fetchCollection = async (
-  collectionId: number
+  collectionId: number,
 ): Promise<Collection | undefined> => {
   const url = `${API_URL}/api/collections/${collectionId}`;
   const token = await auth.currentUser?.getIdToken();
@@ -132,7 +132,7 @@ export const fetchCollection = async (
 };
 
 export const fetchCollectionBeersByCollectionId = async (
-  collectionId: number
+  collectionId: number,
 ): Promise<CollectionBeer[]> => {
   const url = `${API_URL}/api/collections/${collectionId}/beers/`;
   const token = await auth.currentUser?.getIdToken();
@@ -147,7 +147,7 @@ export const fetchCollectionBeersByCollectionId = async (
 };
 
 export const fetchCollectionBeersByBeerId = async (
-  beerId: number
+  beerId: number,
 ): Promise<CollectionBeer[]> => {
   const url = `${API_URL}/api/beers/${beerId}/collections/`;
   const token = await auth.currentUser?.getIdToken();
@@ -178,7 +178,7 @@ export const deleteAccount = async (): Promise<void> => {
   const uid = auth.currentUser?.uid;
   const url = `${API_URL}/api/users/${uid}`;
   const token = await auth.currentUser?.getIdToken();
-  const response = await fetch(url, {
+  await fetch(url, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
@@ -211,13 +211,13 @@ export const addFriend = async (user2: number): Promise<void> => {
       Authorization: "Bearer " + token,
     },
   });
-  const friend = await response.json();
+  await response.json();
 };
 
 export const removeFriend = async (user2: number): Promise<void> => {
   const url = `${API_URL}/api/friends/${user2}`;
   const token = await auth.currentUser?.getIdToken();
-  const response = await fetch(url, {
+  await fetch(url, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",

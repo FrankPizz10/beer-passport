@@ -2,7 +2,6 @@ import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { CommonNavButtonProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
-import { ButtonColor } from "./colors";
 import { deleteAccount } from "../Models/Requests";
 
 const DeleteAccountButton = (props: CommonNavButtonProps) => {
@@ -29,7 +28,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   button: {
-    backgroundColor: ButtonColor,
+    backgroundColor: "red",
     color: "white",
     height: 50,
     padding: 10,
