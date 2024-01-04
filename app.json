@@ -4,10 +4,10 @@
     "slug": "beerpassport",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/BeerIcon.png",
     "userInterfaceStyle": "dark",
     "splash": {
-      "image": "./assets/BeerLogo3.png",
+      "image": "./assets/CampfireSplash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -19,12 +19,12 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/BeerIcon.png",
         "backgroundColor": "#ffffff"
       }
     },
     "web": {
-      "favicon": "./assets/BeerLogo1.png"
+      "favicon": "./assets/BeerIcon.png"
     },
     "extra": {
       "eas": {
