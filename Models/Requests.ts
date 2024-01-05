@@ -44,7 +44,7 @@ export const fetchNewestBeer = async (): Promise<number | undefined> => {
 
 export const fetchBeer = async (beer_id: number): Promise<Beer | undefined> => {
   try {
-    const url = `${API_URL}/api/beers/${beer_id}/?includeBrewery=true`;
+    const url = `${API_URL}/api/beers/${beer_id}/?includeBrewery=true&includeStyle=true`;
     const token = await auth.currentUser?.getIdToken();
     const response = await fetch(url, {
       headers: {

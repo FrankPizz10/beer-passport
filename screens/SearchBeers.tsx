@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -16,6 +16,9 @@ import { useSearchFilter } from "../Controllers/SearchController";
 import { BackgroundColor } from "../Styles/colors";
 import { useLocalStorage } from "../Controllers/AsyncStorageHelper";
 import { standardStyles } from "../Styles/styles";
+import { API_URL } from "@env";
+import { auth } from "../Models/firebase";
+import { useFocusEffect } from "@react-navigation/native";
 
 const getNewestStoredBeer = async () => {
   const storedData = await AsyncStorage.getItem("beers");
@@ -38,6 +41,7 @@ const SearchBeerScreen = (props: SearchBeersProps) => {
     fetchNewestBeer,
     getNewestStoredBeer,
   );
+  const [mostPopularBeers, setMostPopularBeers] = useState<BasicBeer[]>([]);
 
   const handleBeerPress = (beerId: number) => {
     navigation.navigate("Beer", {
@@ -48,7 +52,30 @@ const SearchBeerScreen = (props: SearchBeersProps) => {
   const { searchInput, setSearchInput, filteredList } = useSearchFilter({
     initialList: beers,
     nameKey: "name",
+    defaultResults: mostPopularBeers,
   });
+
+  useFocusEffect(
+    useCallback(() => {
+      const getMostPopularBeers = async () => {
+        const url = `${API_URL}/api/toplikedbeers`;
+        const token = await auth.currentUser?.getIdToken();
+        const response = await fetch(url, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        });
+        const mostPopularBeers = await response.json();
+        // alphabetize
+        mostPopularBeers.sort((a: BasicBeer, b: BasicBeer) =>
+          a.name.localeCompare(b.name),
+        );
+        setMostPopularBeers(mostPopularBeers);
+      };
+      getMostPopularBeers();
+    }, []),
+  );
 
   return (
     <View style={styles.container}>
@@ -60,6 +87,7 @@ const SearchBeerScreen = (props: SearchBeersProps) => {
         placeholder="Search for a beer"
         placeholderTextColor="gray"
       />
+      {searchInput.length > 0 && (
       <ScrollView>
         {filteredList?.map((beer) => {
           return (
@@ -71,6 +99,19 @@ const SearchBeerScreen = (props: SearchBeersProps) => {
           );
         })}
       </ScrollView>
+      )}
+      {searchInput.length === 0 && mostPopularBeers.length > 0 && (
+        <ScrollView>
+          {mostPopularBeers?.map((beer) => {
+            return (
+              <View key={beer.id} style={standardStyles.basicCard}>
+                <TouchableOpacity onPress={() => handleBeerPress(beer.id)}>
+                  <Text style={standardStyles.basicCardText}>{beer.name}</Text>
+                </TouchableOpacity>
+              </View>
+            );
+          })}
+      </ScrollView>)}
     </View>
   );
 };

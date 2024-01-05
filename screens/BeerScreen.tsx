@@ -210,11 +210,13 @@ const BeerScreen = (props: BeerProps) => {
               </TouchableOpacity>
             )}
           </View>
-          <View style={styles.styleContainer}>
-            {beer.style && (
-              <Text style={styles.style}>Style: {beer.style.style_name}</Text>
-            )}
-          </View>
+          {beer.style && (
+            <View style={styles.styleContainer}>
+              <Text style={styles.style}>
+                {beer.style.style_name}
+              </Text>
+            </View>
+          )}
           {(beer.abv || beer.abv === 0) && (
             <View style={styles.abvContainer}>
               <Text style={styles.abv}>ABV: {beer.abv}</Text>
@@ -223,7 +225,7 @@ const BeerScreen = (props: BeerProps) => {
           {!!beer.descript && (
             <View style={styles.descriptionContainer}>
               <Text style={styles.description}>
-                Description: {beer.descript}
+                {beer.descript}
               </Text>
             </View>
           )}
@@ -268,14 +270,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 20,
+    marginTop: 10,
   },
   style: {
-    fontSize: 30,
+    fontSize: 20,
     fontWeight: "bold",
   },
   description: {
     fontSize: 20,
-    fontWeight: "bold",
     width: 350,
   },
   descriptionContainer: {
