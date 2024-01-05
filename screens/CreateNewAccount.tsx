@@ -41,6 +41,28 @@ const CreateNewAccount = (props: CreateAccountProps) => {
 
   const handleSignUp = async () => {
     try {
+      const userExistsURL = `${API_URL}/userexists/`
+      const userExists = await fetch(userExistsURL, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          user_name: username,
+        })
+      });
+      const existsRes = await userExists.json();
+      if (existsRes.exists) {
+        if (existsRes.type == 'email') {
+          alert("Email already exists");
+        }
+        else {
+          alert("Username already exists");
+        }
+        return;
+      }
       const userCredentials = await createUserWithEmailAndPassword(
         auth,
         email,
@@ -64,12 +86,16 @@ const CreateNewAccount = (props: CreateAccountProps) => {
         }),
       });
       if (response.status === 200) {
+        alert("Account created!");
         setAccountVerified(true);
       } else {
+        alert("Account creation failed");
+        console.log('FORCED DELETE');
         setDeleteAccount(true);
       }
     } catch (error: any) {
       const errorCode = error.code;
+      console.log(error);
       alert(getErrorMessage(errorCode));
     }
   };
