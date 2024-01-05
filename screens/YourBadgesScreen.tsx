@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   SafeAreaView,
   ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -12,7 +11,7 @@ import { YourBadgesProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
 import { useYourBadges } from "../Controllers/YourBadgesController";
 import { decimalToPercent } from "../utils";
-import { BackgroundColor } from "./colors";
+import { BackgroundColor, MainButtonColor } from "../Styles/colors";
 // import HomeButton from "./HomeButton";
 
 const YourBadgesScreen = (props: YourBadgesProps) => {
@@ -91,7 +90,7 @@ const styles = StyleSheet.create({
   badge: {
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#ff5722",
+    backgroundColor: MainButtonColor,
     borderRadius: 12,
     margin: 5,
     width: 350,

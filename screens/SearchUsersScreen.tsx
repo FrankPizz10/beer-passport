@@ -12,8 +12,9 @@ import { SearchUsersProps } from "../props";
 import { User } from "../Models/SQLData";
 import { useSearchFilter } from "../Controllers/SearchController";
 import { fetchAllUsers } from "../Models/Requests";
-import { BackgroundColor } from "./colors";
+import { BackgroundColor } from "../Styles/colors";
 import { getUser } from "./HomeScreen";
+import { standardStyles } from "../Styles/styles";
 
 const SearchUsersScreen = (props: SearchUsersProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
@@ -51,13 +52,16 @@ const SearchUsersScreen = (props: SearchUsersProps) => {
           value={searchInput}
           onChangeText={(text) => setSearchInput(text)}
           placeholder="Search for a user"
+          placeholderTextColor="gray"
         />
         <ScrollView>
           {filteredList?.map((user) => {
             return (
-              <View key={user.id} style={styles.beerCard}>
+              <View key={user.id} style={standardStyles.basicCard}>
                 <TouchableOpacity onPress={() => handleUserPress(user.id)}>
-                  <Text>{user.user_name}</Text>
+                  <Text style={standardStyles.basicCardText}>
+                    {user.user_name}
+                  </Text>
                 </TouchableOpacity>
               </View>
             );
@@ -81,19 +85,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     margin: 10,
-  },
-  beerCard: {
-    backgroundColor: "lightblue",
-    padding: 10,
-    margin: 10,
-    borderRadius: 5,
-    shadowColor: "black",
-    shadowOpacity: 0.5,
-    shadowRadius: 5,
-    shadowOffset: {
-      width: 1,
-      height: 1,
-    },
   },
   input: {
     height: 40,

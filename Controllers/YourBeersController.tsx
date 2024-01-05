@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Beer, BeerId, UserBeer } from "../Models/SQLData";
+import { Beer, UserBeer } from "../Models/SQLData";
 import { API_URL } from "@env";
 import { auth } from "../Models/firebase";
 

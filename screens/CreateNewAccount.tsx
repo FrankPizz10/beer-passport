@@ -16,6 +16,7 @@ import {
 import { auth } from "../Models/firebase";
 import { API_URL } from "@env";
 import { getErrorMessage } from "./LoginScreen";
+import { MainHighlightColor } from "../Styles/colors";
 
 const CreateNewAccount = (props: CreateAccountProps) => {
   const [email, setEmail] = useState("");
@@ -43,7 +44,7 @@ const CreateNewAccount = (props: CreateAccountProps) => {
       const userCredentials = await createUserWithEmailAndPassword(
         auth,
         email,
-        password
+        password,
       );
       const userUID = userCredentials.user.uid;
       const url = `${API_URL}/api/users/`;
@@ -58,8 +59,8 @@ const CreateNewAccount = (props: CreateAccountProps) => {
         body: JSON.stringify({
           uid: userUID,
           user_name: username,
-          age: age,
-          email: email,
+          age,
+          email,
         }),
       });
       if (response.status === 200) {
@@ -75,16 +76,18 @@ const CreateNewAccount = (props: CreateAccountProps) => {
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
-      <Text style={styles.title}>Create New Account</Text>
+      <Text style={styles.title}>Create Account</Text>
       <View style={styles.inputContainer}>
         <TextInput
           placeholder="Email"
+          placeholderTextColor="gray"
           value={email}
           onChangeText={(text) => setEmail(text)}
           style={styles.input}
         />
         <TextInput
           placeholder="Password"
+          placeholderTextColor="gray"
           value={password}
           onChangeText={(text) => setPassword(text)}
           style={styles.input}
@@ -92,6 +95,7 @@ const CreateNewAccount = (props: CreateAccountProps) => {
         />
         <TextInput
           placeholder="Age"
+          placeholderTextColor="gray"
           keyboardType="numeric"
           value={age}
           onChangeText={(text) => setAge(text)}
@@ -99,6 +103,7 @@ const CreateNewAccount = (props: CreateAccountProps) => {
         />
         <TextInput
           placeholder="Username"
+          placeholderTextColor="gray"
           value={username}
           onChangeText={(text) => setUsername(text)}
           style={styles.input}
@@ -140,7 +145,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   button: {
-    backgroundColor: "blue",
+    backgroundColor: MainHighlightColor,
     color: "white",
     padding: 10,
     margin: 10,

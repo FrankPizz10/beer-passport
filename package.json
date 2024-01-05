@@ -6,7 +6,8 @@
     "start": "npx tsc && npx expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "lint": "eslint --fix ."
   },
   "dependencies": {
     "@expo/webpack-config": "^18.1.2",
@@ -14,26 +15,28 @@
     "@react-navigation/bottom-tabs": "^6.5.8",
     "@react-navigation/native-stack": "^6.9.12",
     "@types/react-native": "^0.72.6",
+    "eslint": "^8.56.0",
+    "eslint-config-universe": "^12.0.0",
     "expo": "~48.0.11",
+    "expo-constants": "~14.2.1",
+    "expo-device": "~5.2.1",
+    "expo-notifications": "~0.18.1",
     "expo-status-bar": "~1.4.4",
     "firebase": "^9.20.0",
+    "prettier": "^3.1.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "0.71.14",
     "react-native-dotenv": "^3.4.8",
-    "react-native-dropdown-select-list": "^2.0.4",
+    "react-native-element-dropdown": "^2.10.1",
     "react-native-web": "~0.18.10",
-    "typescript": "^4.9.4",
-    "expo-notifications": "~0.18.1",
-    "expo-device": "~5.2.1",
-    "expo-constants": "~14.2.1"
+    "typescript": "^4.9.4"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@tsconfig/react-native": "^3.0.0",
     "@types/jest": "^29.5.1",
     "@types/react": "^18.0.38",
-    "@types/react-native-material-dropdown": "^0.11.5",
     "@types/react-test-renderer": "^18.0.0",
     "typescript": "^4.9.4"
   },

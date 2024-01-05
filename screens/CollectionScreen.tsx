@@ -15,8 +15,8 @@ import {
 } from "../Models/Requests";
 import { CollectionProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
-import { BackgroundColor } from "./colors";
-// import HomeButton from "./HomeButton";
+import { BackgroundColor } from "../Styles/colors";
+import { standardStyles } from "../Styles/styles";
 
 const CollectionScreen = (props: CollectionProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
@@ -59,9 +59,9 @@ const CollectionScreen = (props: CollectionProps) => {
       <ScrollView>
         {beers?.map((beer) => {
           return (
-            <View key={beer.id} style={styles.beerCard}>
+            <View key={beer.id} style={standardStyles.basicCard}>
               <TouchableOpacity onPress={() => handleBeerPress(beer.id)}>
-                <Text>{beer.name}</Text>
+                <Text style={standardStyles.basicCardText}>{beer.name}</Text>
               </TouchableOpacity>
             </View>
           );
@@ -82,19 +82,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     margin: 10,
-  },
-  beerCard: {
-    backgroundColor: "lightblue",
-    padding: 10,
-    margin: 10,
-    borderRadius: 5,
-    shadowColor: "black",
-    shadowOpacity: 0.5,
-    shadowRadius: 5,
-    shadowOffset: {
-      width: 1,
-      height: 1,
-    },
   },
   CollectionTitle: {
     fontSize: 50,

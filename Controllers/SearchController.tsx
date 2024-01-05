@@ -1,5 +1,4 @@
 import { useState, useMemo } from "react";
-import { fetchFriends } from "../Models/Requests";
 
 type ItemWithName = {
   name?: string;
@@ -9,18 +8,23 @@ type ItemWithName = {
 type SearchableObject<T> = {
   initialList: T[];
   nameKey: keyof T;
+  defaultResults: T[];
 };
 
-export const useSearchFilter = <T extends ItemWithName, K extends keyof T>({
+export const useSearchFilter = <T extends ItemWithName>({
   initialList,
   nameKey,
+  defaultResults
 }: SearchableObject<T>) => {
   const [searchInput, setSearchInput] = useState("");
 
   const filteredList = useMemo(() => {
+    if (searchInput.length === 0 && defaultResults.length > 0) {
+      return defaultResults;
+    }
     return initialList
       .filter((item) =>
-        String(item[nameKey]).toLowerCase().includes(searchInput.toLowerCase())
+        String(item[nameKey]).toLowerCase().includes(searchInput.toLowerCase()),
       )
       .slice(0, 20)
       .sort((a, b) => String(a[nameKey]).localeCompare(String(b[nameKey])));

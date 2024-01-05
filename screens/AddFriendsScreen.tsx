@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -9,14 +9,14 @@ import {
   Animated,
   Dimensions,
 } from "react-native";
-import { useNavigation } from "@react-navigation/core";
 import { AddFriendsProps } from "../props";
 import { User } from "../Models/SQLData";
 import { useSearchFilter } from "../Controllers/SearchController";
 import { addFriend } from "../Models/Requests";
 import { API_URL } from "@env";
 import { auth } from "../Models/firebase";
-import { BackgroundColor } from "./colors";
+import { BackgroundColor } from "../Styles/colors";
+import { standardStyles } from "../Styles/styles";
 
 const AddFriendsScreen = (props: AddFriendsProps) => {
   const [notfriends, setNotFriends] = useState([] as User[]);
@@ -79,13 +79,16 @@ const AddFriendsScreen = (props: AddFriendsProps) => {
           value={searchInput}
           onChangeText={(text) => setSearchInput(text)}
           placeholder="Search for a user"
+          placeholderTextColor="gray"
         />
         <ScrollView>
           {filteredList?.map((user) => {
             return (
-              <View key={user.id} style={styles.beerCard}>
+              <View key={user.id} style={standardStyles.basicCard}>
                 <TouchableOpacity onPress={() => handleAddFriend(user.id)}>
-                  <Text>{user.user_name}</Text>
+                  <Text style={standardStyles.basicCardText}>
+                    {user.user_name}
+                  </Text>
                 </TouchableOpacity>
               </View>
             );
@@ -145,19 +148,6 @@ const styles = StyleSheet.create({
     padding: 10,
     margin: 10,
     borderRadius: 5,
-  },
-  beerCard: {
-    backgroundColor: "lightblue",
-    padding: 10,
-    margin: 10,
-    borderRadius: 5,
-    shadowColor: "black",
-    shadowOpacity: 0.5,
-    shadowRadius: 5,
-    shadowOffset: {
-      width: 1,
-      height: 1,
-    },
   },
   input: {
     height: 40,
