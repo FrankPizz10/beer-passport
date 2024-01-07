@@ -129,7 +129,7 @@ const OtherUserScreen = (props: FriendProfileProps) => {
               return (
                 <View key={beer.id} style={standardStyles.basicCard}>
                   <TouchableOpacity onPress={() => handleBeerPress(beer.id)}>
-                    <Text>{beer.name}</Text>
+                    <Text style={standardStyles.basicCardText}>{beer.name}</Text>
                   </TouchableOpacity>
                 </View>
               );
@@ -144,7 +144,7 @@ const OtherUserScreen = (props: FriendProfileProps) => {
               return (
                 <View key={beer.id} style={standardStyles.basicCard}>
                   <TouchableOpacity onPress={() => handleBeerPress(beer.id)}>
-                    <Text>{beer.name}</Text>
+                    <Text style={standardStyles.basicCardText}>{beer.name}</Text>
                   </TouchableOpacity>
                 </View>
               );

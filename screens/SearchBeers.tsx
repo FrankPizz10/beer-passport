@@ -68,9 +68,9 @@ const SearchBeerScreen = (props: SearchBeersProps) => {
         });
         const mostPopularBeers = await response.json();
         // alphabetize
-        mostPopularBeers.sort((a: BasicBeer, b: BasicBeer) =>
-          a.name.localeCompare(b.name),
-        );
+        // mostPopularBeers.sort((a: BasicBeer, b: BasicBeer) =>
+        //   a.name.localeCompare(b.name),
+        // );
         setMostPopularBeers(mostPopularBeers);
       };
       getMostPopularBeers();

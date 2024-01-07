@@ -32,6 +32,7 @@ const SearchUsersScreen = (props: SearchUsersProps) => {
   const { searchInput, setSearchInput, filteredList } = useSearchFilter({
     initialList: users,
     nameKey: "user_name",
+    defaultResults: [],
   });
 
   const handleUserPress = async (userId: number) => {

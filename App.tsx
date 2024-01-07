@@ -66,7 +66,6 @@ const CustomHeaderWithBack = () => {
         }}
       >
         <AntDesign name="left" size={30} color="white" />
-        <Text style={{ color: "white", fontSize: 16 }}>Back</Text>
       </TouchableOpacity>
       <Text style={styles.headerTitle}>BEER PASSPORT</Text>
     </SafeAreaView>

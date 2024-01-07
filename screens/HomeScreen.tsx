@@ -16,6 +16,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect } from "@react-navigation/native";
 import * as Notifications from "expo-notifications";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { EXPO_ID } from "@env";
 
 export const getUser = async (): Promise<User | undefined> => {
   try {
@@ -43,7 +44,7 @@ async function registerForPushNotificationsAsync() {
   }
   const token = (
     await Notifications.getExpoPushTokenAsync({
-      experienceId: "@frank_pizz10/beer-passport",
+      experienceId: EXPO_ID,
     })
   ).data;
   return token;
