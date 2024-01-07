@@ -14,7 +14,7 @@ type SearchableObject<T> = {
 export const useSearchFilter = <T extends ItemWithName>({
   initialList,
   nameKey,
-  defaultResults
+  defaultResults,
 }: SearchableObject<T>) => {
   const [searchInput, setSearchInput] = useState("");
 

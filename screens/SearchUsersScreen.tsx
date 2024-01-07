@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import { useNavigation } from "@react-navigation/core";
 import { SearchUsersProps } from "../props";
@@ -32,12 +34,17 @@ const SearchUsersScreen = (props: SearchUsersProps) => {
   const { searchInput, setSearchInput, filteredList } = useSearchFilter({
     initialList: users,
     nameKey: "user_name",
+    defaultResults: [],
   });
 
   const handleUserPress = async (userId: number) => {
     navigation.navigate("FriendProfile", {
       friend_id: userId,
     });
+  };
+
+  const dismissKeyboard = () => {
+    Keyboard.dismiss();
   };
 
   return (
@@ -47,13 +54,15 @@ const SearchUsersScreen = (props: SearchUsersProps) => {
       </View>
       <View>
         {/* Search Bar */}
-        <TextInput
-          style={styles.input}
-          value={searchInput}
-          onChangeText={(text) => setSearchInput(text)}
-          placeholder="Search for a user"
-          placeholderTextColor="gray"
-        />
+        <TouchableWithoutFeedback onPress={dismissKeyboard}>
+          <TextInput
+            style={styles.input}
+            value={searchInput}
+            onChangeText={(text) => setSearchInput(text)}
+            placeholder="Search for a user"
+            placeholderTextColor="gray"
+          />
+        </TouchableWithoutFeedback>
         <ScrollView>
           {filteredList?.map((user) => {
             return (

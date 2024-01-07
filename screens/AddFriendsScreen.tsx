@@ -8,6 +8,8 @@ import {
   ScrollView,
   Animated,
   Dimensions,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import { AddFriendsProps } from "../props";
 import { User } from "../Models/SQLData";
@@ -56,7 +58,12 @@ const AddFriendsScreen = (props: AddFriendsProps) => {
   const { searchInput, setSearchInput, filteredList } = useSearchFilter({
     initialList: notfriends,
     nameKey: "user_name",
+    defaultResults: [],
   });
+
+  const dismissKeyboard = () => {
+    Keyboard.dismiss();
+  };
 
   const handleAddFriend = async (friendId: number) => {
     await addFriend(friendId);
@@ -74,13 +81,15 @@ const AddFriendsScreen = (props: AddFriendsProps) => {
       </View>
       <View>
         {/* Search Bar */}
-        <TextInput
-          style={styles.input}
-          value={searchInput}
-          onChangeText={(text) => setSearchInput(text)}
-          placeholder="Search for a user"
-          placeholderTextColor="gray"
-        />
+        <TouchableWithoutFeedback onPress={dismissKeyboard}>
+          <TextInput
+            style={styles.input}
+            value={searchInput}
+            onChangeText={(text) => setSearchInput(text)}
+            placeholder="Search for a user"
+            placeholderTextColor="gray"
+          />
+        </TouchableWithoutFeedback>
         <ScrollView>
           {filteredList?.map((user) => {
             return (

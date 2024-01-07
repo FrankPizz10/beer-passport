@@ -212,9 +212,7 @@ const BeerScreen = (props: BeerProps) => {
           </View>
           {beer.style && (
             <View style={styles.styleContainer}>
-              <Text style={styles.style}>
-                {beer.style.style_name}
-              </Text>
+              <Text style={styles.style}>{beer.style.style_name}</Text>
             </View>
           )}
           {(beer.abv || beer.abv === 0) && (
@@ -224,9 +222,7 @@ const BeerScreen = (props: BeerProps) => {
           )}
           {!!beer.descript && (
             <View style={styles.descriptionContainer}>
-              <Text style={styles.description}>
-                {beer.descript}
-              </Text>
+              <Text style={styles.description}>{beer.descript}</Text>
             </View>
           )}
           <View style={styles.breweryContainer}>

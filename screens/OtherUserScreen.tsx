@@ -129,14 +129,18 @@ const OtherUserScreen = (props: FriendProfileProps) => {
               return (
                 <View key={beer.id} style={standardStyles.basicCard}>
                   <TouchableOpacity onPress={() => handleBeerPress(beer.id)}>
-                    <Text>{beer.name}</Text>
+                    <Text style={standardStyles.basicCardText}>
+                      {beer.name}
+                    </Text>
                   </TouchableOpacity>
                 </View>
               );
             })}
           {triedPressed && triedBeers?.length === 0 && (
             <View style={standardStyles.basicCard}>
-              <Text style={standardStyles.basicCardText}>{user.user_name} has no tried beers yet!</Text>
+              <Text style={standardStyles.basicCardText}>
+                {user.user_name} has no tried beers yet!
+              </Text>
             </View>
           )}
           {likedPressed &&
@@ -144,14 +148,18 @@ const OtherUserScreen = (props: FriendProfileProps) => {
               return (
                 <View key={beer.id} style={standardStyles.basicCard}>
                   <TouchableOpacity onPress={() => handleBeerPress(beer.id)}>
-                    <Text>{beer.name}</Text>
+                    <Text style={standardStyles.basicCardText}>
+                      {beer.name}
+                    </Text>
                   </TouchableOpacity>
                 </View>
               );
             })}
           {likedPressed && likedBeers?.length === 0 && (
             <View style={standardStyles.basicCard}>
-              <Text style={standardStyles.basicCardText}>{user.user_name} has no liked beers yet!</Text>
+              <Text style={standardStyles.basicCardText}>
+                {user.user_name} has no liked beers yet!
+              </Text>
             </View>
           )}
           {badgesPressed &&

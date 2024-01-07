@@ -62,7 +62,9 @@ const YourBeersScreen = (props: YourBeersProps) => {
           })}
         {tried && triedBeers?.length === 0 && (
           <View style={standardStyles.basicCard}>
-            <Text style={standardStyles.basicCardText}>You have no tried beers yet!</Text>
+            <Text style={standardStyles.basicCardText}>
+              You have no tried beers yet!
+            </Text>
           </View>
         )}
         {liked &&
@@ -78,7 +80,9 @@ const YourBeersScreen = (props: YourBeersProps) => {
           })}
         {liked && likedBeers?.length === 0 && (
           <View style={standardStyles.basicCard}>
-            <Text style={standardStyles.basicCardText}>You have no liked beers yet!</Text>
+            <Text style={standardStyles.basicCardText}>
+              You have no liked beers yet!
+            </Text>
           </View>
         )}
       </ScrollView>

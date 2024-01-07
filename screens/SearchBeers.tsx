@@ -6,6 +6,8 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SearchBeersProps } from "../props";
@@ -43,6 +45,10 @@ const SearchBeerScreen = (props: SearchBeersProps) => {
   );
   const [mostPopularBeers, setMostPopularBeers] = useState<BasicBeer[]>([]);
 
+  const dismissKeyboard = () => {
+    Keyboard.dismiss();
+  };
+
   const handleBeerPress = (beerId: number) => {
     navigation.navigate("Beer", {
       beer_id: beerId,
@@ -68,9 +74,9 @@ const SearchBeerScreen = (props: SearchBeersProps) => {
         });
         const mostPopularBeers = await response.json();
         // alphabetize
-        mostPopularBeers.sort((a: BasicBeer, b: BasicBeer) =>
-          a.name.localeCompare(b.name),
-        );
+        // mostPopularBeers.sort((a: BasicBeer, b: BasicBeer) =>
+        //   a.name.localeCompare(b.name),
+        // );
         setMostPopularBeers(mostPopularBeers);
       };
       getMostPopularBeers();
@@ -80,25 +86,27 @@ const SearchBeerScreen = (props: SearchBeersProps) => {
   return (
     <View style={styles.container}>
       {/* Search Bar */}
-      <TextInput
-        style={styles.input}
-        value={searchInput}
-        onChangeText={(text) => setSearchInput(text)}
-        placeholder="Search for a beer"
-        placeholderTextColor="gray"
-      />
+      <TouchableWithoutFeedback onPress={dismissKeyboard}>
+        <TextInput
+          style={styles.input}
+          value={searchInput}
+          onChangeText={(text) => setSearchInput(text)}
+          placeholder="Search for a beer"
+          placeholderTextColor="gray"
+        />
+      </TouchableWithoutFeedback>
       {searchInput.length > 0 && (
-      <ScrollView>
-        {filteredList?.map((beer) => {
-          return (
-            <View key={beer.id} style={standardStyles.basicCard}>
-              <TouchableOpacity onPress={() => handleBeerPress(beer.id)}>
-                <Text style={standardStyles.basicCardText}>{beer.name}</Text>
-              </TouchableOpacity>
-            </View>
-          );
-        })}
-      </ScrollView>
+        <ScrollView>
+          {filteredList?.map((beer) => {
+            return (
+              <View key={beer.id} style={standardStyles.basicCard}>
+                <TouchableOpacity onPress={() => handleBeerPress(beer.id)}>
+                  <Text style={standardStyles.basicCardText}>{beer.name}</Text>
+                </TouchableOpacity>
+              </View>
+            );
+          })}
+        </ScrollView>
       )}
       {searchInput.length === 0 && mostPopularBeers.length > 0 && (
         <ScrollView>
@@ -111,7 +119,8 @@ const SearchBeerScreen = (props: SearchBeersProps) => {
               </View>
             );
           })}
-      </ScrollView>)}
+        </ScrollView>
+      )}
     </View>
   );
 };

@@ -6,6 +6,8 @@ import {
   View,
   KeyboardAvoidingView,
   TouchableOpacity,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import { auth } from "../Models/firebase";
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
@@ -42,6 +44,10 @@ const LoginScreen = (props: LoginProps) => {
   const [serverConnected, setServerConnected] = useState(false);
 
   const navigation = useNavigation<(typeof props)["navigation"]>();
+
+  const dismissKeyboard = () => {
+    Keyboard.dismiss();
+  };
 
   useEffect(() => {
     const checkServerConnected = async () => {
@@ -80,36 +86,38 @@ const LoginScreen = (props: LoginProps) => {
   return (
     <>
       {serverConnected && (
-        <KeyboardAvoidingView style={styles.root} behavior="padding">
-          <View style={styles.title}>
-            <Text style={styles.title}>Login</Text>
-          </View>
-          <View style={styles.inputContainer}>
-            <TextInput
-              placeholder="Email"
-              placeholderTextColor="gray"
-              value={email}
-              onChangeText={(text) => setEmail(text)}
-              style={styles.input}
-            />
-            <TextInput
-              placeholder="Password"
-              placeholderTextColor="gray"
-              value={password}
-              onChangeText={(text) => setPassword(text)}
-              style={styles.input}
-              secureTextEntry
-            />
-          </View>
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity onPress={handleLogin} style={styles.button}>
-              <Text style={styles.buttonText}>Login</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={handleSignUp} style={styles.button}>
-              <Text style={styles.buttonText}>Register</Text>
-            </TouchableOpacity>
-          </View>
-        </KeyboardAvoidingView>
+        <TouchableWithoutFeedback onPress={dismissKeyboard}>
+          <KeyboardAvoidingView style={styles.root} behavior="padding">
+            <View style={styles.title}>
+              <Text style={styles.title}>Login</Text>
+            </View>
+            <View style={styles.inputContainer}>
+              <TextInput
+                placeholder="Email"
+                placeholderTextColor="gray"
+                value={email}
+                onChangeText={(text) => setEmail(text)}
+                style={styles.input}
+              />
+              <TextInput
+                placeholder="Password"
+                placeholderTextColor="gray"
+                value={password}
+                onChangeText={(text) => setPassword(text)}
+                style={styles.input}
+                secureTextEntry
+              />
+            </View>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity onPress={handleLogin} style={styles.button}>
+                <Text style={styles.buttonText}>Login</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={handleSignUp} style={styles.button}>
+                <Text style={styles.buttonText}>Register</Text>
+              </TouchableOpacity>
+            </View>
+          </KeyboardAvoidingView>
+        </TouchableWithoutFeedback>
       )}
       {!serverConnected && (
         <View style={styles.failed}>
