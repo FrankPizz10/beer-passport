@@ -10,13 +10,12 @@ import { auth } from "../Models/firebase";
 import { useNavigation } from "@react-navigation/core";
 import { HomeProps } from "../props";
 import { User } from "../Models/SQLData";
-import { API_URL } from "@env";
+import { API_URL, EXPO_ID } from "@env";
 import { BackgroundColor, MainButtonColor, TitleColor } from "../Styles/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect } from "@react-navigation/native";
 import * as Notifications from "expo-notifications";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { EXPO_ID } from "@env";
 
 export const getUser = async (): Promise<User | undefined> => {
   try {

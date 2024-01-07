@@ -12,6 +12,8 @@ import {
   StyleSheet,
   KeyboardAvoidingView,
   TouchableOpacity,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import { auth } from "../Models/firebase";
 import { API_URL } from "@env";
@@ -41,7 +43,7 @@ const CreateNewAccount = (props: CreateAccountProps) => {
 
   const handleSignUp = async () => {
     try {
-      const userExistsURL = `${API_URL}/userexists/`
+      const userExistsURL = `${API_URL}/userexists/`;
       const userExists = await fetch(userExistsURL, {
         method: "POST",
         headers: {
@@ -51,14 +53,13 @@ const CreateNewAccount = (props: CreateAccountProps) => {
         body: JSON.stringify({
           email,
           user_name: username,
-        })
+        }),
       });
       const existsRes = await userExists.json();
       if (existsRes.exists) {
-        if (existsRes.type == 'email') {
+        if (existsRes.type === "email") {
           alert("Email already exists");
-        }
-        else {
+        } else {
           alert("Username already exists");
         }
         return;
@@ -90,7 +91,7 @@ const CreateNewAccount = (props: CreateAccountProps) => {
         setAccountVerified(true);
       } else {
         alert("Account creation failed");
-        console.log('FORCED DELETE');
+        console.log("FORCED DELETE");
         setDeleteAccount(true);
       }
     } catch (error: any) {
@@ -100,45 +101,51 @@ const CreateNewAccount = (props: CreateAccountProps) => {
     }
   };
 
+  const dismissKeyboard = () => {
+    Keyboard.dismiss();
+  };
+
   return (
-    <KeyboardAvoidingView style={styles.container} behavior="padding">
-      <Text style={styles.title}>Create Account</Text>
-      <View style={styles.inputContainer}>
-        <TextInput
-          placeholder="Email"
-          placeholderTextColor="gray"
-          value={email}
-          onChangeText={(text) => setEmail(text)}
-          style={styles.input}
-        />
-        <TextInput
-          placeholder="Password"
-          placeholderTextColor="gray"
-          value={password}
-          onChangeText={(text) => setPassword(text)}
-          style={styles.input}
-          secureTextEntry
-        />
-        <TextInput
-          placeholder="Age"
-          placeholderTextColor="gray"
-          keyboardType="numeric"
-          value={age}
-          onChangeText={(text) => setAge(text)}
-          style={styles.input}
-        />
-        <TextInput
-          placeholder="Username"
-          placeholderTextColor="gray"
-          value={username}
-          onChangeText={(text) => setUsername(text)}
-          style={styles.input}
-        />
-      </View>
-      <TouchableOpacity onPress={handleSignUp} style={styles.button}>
-        <Text style={styles.buttonText}>Register</Text>
-      </TouchableOpacity>
-    </KeyboardAvoidingView>
+    <TouchableWithoutFeedback onPress={dismissKeyboard}>
+      <KeyboardAvoidingView style={styles.container} behavior="padding">
+        <Text style={styles.title}>Create Account</Text>
+        <View style={styles.inputContainer}>
+          <TextInput
+            placeholder="Email"
+            placeholderTextColor="gray"
+            value={email}
+            onChangeText={(text) => setEmail(text)}
+            style={styles.input}
+          />
+          <TextInput
+            placeholder="Password"
+            placeholderTextColor="gray"
+            value={password}
+            onChangeText={(text) => setPassword(text)}
+            style={styles.input}
+            secureTextEntry
+          />
+          <TextInput
+            placeholder="Age"
+            placeholderTextColor="gray"
+            keyboardType="numeric"
+            value={age}
+            onChangeText={(text) => setAge(text)}
+            style={styles.input}
+          />
+          <TextInput
+            placeholder="Username"
+            placeholderTextColor="gray"
+            value={username}
+            onChangeText={(text) => setUsername(text)}
+            style={styles.input}
+          />
+        </View>
+        <TouchableOpacity onPress={handleSignUp} style={styles.button}>
+          <Text style={styles.buttonText}>Register</Text>
+        </TouchableOpacity>
+      </KeyboardAvoidingView>
+    </TouchableWithoutFeedback>
   );
 };
 
