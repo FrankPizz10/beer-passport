@@ -99,7 +99,7 @@ const HomeScreen = (props: HomeProps) => {
   useFocusEffect(() => {
     const getBadgeCount = async () => {
       try {
-        const url = `${API_URL}/api/userbadges/count`;
+        const url = `${API_URL}/api/userbadges/completedcount`;
         const token = await auth.currentUser?.getIdToken();
         const response = await fetch(url, {
           headers: {
