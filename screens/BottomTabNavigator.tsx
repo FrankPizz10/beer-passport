@@ -6,10 +6,11 @@ import NotificationsScreen from "./NotificationsScreen";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Entypo, MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
 import ProfileScreen from "./ProfileScreen";
-import { useState, useEffect } from "react";
+import { useState, useCallback } from "react";
 import { auth } from "../Models/firebase";
 import { API_URL } from "@env";
 import { View, Text } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 
 const Tab = createBottomTabNavigator<RootStackParamList>();
 
@@ -17,34 +18,36 @@ export const BottomTabNavigator = () => {
   const [notificationCount, setNotificationCount] = useState(0);
   const [notificationIds, setNotificationIds] = useState([]);
 
-  useEffect(() => {
-    const getUnViewedNotifications = async () => {
-      try {
-        const url = `${API_URL}/api/notifications/unviewed`;
-        const token = await auth.currentUser?.getIdToken();
-        const response = await fetch(url, {
-          headers: {
-            Authorization: "Bearer " + token,
-          },
-        });
-        const { unViewedCount, unViewedIds } = await response.json();
-        setNotificationCount(unViewedCount);
-        setNotificationIds(unViewedIds);
-      } catch (error) {
-        console.log("GetNotificationsError", error);
-      }
-    };
+  useFocusEffect(
+    useCallback(() => {
+      const getUnViewedNotifications = async () => {
+        try {
+          const url = `${API_URL}/api/notifications/unviewed`;
+          const token = await auth.currentUser?.getIdToken();
+          const response = await fetch(url, {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          });
+          const { unViewedCount, unViewedIds } = await response.json();
+          setNotificationCount(unViewedCount);
+          setNotificationIds(unViewedIds);
+        } catch (error) {
+          console.log("GetNotificationsError", error);
+        }
+      };
 
-    // // Update notifications every 5 seconds (adjust the interval as needed)
-    // const intervalId = setInterval(() => {
-    //   getUnViewedNotifications();
-    // }, 5000);
+      // // Update notifications every 5 seconds (adjust the interval as needed)
+      // const intervalId = setInterval(() => {
+      //   getUnViewedNotifications();
+      // }, 5000);
 
-    // // Clean up the interval when the component unmounts
-    // return () => clearInterval(intervalId);
+      // // Clean up the interval when the component unmounts
+      // return () => clearInterval(intervalId);
 
-    getUnViewedNotifications();
-  }, []);
+      getUnViewedNotifications();
+    }, []),
+  );
 
   const handleNotificationsPress = () => {
     const updateUnViewedNotifications = async () => {

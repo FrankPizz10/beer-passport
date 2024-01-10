@@ -55,7 +55,7 @@ const YourBadgesScreen = (props: YourBadgesProps) => {
         })}
         {userBadges?.length === 0 && (
           <View style={styles.badge}>
-            <Text style={styles.badgeTitle}>You have no badges yet!</Text>
+            <Text style={styles.noBadgeTitle}>You have no badges yet!</Text>
           </View>
         )}
       </ScrollView>
@@ -87,6 +87,12 @@ const styles = StyleSheet.create({
   },
   badgeTitle: {
     fontSize: 35,
+    fontWeight: "bold",
+    justifyContent: "center",
+    marginBottom: 10,
+  },
+  noBadgeTitle: {
+    fontSize: 25,
     fontWeight: "bold",
     justifyContent: "center",
     marginBottom: 10,
