@@ -12,6 +12,7 @@ import { useNavigation } from "@react-navigation/core";
 import { useYourBadges } from "../Controllers/YourBadgesController";
 import { decimalToPercent } from "../utils";
 import { BackgroundColor, MainButtonColor } from "../Styles/colors";
+import { standardStyles } from "../Styles/styles";
 // import HomeButton from "./HomeButton";
 
 const YourBadgesScreen = (props: YourBadgesProps) => {
@@ -37,15 +38,18 @@ const YourBadgesScreen = (props: YourBadgesProps) => {
           return (
             <TouchableOpacity
               key={badge.id}
-              style={styles.badge}
+              style={[
+                styles.badge,
+                badge.earned ? styles.goldenBadge : null
+              ]}
               onPress={() => handleBadgePress(badge.collections.id)}
             >
               <Text style={styles.badgeTitle}>
                 {badge.collections.name.toUpperCase()}
               </Text>
-              <Text>{badge.collections.description}</Text>
-              <Text>Difficulty: {badge.collections.difficulty}</Text>
-              <Text>Progress: {decimalToPercent(badge.progress)}</Text>
+              <Text style={standardStyles.basicCardText}>{badge.collections.description}</Text>
+              <Text style={standardStyles.basicCardText}>Difficulty: {badge.collections.difficulty}</Text>
+              <Text style={standardStyles.basicCardText}>Progress: {decimalToPercent(badge.progress)}</Text>
             </TouchableOpacity>
           );
         })}
@@ -82,7 +86,7 @@ const styles = StyleSheet.create({
     alignContent: "center",
   },
   badgeTitle: {
-    fontSize: 25,
+    fontSize: 35,
     fontWeight: "bold",
     justifyContent: "center",
     marginBottom: 10,
@@ -94,7 +98,10 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     margin: 5,
     width: 350,
-    height: 150,
+    height: 160,
+  },
+  goldenBadge: {
+    backgroundColor: "gold",
   },
   HomeButton: {
     alignItems: "flex-end",
