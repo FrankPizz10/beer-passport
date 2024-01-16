@@ -93,7 +93,6 @@ const HomeScreen = (props: HomeProps) => {
         if (token) sendPushTokenToServer(token);
       })
       .catch((error) => console.error("Error obtaining push token:", error));
-    AsyncStorage.clear();
   }, []);
 
   useFocusEffect(() => {

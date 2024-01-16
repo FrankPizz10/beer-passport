@@ -22,27 +22,28 @@ import { API_URL } from "@env";
 import { auth } from "../Models/firebase";
 import { useFocusEffect } from "@react-navigation/native";
 
-const getNewestStoredBeer = async () => {
-  const storedData = await AsyncStorage.getItem("beers");
-  if (storedData) {
-    const storedBeers = JSON.parse(storedData) as BasicBeer[];
-    const storedNewestBeer = storedBeers.reduce((prev, current) =>
-      prev.id > current.id ? prev : current,
-    );
-    return storedNewestBeer.last_mod;
-  }
-  return undefined;
-};
+// const getNewestStoredBeer = async () => {
+//   const storedData = await AsyncStorage.getItem("beers");
+//   if (storedData) {
+//     const storedBeers = JSON.parse(storedData) as BasicBeer[];
+//     const storedNewestBeer = storedBeers.reduce((prev, current) =>
+//       prev.id > current.id ? prev : current
+//     );
+//     return storedNewestBeer.last_mod;
+//   }
+//   return undefined;
+// };
 
 const SearchBeerScreen = (props: SearchBeersProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
-  const [beers, setBeers] = useLocalStorage<BasicBeer[]>(
-    "beers",
-    [] as BasicBeer[],
-    fetchAllBeers,
-    fetchNewestBeer,
-    getNewestStoredBeer,
-  );
+  // const [beers, setBeers] = useLocalStorage<BasicBeer[]>(
+  //   "beers",
+  //   [] as BasicBeer[],
+  //   fetchAllBeers,
+  //   fetchNewestBeer,
+  //   getNewestStoredBeer,
+  // );
+  const [beers, setBeers] = useState<BasicBeer[]>([] as BasicBeer[]);
   const [mostPopularBeers, setMostPopularBeers] = useState<BasicBeer[]>([]);
 
   const dismissKeyboard = () => {
@@ -78,9 +79,12 @@ const SearchBeerScreen = (props: SearchBeersProps) => {
         //   a.name.localeCompare(b.name),
         // );
         setMostPopularBeers(mostPopularBeers);
+        fetchAllBeers().then((beers) => {
+          setBeers(beers);
+        });
       };
       getMostPopularBeers();
-    }, []),
+    }, [])
   );
 
   return (
