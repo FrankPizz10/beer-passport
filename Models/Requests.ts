@@ -1,5 +1,5 @@
 // This is develop branch
-import { API_URL } from "@env";
+import { EXPO_PUBLIC_API_URL } from "@env";
 import {
   Beer,
   Collection,
@@ -13,7 +13,7 @@ import {
 import { auth } from "../Models/firebase";
 
 export const fetchAllBeers = async (): Promise<BasicBeer[]> => {
-  const url = `${API_URL}/api/beers/basic`;
+  const url = `${EXPO_PUBLIC_API_URL}/api/beers/basic`;
   const token = await auth.currentUser?.getIdToken();
   const response = await fetch(url, {
     headers: {
@@ -27,7 +27,7 @@ export const fetchAllBeers = async (): Promise<BasicBeer[]> => {
 
 export const fetchNewestBeer = async (): Promise<number | undefined> => {
   try {
-    const url = `${API_URL}/api/beers/newest`;
+    const url = `${EXPO_PUBLIC_API_URL}/api/beers/newest`;
     const token = await auth.currentUser?.getIdToken();
     const response = await fetch(url, {
       headers: {
@@ -44,7 +44,7 @@ export const fetchNewestBeer = async (): Promise<number | undefined> => {
 
 export const fetchBeer = async (beer_id: number): Promise<Beer | undefined> => {
   try {
-    const url = `${API_URL}/api/beers/${beer_id}/?includeBrewery=true&includeStyle=true`;
+    const url = `${EXPO_PUBLIC_API_URL}/api/beers/${beer_id}/?includeBrewery=true&includeStyle=true`;
     const token = await auth.currentUser?.getIdToken();
     const response = await fetch(url, {
       headers: {
@@ -64,7 +64,7 @@ export const fetchUserBeer = async (
   beer_id: number,
 ): Promise<UserBeer | undefined> => {
   try {
-    const url = `${API_URL}/api/userbeer/${beer_id}`;
+    const url = `${EXPO_PUBLIC_API_URL}/api/userbeer/${beer_id}`;
     const token = await auth.currentUser?.getIdToken();
     const response = await fetch(url, {
       headers: {
@@ -86,7 +86,7 @@ export const fetchCollectionBeer = async (
 ): Promise<CollectionBeer | undefined> => {
   if (!collection_id) return;
   try {
-    const url = `${API_URL}/api/collectionbeer/${collection_id}/${beer_id}`;
+    const url = `${EXPO_PUBLIC_API_URL}/api/collectionbeer/${collection_id}/${beer_id}`;
     const token = await auth.currentUser?.getIdToken();
     const response = await fetch(url, {
       headers: {
@@ -103,7 +103,7 @@ export const fetchCollectionBeer = async (
 };
 
 export const fetchAllCollections = async (): Promise<Collection[]> => {
-  const url = `${API_URL}/api/collections`;
+  const url = `${EXPO_PUBLIC_API_URL}/api/collections`;
   const token = await auth.currentUser?.getIdToken();
   const response = await fetch(url, {
     headers: {
@@ -118,7 +118,7 @@ export const fetchAllCollections = async (): Promise<Collection[]> => {
 export const fetchCollection = async (
   collectionId: number,
 ): Promise<Collection | undefined> => {
-  const url = `${API_URL}/api/collections/${collectionId}`;
+  const url = `${EXPO_PUBLIC_API_URL}/api/collections/${collectionId}`;
   const token = await auth.currentUser?.getIdToken();
   const response = await fetch(url, {
     headers: {
@@ -134,7 +134,7 @@ export const fetchCollection = async (
 export const fetchCollectionBeersByCollectionId = async (
   collectionId: number,
 ): Promise<CollectionBeer[]> => {
-  const url = `${API_URL}/api/collections/${collectionId}/beers/`;
+  const url = `${EXPO_PUBLIC_API_URL}/api/collections/${collectionId}/beers/`;
   const token = await auth.currentUser?.getIdToken();
   const response = await fetch(url, {
     headers: {
@@ -149,7 +149,7 @@ export const fetchCollectionBeersByCollectionId = async (
 export const fetchCollectionBeersByBeerId = async (
   beerId: number,
 ): Promise<CollectionBeer[]> => {
-  const url = `${API_URL}/api/beers/${beerId}/collections/`;
+  const url = `${EXPO_PUBLIC_API_URL}/api/beers/${beerId}/collections/`;
   const token = await auth.currentUser?.getIdToken();
   const response = await fetch(url, {
     headers: {
@@ -162,7 +162,7 @@ export const fetchCollectionBeersByBeerId = async (
 };
 
 export const fetchFriends = async (): Promise<Friend[]> => {
-  const url = `${API_URL}/api/friends/`;
+  const url = `${EXPO_PUBLIC_API_URL}/api/friends/`;
   const token = await auth.currentUser?.getIdToken();
   const response = await fetch(url, {
     headers: {
@@ -176,7 +176,7 @@ export const fetchFriends = async (): Promise<Friend[]> => {
 
 export const deleteAccount = async (): Promise<void> => {
   const uid = auth.currentUser?.uid;
-  const url = `${API_URL}/api/users/${uid}`;
+  const url = `${EXPO_PUBLIC_API_URL}/api/users/${uid}`;
   const token = await auth.currentUser?.getIdToken();
   await fetch(url, {
     method: "DELETE",
@@ -189,7 +189,7 @@ export const deleteAccount = async (): Promise<void> => {
 };
 
 export const fetchAllUsers = async (): Promise<User[]> => {
-  const url = `${API_URL}/api/users`;
+  const url = `${EXPO_PUBLIC_API_URL}/api/users`;
   const token = await auth.currentUser?.getIdToken();
   const response = await fetch(url, {
     headers: {
@@ -202,7 +202,7 @@ export const fetchAllUsers = async (): Promise<User[]> => {
 };
 
 export const addFriend = async (user2: number): Promise<void> => {
-  const url = `${API_URL}/api/friends/${user2}`;
+  const url = `${EXPO_PUBLIC_API_URL}/api/friends/${user2}`;
   const token = await auth.currentUser?.getIdToken();
   const response = await fetch(url, {
     method: "POST",
@@ -215,7 +215,7 @@ export const addFriend = async (user2: number): Promise<void> => {
 };
 
 export const removeFriend = async (user2: number): Promise<void> => {
-  const url = `${API_URL}/api/friends/${user2}`;
+  const url = `${EXPO_PUBLIC_API_URL}/api/friends/${user2}`;
   const token = await auth.currentUser?.getIdToken();
   await fetch(url, {
     method: "DELETE",
@@ -227,7 +227,7 @@ export const removeFriend = async (user2: number): Promise<void> => {
 };
 
 export const fetchUserById = async (userId: number): Promise<User> => {
-  const url = `${API_URL}/api/users/${userId}`;
+  const url = `${EXPO_PUBLIC_API_URL}/api/users/${userId}`;
   const token = await auth.currentUser?.getIdToken();
   const response = await fetch(url, {
     headers: {
@@ -240,7 +240,7 @@ export const fetchUserById = async (userId: number): Promise<User> => {
 };
 
 export const fetchNotifications = async (): Promise<Notification[]> => {
-  const url = `${API_URL}/api/notifications`;
+  const url = `${EXPO_PUBLIC_API_URL}/api/notifications`;
   const token = await auth.currentUser?.getIdToken();
   const response = await fetch(url, {
     headers: {
@@ -253,7 +253,7 @@ export const fetchNotifications = async (): Promise<Notification[]> => {
 };
 
 export const fetchUserByUserName = async (userName: string): Promise<User> => {
-  const url = `${API_URL}/api/userbyname/${userName}`;
+  const url = `${EXPO_PUBLIC_API_URL}/api/userbyname/${userName}`;
   const token = await auth.currentUser?.getIdToken();
   const response = await fetch(url, {
     headers: {

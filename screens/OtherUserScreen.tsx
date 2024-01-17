@@ -14,7 +14,7 @@ import { addFriend, fetchUserById, removeFriend } from "../Models/Requests";
 import { useYourBeers } from "../Controllers/YourBeersController";
 import { useYourBadges } from "../Controllers/YourBadgesController";
 import { decimalToPercent } from "../utils";
-import { API_URL } from "@env";
+import { EXPO_PUBLIC_API_URL } from "@env";
 import {
   BackgroundColor,
   MainButtonColor,
@@ -61,7 +61,7 @@ const OtherUserScreen = (props: FriendProfileProps) => {
       setUser(friendData);
     };
     const getFriendshipStatus = async () => {
-      const url = `${API_URL}/api/friends/${props.route.params.friend_id}`;
+      const url = `${EXPO_PUBLIC_API_URL}/api/friends/${props.route.params.friend_id}`;
       const token = await auth.currentUser?.getIdToken();
       const response = await fetch(url, {
         headers: {

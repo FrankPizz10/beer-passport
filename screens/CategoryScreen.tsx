@@ -9,7 +9,7 @@ import {
 import { CategoryProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
 import { Category } from "../Models/SQLData";
-import { API_URL } from "@env";
+import { EXPO_PUBLIC_API_URL } from "@env";
 import { useCategory } from "../Controllers/CategoryController";
 import { auth } from "../Models/firebase";
 import { BackgroundColor } from "../Styles/colors";
@@ -31,7 +31,7 @@ const CategoryScreen = (props: CategoryProps) => {
   useEffect(() => {
     const fetchCatgeories = async () => {
       try {
-        const url = `${API_URL}/api/categories`;
+        const url = `${EXPO_PUBLIC_API_URL}/api/categories`;
         async function fetchCategoriesHelper(): Promise<CategoryMap[]> {
           const token = await auth.currentUser?.getIdToken();
           const response = await fetch(url, {

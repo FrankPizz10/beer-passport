@@ -8,7 +8,7 @@ import { Entypo, MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
 import ProfileScreen from "./ProfileScreen";
 import { useState, useCallback } from "react";
 import { auth } from "../Models/firebase";
-import { API_URL } from "@env";
+import { EXPO_PUBLIC_API_URL } from "@env";
 import { View, Text } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 
@@ -22,7 +22,7 @@ export const BottomTabNavigator = () => {
     useCallback(() => {
       const getUnViewedNotifications = async () => {
         try {
-          const url = `${API_URL}/api/notifications/unviewed`;
+          const url = `${EXPO_PUBLIC_API_URL}/api/notifications/unviewed`;
           const token = await auth.currentUser?.getIdToken();
           const response = await fetch(url, {
             headers: {
@@ -52,7 +52,7 @@ export const BottomTabNavigator = () => {
   const handleNotificationsPress = () => {
     const updateUnViewedNotifications = async () => {
       try {
-        const url = `${API_URL}/api/notifications/view`;
+        const url = `${EXPO_PUBLIC_API_URL}/api/notifications/view`;
         const token = await auth.currentUser?.getIdToken();
         const response = await fetch(url, {
           method: "POST",

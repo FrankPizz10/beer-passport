@@ -18,7 +18,7 @@ import { useSearchFilter } from "../Controllers/SearchController";
 import { BackgroundColor } from "../Styles/colors";
 import { useLocalStorage } from "../Controllers/AsyncStorageHelper";
 import { standardStyles } from "../Styles/styles";
-import { API_URL } from "@env";
+import { EXPO_PUBLIC_API_URL } from "@env";
 import { auth } from "../Models/firebase";
 import { useFocusEffect } from "@react-navigation/native";
 
@@ -65,7 +65,7 @@ const SearchBeerScreen = (props: SearchBeersProps) => {
   useFocusEffect(
     useCallback(() => {
       const getMostPopularBeers = async () => {
-        const url = `${API_URL}/api/toplikedbeers`;
+        const url = `${EXPO_PUBLIC_API_URL}/api/toplikedbeers`;
         const token = await auth.currentUser?.getIdToken();
         const response = await fetch(url, {
           headers: {

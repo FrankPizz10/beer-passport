@@ -13,7 +13,7 @@ import { auth } from "../Models/firebase";
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigation } from "@react-navigation/core";
 import { LoginProps } from "../props";
-import { API_URL } from "@env";
+import { EXPO_PUBLIC_API_URL } from "@env";
 import { BackgroundColor, MainHighlightColor } from "../Styles/colors";
 
 export const getErrorMessage = (errorCode: string) => {
@@ -51,7 +51,7 @@ const LoginScreen = (props: LoginProps) => {
 
   useEffect(() => {
     const checkServerConnected = async () => {
-      const url = `${API_URL}/`;
+      const url = `${EXPO_PUBLIC_API_URL}/`;
       const response = await fetch(url);
       if (response.status === 200) {
         setServerConnected(true);
@@ -62,7 +62,7 @@ const LoginScreen = (props: LoginProps) => {
 
   useEffect(() => {
     const unsibscribe = onAuthStateChanged(auth, (user) => {
-      if (user && loginPressed) {
+      if (user) {
         navigation.replace("BottomTabNavigator");
       }
     });

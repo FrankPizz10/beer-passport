@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Beer, UserBeer } from "../Models/SQLData";
-import { API_URL } from "@env";
+import { EXPO_PUBLIC_API_URL } from "@env";
 import { auth } from "../Models/firebase";
 
 export const useYourBeers = (userId: number | undefined) => {
@@ -10,7 +10,7 @@ export const useYourBeers = (userId: number | undefined) => {
   const fetchBeers = async (userBeers: UserBeer[], tried: boolean) => {
     try {
       userBeers.forEach(async (userBeer) => {
-        const url = `${API_URL}/api/beers/${userBeer.beer_id}`;
+        const url = `${EXPO_PUBLIC_API_URL}/api/beers/${userBeer.beer_id}`;
         const token = await auth.currentUser?.getIdToken();
         const response = await fetch(url, {
           headers: {
@@ -51,8 +51,8 @@ export const useYourBeers = (userId: number | undefined) => {
   };
 
   useEffect(() => {
-    const triedUrl = `${API_URL}/api/triedbeers/${userId}`;
-    const likedUrl = `${API_URL}/api/likedbeers/${userId}`;
+    const triedUrl = `${EXPO_PUBLIC_API_URL}/api/triedbeers/${userId}`;
+    const likedUrl = `${EXPO_PUBLIC_API_URL}/api/likedbeers/${userId}`;
     fetchBeersHelper(triedUrl, true);
     fetchBeersHelper(likedUrl, false);
   }, [userId]);

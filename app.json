@@ -21,7 +21,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/BeerIcon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.frank_pizz10.beerpassport"
     },
     "web": {
       "favicon": "./assets/BeerIcon.png"
