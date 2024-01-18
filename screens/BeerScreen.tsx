@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { API_URL } from "@env";
+import { EXPO_PUBLIC_API_URL } from "@env";
 import { Beer, CollectionBeer, UserBeer } from "../Models/SQLData";
 import { BeerProps } from "../props";
 import {
@@ -35,7 +35,7 @@ const BeerScreen = (props: BeerProps) => {
 
   const handleTriedPress = async () => {
     try {
-      const url = `${API_URL}/api/userbeers/`;
+      const url = `${EXPO_PUBLIC_API_URL}/api/userbeers/`;
       const token = await auth.currentUser?.getIdToken();
       const response = await fetch(url, {
         method: "POST",
@@ -59,7 +59,7 @@ const BeerScreen = (props: BeerProps) => {
 
   const handleLikedPress = async () => {
     try {
-      const url = `${API_URL}/api/userbeers/`;
+      const url = `${EXPO_PUBLIC_API_URL}/api/userbeers/`;
       const token = await auth.currentUser?.getIdToken();
       const response = await fetch(url, {
         method: "POST",
@@ -84,7 +84,7 @@ const BeerScreen = (props: BeerProps) => {
 
   const handleUnLikedPress = async () => {
     try {
-      const url = `${API_URL}/api/userbeers/`;
+      const url = `${EXPO_PUBLIC_API_URL}/api/userbeers/`;
       const token = await auth.currentUser?.getIdToken();
       const response = await fetch(url, {
         method: "POST",
@@ -108,7 +108,7 @@ const BeerScreen = (props: BeerProps) => {
 
   const handleUnTriedPress = async () => {
     try {
-      const url = `${API_URL}/api/userbeers/${userBeer?.beer_id}`;
+      const url = `${EXPO_PUBLIC_API_URL}/api/userbeers/${userBeer?.beer_id}`;
       const token = await auth.currentUser?.getIdToken();
       await fetch(url, {
         method: "DELETE",

@@ -10,16 +10,15 @@ import { auth } from "../Models/firebase";
 import { useNavigation } from "@react-navigation/core";
 import { HomeProps } from "../props";
 import { User } from "../Models/SQLData";
-import { API_URL, EXPO_ID } from "@env";
+import { EXPO_PUBLIC_API_URL, EXPO_ID } from "@env";
 import { BackgroundColor, MainButtonColor, TitleColor } from "../Styles/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect } from "@react-navigation/native";
 import * as Notifications from "expo-notifications";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const getUser = async (): Promise<User | undefined> => {
   try {
-    const url = `${API_URL}/api/userbyuid`;
+    const url = `${EXPO_PUBLIC_API_URL}/api/userbyuid`;
     const token = await auth.currentUser?.getIdToken();
     const response = await fetch(url, {
       headers: {
@@ -51,7 +50,7 @@ async function registerForPushNotificationsAsync() {
 
 const sendPushTokenToServer = async (notificationToken: string) => {
   try {
-    const url = `${API_URL}/api/notification-token`;
+    const url = `${EXPO_PUBLIC_API_URL}/api/notification-token`;
     const token = await auth.currentUser?.getIdToken();
     const response = await fetch(url, {
       method: "POST",
@@ -93,13 +92,12 @@ const HomeScreen = (props: HomeProps) => {
         if (token) sendPushTokenToServer(token);
       })
       .catch((error) => console.error("Error obtaining push token:", error));
-    AsyncStorage.clear();
   }, []);
 
   useFocusEffect(() => {
     const getBadgeCount = async () => {
       try {
-        const url = `${API_URL}/api/userbadges/completedcount`;
+        const url = `${EXPO_PUBLIC_API_URL}/api/userbadges/completedcount`;
         const token = await auth.currentUser?.getIdToken();
         const response = await fetch(url, {
           headers: {
@@ -115,7 +113,7 @@ const HomeScreen = (props: HomeProps) => {
     getBadgeCount();
     const getLikedAndTriedBeersCount = async () => {
       try {
-        const url = `${API_URL}/api/userbeers/count`;
+        const url = `${EXPO_PUBLIC_API_URL}/api/userbeers/count`;
         const token = await auth.currentUser?.getIdToken();
         const response = await fetch(url, {
           headers: {

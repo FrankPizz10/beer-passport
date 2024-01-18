@@ -16,7 +16,7 @@ import {
   Keyboard,
 } from "react-native";
 import { auth } from "../Models/firebase";
-import { API_URL } from "@env";
+import { EXPO_PUBLIC_API_URL } from "@env";
 import { getErrorMessage } from "./LoginScreen";
 import { MainHighlightColor } from "../Styles/colors";
 
@@ -43,7 +43,7 @@ const CreateNewAccount = (props: CreateAccountProps) => {
 
   const handleSignUp = async () => {
     try {
-      const userExistsURL = `${API_URL}/userexists/`;
+      const userExistsURL = `${EXPO_PUBLIC_API_URL}/userexists/`;
       const userExists = await fetch(userExistsURL, {
         method: "POST",
         headers: {
@@ -70,7 +70,7 @@ const CreateNewAccount = (props: CreateAccountProps) => {
         password,
       );
       const userUID = userCredentials.user.uid;
-      const url = `${API_URL}/api/users/`;
+      const url = `${EXPO_PUBLIC_API_URL}/api/users/`;
       const token = await auth.currentUser?.getIdToken();
       const response = await fetch(url, {
         method: "POST",

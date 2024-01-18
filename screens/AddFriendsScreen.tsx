@@ -15,7 +15,7 @@ import { AddFriendsProps } from "../props";
 import { User } from "../Models/SQLData";
 import { useSearchFilter } from "../Controllers/SearchController";
 import { addFriend } from "../Models/Requests";
-import { API_URL } from "@env";
+import { EXPO_PUBLIC_API_URL } from "@env";
 import { auth } from "../Models/firebase";
 import { BackgroundColor } from "../Styles/colors";
 import { standardStyles } from "../Styles/styles";
@@ -41,7 +41,7 @@ const AddFriendsScreen = (props: AddFriendsProps) => {
 
   useEffect(() => {
     const getFriendScreenData = async () => {
-      const url = `${API_URL}/api/notfriends/`;
+      const url = `${EXPO_PUBLIC_API_URL}/api/notfriends/`;
       const token = await auth.currentUser?.getIdToken();
       const response = await fetch(url, {
         headers: {

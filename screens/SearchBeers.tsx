@@ -9,40 +9,32 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SearchBeersProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
 import { BasicBeer } from "../Models/SQLData";
-import { fetchAllBeers, fetchNewestBeer } from "../Models/Requests";
+import { fetchAllBeers } from "../Models/Requests";
 import { useSearchFilter } from "../Controllers/SearchController";
 import { BackgroundColor } from "../Styles/colors";
-import { useLocalStorage } from "../Controllers/AsyncStorageHelper";
 import { standardStyles } from "../Styles/styles";
-import { API_URL } from "@env";
+import { EXPO_PUBLIC_API_URL } from "@env";
 import { auth } from "../Models/firebase";
 import { useFocusEffect } from "@react-navigation/native";
 
-const getNewestStoredBeer = async () => {
-  const storedData = await AsyncStorage.getItem("beers");
-  if (storedData) {
-    const storedBeers = JSON.parse(storedData) as BasicBeer[];
-    const storedNewestBeer = storedBeers.reduce((prev, current) =>
-      prev.id > current.id ? prev : current,
-    );
-    return storedNewestBeer.last_mod;
-  }
-  return undefined;
-};
+// const getNewestStoredBeer = async () => {
+//   const storedData = await AsyncStorage.getItem("beers");
+//   if (storedData) {
+//     const storedBeers = JSON.parse(storedData) as BasicBeer[];
+//     const storedNewestBeer = storedBeers.reduce((prev, current) =>
+//       prev.id > current.id ? prev : current
+//     );
+//     return storedNewestBeer.last_mod;
+//   }
+//   return undefined;
+// };
 
 const SearchBeerScreen = (props: SearchBeersProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
-  const [beers, setBeers] = useLocalStorage<BasicBeer[]>(
-    "beers",
-    [] as BasicBeer[],
-    fetchAllBeers,
-    fetchNewestBeer,
-    getNewestStoredBeer,
-  );
+  const [beers, setBeers] = useState<BasicBeer[]>([] as BasicBeer[]);
   const [mostPopularBeers, setMostPopularBeers] = useState<BasicBeer[]>([]);
 
   const dismissKeyboard = () => {
@@ -64,7 +56,7 @@ const SearchBeerScreen = (props: SearchBeersProps) => {
   useFocusEffect(
     useCallback(() => {
       const getMostPopularBeers = async () => {
-        const url = `${API_URL}/api/toplikedbeers`;
+        const url = `${EXPO_PUBLIC_API_URL}/api/toplikedbeers`;
         const token = await auth.currentUser?.getIdToken();
         const response = await fetch(url, {
           headers: {
@@ -73,11 +65,10 @@ const SearchBeerScreen = (props: SearchBeersProps) => {
           },
         });
         const mostPopularBeers = await response.json();
-        // alphabetize
-        // mostPopularBeers.sort((a: BasicBeer, b: BasicBeer) =>
-        //   a.name.localeCompare(b.name),
-        // );
         setMostPopularBeers(mostPopularBeers);
+        fetchAllBeers().then((beers) => {
+          setBeers(beers);
+        });
       };
       getMostPopularBeers();
     }, []),

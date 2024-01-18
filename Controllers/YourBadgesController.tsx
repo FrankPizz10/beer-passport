@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { UserBadge } from "../Models/SQLData";
-import { API_URL } from "@env";
+import { EXPO_PUBLIC_API_URL } from "@env";
 import { auth } from "../Models/firebase";
 
 export const useYourBadges = (userId?: number) => {
@@ -8,8 +8,8 @@ export const useYourBadges = (userId?: number) => {
   const fetchBadges = async () => {
     try {
       const badgesurl = userId
-        ? `${API_URL}/api/userbadges/${userId}}`
-        : `${API_URL}/api/userbadges/`;
+        ? `${EXPO_PUBLIC_API_URL}/api/userbadges/${userId}}`
+        : `${EXPO_PUBLIC_API_URL}/api/userbadges/`;
       const token = await auth.currentUser?.getIdToken();
       const response = await fetch(badgesurl, {
         headers: {

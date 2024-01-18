@@ -19,7 +19,7 @@ export const useSearchFilter = <T extends ItemWithName>({
   const [searchInput, setSearchInput] = useState("");
 
   const filteredList = useMemo(() => {
-    if (searchInput.length === 0 && defaultResults.length > 0) {
+    if (searchInput.length === 0) {
       return defaultResults;
     }
     return initialList
