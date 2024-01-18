@@ -111,78 +111,80 @@ const OtherUserScreen = (props: FriendProfileProps) => {
           <Text style={styles.friendButtonTitle}>Add Friend</Text>
         </TouchableOpacity>
       )}
-      <View style={styles.buttonAndItemsContainer}>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={handleTriedPress}>
-            <Text style={styles.friendButtonTitle}> Tried </Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={handleLikedPress}>
-            <Text style={styles.friendButtonTitle}> Liked </Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={handleBadgesPress}>
-            <Text style={styles.friendButtonTitle}> Badges </Text>
-          </TouchableOpacity>
+      {isFriend && (
+        <View style={styles.buttonAndItemsContainer}>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.button} onPress={handleTriedPress}>
+              <Text style={styles.friendButtonTitle}> Tried </Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={handleLikedPress}>
+              <Text style={styles.friendButtonTitle}> Liked </Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={handleBadgesPress}>
+              <Text style={styles.friendButtonTitle}> Badges </Text>
+            </TouchableOpacity>
+          </View>
+          <ScrollView style={styles.friendBeersContainer}>
+            {triedPressed &&
+              triedBeers?.map((beer) => {
+                return (
+                  <View key={beer.id} style={standardStyles.basicCard}>
+                    <TouchableOpacity onPress={() => handleBeerPress(beer.id)}>
+                      <Text style={standardStyles.basicCardText}>
+                        {beer.name}
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                );
+              })}
+            {triedPressed && triedBeers?.length === 0 && (
+              <View style={standardStyles.basicCard}>
+                <Text style={standardStyles.basicCardText}>
+                  {user.user_name} has no tried beers yet!
+                </Text>
+              </View>
+            )}
+            {likedPressed &&
+              likedBeers?.map((beer) => {
+                return (
+                  <View key={beer.id} style={standardStyles.basicCard}>
+                    <TouchableOpacity onPress={() => handleBeerPress(beer.id)}>
+                      <Text style={standardStyles.basicCardText}>
+                        {beer.name}
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                );
+              })}
+            {likedPressed && likedBeers?.length === 0 && (
+              <View style={standardStyles.basicCard}>
+                <Text style={standardStyles.basicCardText}>
+                  {user.user_name} has no liked beers yet!
+                </Text>
+              </View>
+            )}
+            {badgesPressed &&
+              badges &&
+              badges?.map((badge) => {
+                return (
+                  <View key={badge.id} style={styles.badge}>
+                    <Text style={styles.badgeTitle}>
+                      {badge.collections.name.toUpperCase()}
+                    </Text>
+                    <Text>{badge.collections.description}</Text>
+                    <Text>Difficulty: {badge.collections.difficulty}</Text>
+                    <Text>Progress: {decimalToPercent(badge.progress)}</Text>
+                  </View>
+                );
+              })}
+            {badgesPressed && badges?.length === 0 && (
+              <View style={styles.badge}>
+                <Text style={styles.badgeTitle}>No badges yet!</Text>
+              </View>
+            )}
+          </ScrollView>
         </View>
-        <ScrollView style={styles.friendBeersContainer}>
-          {triedPressed &&
-            triedBeers?.map((beer) => {
-              return (
-                <View key={beer.id} style={standardStyles.basicCard}>
-                  <TouchableOpacity onPress={() => handleBeerPress(beer.id)}>
-                    <Text style={standardStyles.basicCardText}>
-                      {beer.name}
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              );
-            })}
-          {triedPressed && triedBeers?.length === 0 && (
-            <View style={standardStyles.basicCard}>
-              <Text style={standardStyles.basicCardText}>
-                {user.user_name} has no tried beers yet!
-              </Text>
-            </View>
-          )}
-          {likedPressed &&
-            likedBeers?.map((beer) => {
-              return (
-                <View key={beer.id} style={standardStyles.basicCard}>
-                  <TouchableOpacity onPress={() => handleBeerPress(beer.id)}>
-                    <Text style={standardStyles.basicCardText}>
-                      {beer.name}
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              );
-            })}
-          {likedPressed && likedBeers?.length === 0 && (
-            <View style={standardStyles.basicCard}>
-              <Text style={standardStyles.basicCardText}>
-                {user.user_name} has no liked beers yet!
-              </Text>
-            </View>
-          )}
-          {badgesPressed &&
-            badges &&
-            badges?.map((badge) => {
-              return (
-                <View key={badge.id} style={styles.badge}>
-                  <Text style={styles.badgeTitle}>
-                    {badge.collections.name.toUpperCase()}
-                  </Text>
-                  <Text>{badge.collections.description}</Text>
-                  <Text>Difficulty: {badge.collections.difficulty}</Text>
-                  <Text>Progress: {decimalToPercent(badge.progress)}</Text>
-                </View>
-              );
-            })}
-          {badgesPressed && badges?.length === 0 && (
-            <View style={styles.badge}>
-              <Text style={styles.badgeTitle}>No badges yet!</Text>
-            </View>
-          )}
-        </ScrollView>
-      </View>
+      )}
     </SafeAreaView>
   );
 };
@@ -243,13 +245,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     marginBottom: 15,
-    shadowColor: "black",
-    shadowOpacity: 0.5,
-    shadowRadius: 5,
-    shadowOffset: {
-      width: 1,
-      height: 1,
-    },
   },
   button: {
     backgroundColor: MainHighlightColor,
