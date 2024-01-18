@@ -19,6 +19,8 @@ import { auth } from "../Models/firebase";
 import { EXPO_PUBLIC_API_URL } from "@env";
 import { getErrorMessage } from "./LoginScreen";
 import { MainHighlightColor } from "../Styles/colors";
+import { checkServerConnected } from "./LoginScreen";
+import { check } from "prettier";
 
 const CreateNewAccount = (props: CreateAccountProps) => {
   const [email, setEmail] = useState("");
@@ -27,11 +29,15 @@ const CreateNewAccount = (props: CreateAccountProps) => {
   const [username, setUsername] = useState("");
   const [accountVerified, setAccountVerified] = useState(false);
   const [deleteAccount, setDeleteAccount] = useState(false);
+  const [serverConnected, setServerConnected] = useState(false);
 
   const navigation = useNavigation<(typeof props)["navigation"]>();
 
   useEffect(() => {
     const unsibscribe = onAuthStateChanged(auth, (user) => {
+      checkServerConnected().then((connected) => {
+        setServerConnected(connected);
+      });
       if (user && accountVerified) {
         navigation.replace("BottomTabNavigator");
       } else if (user && deleteAccount) {
@@ -42,6 +48,10 @@ const CreateNewAccount = (props: CreateAccountProps) => {
   }, [accountVerified, deleteAccount]);
 
   const handleSignUp = async () => {
+    if (!serverConnected) {
+      alert("Server not connected");
+      return;
+    }
     try {
       const userExistsURL = `${EXPO_PUBLIC_API_URL}/userexists/`;
       const userExists = await fetch(userExistsURL, {
@@ -97,7 +107,7 @@ const CreateNewAccount = (props: CreateAccountProps) => {
     } catch (error: any) {
       const errorCode = error.code;
       console.log(error);
-      alert(getErrorMessage(errorCode));
+      alert(getErrorMessage(errorCode, serverConnected));
     }
   };
 
