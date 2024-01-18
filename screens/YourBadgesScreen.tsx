@@ -38,18 +38,21 @@ const YourBadgesScreen = (props: YourBadgesProps) => {
           return (
             <TouchableOpacity
               key={badge.id}
-              style={[
-                styles.badge,
-                badge.earned ? styles.goldenBadge : null
-              ]}
+              style={[styles.badge, badge.earned ? styles.goldenBadge : null]}
               onPress={() => handleBadgePress(badge.collections.id)}
             >
               <Text style={styles.badgeTitle}>
                 {badge.collections.name.toUpperCase()}
               </Text>
-              <Text style={standardStyles.basicCardText}>{badge.collections.description}</Text>
-              <Text style={standardStyles.basicCardText}>Difficulty: {badge.collections.difficulty}</Text>
-              <Text style={standardStyles.basicCardText}>Progress: {decimalToPercent(badge.progress)}</Text>
+              <Text style={standardStyles.basicCardText}>
+                {badge.collections.description}
+              </Text>
+              <Text style={standardStyles.basicCardText}>
+                Difficulty: {badge.collections.difficulty}
+              </Text>
+              <Text style={standardStyles.basicCardText}>
+                Progress: {decimalToPercent(badge.progress)}
+              </Text>
             </TouchableOpacity>
           );
         })}

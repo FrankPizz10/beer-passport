@@ -15,7 +15,6 @@ import { BackgroundColor, MainButtonColor, TitleColor } from "../Styles/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect } from "@react-navigation/native";
 import * as Notifications from "expo-notifications";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const getUser = async (): Promise<User | undefined> => {
   try {

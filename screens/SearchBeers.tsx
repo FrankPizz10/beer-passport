@@ -9,14 +9,12 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SearchBeersProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
 import { BasicBeer } from "../Models/SQLData";
-import { fetchAllBeers, fetchNewestBeer } from "../Models/Requests";
+import { fetchAllBeers } from "../Models/Requests";
 import { useSearchFilter } from "../Controllers/SearchController";
 import { BackgroundColor } from "../Styles/colors";
-import { useLocalStorage } from "../Controllers/AsyncStorageHelper";
 import { standardStyles } from "../Styles/styles";
 import { EXPO_PUBLIC_API_URL } from "@env";
 import { auth } from "../Models/firebase";
@@ -36,13 +34,6 @@ import { useFocusEffect } from "@react-navigation/native";
 
 const SearchBeerScreen = (props: SearchBeersProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
-  // const [beers, setBeers] = useLocalStorage<BasicBeer[]>(
-  //   "beers",
-  //   [] as BasicBeer[],
-  //   fetchAllBeers,
-  //   fetchNewestBeer,
-  //   getNewestStoredBeer,
-  // );
   const [beers, setBeers] = useState<BasicBeer[]>([] as BasicBeer[]);
   const [mostPopularBeers, setMostPopularBeers] = useState<BasicBeer[]>([]);
 
@@ -74,17 +65,13 @@ const SearchBeerScreen = (props: SearchBeersProps) => {
           },
         });
         const mostPopularBeers = await response.json();
-        // alphabetize
-        // mostPopularBeers.sort((a: BasicBeer, b: BasicBeer) =>
-        //   a.name.localeCompare(b.name),
-        // );
         setMostPopularBeers(mostPopularBeers);
         fetchAllBeers().then((beers) => {
           setBeers(beers);
         });
       };
       getMostPopularBeers();
-    }, [])
+    }, []),
   );
 
   return (
