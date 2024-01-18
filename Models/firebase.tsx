@@ -6,25 +6,25 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 import {
-  EXPO_PUBLIC_API_KEY,
-  EXPO_PUBLIC_AUTH_DOMAIN,
-  EXPO_PUBLIC_PROJECT_ID,
-  EXPO_PUBLIC_STORAGE_BUCKET,
-  EXPO_PUBLIC_MESSAGE_SENDER_ID,
-  EXPO_PUBLIC_APP_ID,
-  EXPO_PUBLIC_MEASUREMENT_ID,
+  API_KEY,
+  AUTH_DOMAIN,
+  PROJECT_ID,
+  STORAGE_BUCKET,
+  MESSAGE_SENDER_ID,
+  APP_ID,
+  MEASUREMENT_ID,
 } from "@env";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: EXPO_PUBLIC_API_KEY,
-  authDomain: EXPO_PUBLIC_AUTH_DOMAIN,
-  projectId: EXPO_PUBLIC_PROJECT_ID,
-  storageBucket: EXPO_PUBLIC_STORAGE_BUCKET,
-  messagingSenderId: EXPO_PUBLIC_MESSAGE_SENDER_ID,
-  appId: EXPO_PUBLIC_APP_ID,
-  measurementId: EXPO_PUBLIC_MEASUREMENT_ID,
+  apiKey: API_KEY,
+  authDomain: AUTH_DOMAIN,
+  projectId: PROJECT_ID,
+  storageBucket: STORAGE_BUCKET,
+  messagingSenderId: MESSAGE_SENDER_ID,
+  appId: APP_ID,
+  measurementId: MEASUREMENT_ID,
 };
 
 export let app: FirebaseApp | undefined, auth: Auth;
