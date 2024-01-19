@@ -10,7 +10,7 @@ import { auth } from "../Models/firebase";
 import { useNavigation } from "@react-navigation/core";
 import { HomeProps } from "../props";
 import { User } from "../Models/SQLData";
-import { EXPO_PUBLIC_API_URL, EXPO_ID } from "@env";
+import { EXPO_PUBLIC_API_URL, EXPO_ID, EXPO_PROJECT_ID } from "@env";
 import { BackgroundColor, MainButtonColor, TitleColor } from "../Styles/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect } from "@react-navigation/native";
@@ -42,7 +42,7 @@ async function registerForPushNotificationsAsync() {
   }
   const token = (
     await Notifications.getExpoPushTokenAsync({
-      experienceId: EXPO_ID,
+      projectId: EXPO_PROJECT_ID,
     })
   ).data;
   return token;
@@ -136,7 +136,7 @@ const HomeScreen = (props: HomeProps) => {
         <Text style={styles.welcome}>Welcome {user!.user_name}</Text>
       </View>
       <View style={styles.iconContainer}>
-        <Ionicons name="ios-beer" size={80} color="gold" />
+        <Ionicons name="beer-outline" size={80} color="gold" />
       </View>
       <View style={styles.userDetailsContainer}>
         <Text style={styles.userDetails}>
