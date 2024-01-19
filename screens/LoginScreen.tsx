@@ -16,7 +16,10 @@ import { LoginProps } from "../props";
 import { EXPO_PUBLIC_API_URL } from "@env";
 import { BackgroundColor, MainHighlightColor } from "../Styles/colors";
 
-export const getErrorMessage = (errorCode: string) => {
+export const getErrorMessage = (errorCode: string, serverConnected: boolean) => {
+  if (!serverConnected) {
+    return "Server not connected";
+  }
   switch (errorCode) {
     case "auth/invalid-email":
       return "Invalid email address format.";
@@ -37,6 +40,16 @@ export const getErrorMessage = (errorCode: string) => {
   }
 };
 
+export const checkServerConnected = async () => {
+  try {
+    const url = `${EXPO_PUBLIC_API_URL}/`;
+    const response = await fetch(url);
+    return response.status === 200;
+  } catch (error) {
+    return false;
+  }
+};
+
 const LoginScreen = (props: LoginProps) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -50,19 +63,14 @@ const LoginScreen = (props: LoginProps) => {
   };
 
   useEffect(() => {
-    const checkServerConnected = async () => {
-      const url = `${EXPO_PUBLIC_API_URL}/`;
-      const response = await fetch(url);
-      if (response.status === 200) {
-        setServerConnected(true);
-      }
-    };
-    checkServerConnected();
+    checkServerConnected().then((connected) => {
+      setServerConnected(connected);
+    });
   }, []);
 
   useEffect(() => {
     const unsibscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
+      if (user && serverConnected) {
         navigation.replace("BottomTabNavigator");
       }
     });
@@ -75,11 +83,15 @@ const LoginScreen = (props: LoginProps) => {
 
   const handleLogin = async () => {
     try {
+      if (!serverConnected) {
+        alert("Server not connected");
+        return;
+      }
       await signInWithEmailAndPassword(auth, email, password);
       setLoginPressed(true);
     } catch (error: any) {
       const errorCode = error.code;
-      alert(getErrorMessage(errorCode));
+      alert(getErrorMessage(errorCode, serverConnected));
     }
   };
 

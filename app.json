@@ -2,7 +2,7 @@
   "expo": {
     "name": "Beer Passport",
     "slug": "beerpassport",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/BeerIcon.png",
     "userInterfaceStyle": "dark",
@@ -15,7 +15,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.beerpassport"
     },
     "android": {
       "adaptiveIcon": {
