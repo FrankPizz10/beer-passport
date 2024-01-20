@@ -5,6 +5,7 @@ import {
   View,
   TouchableOpacity,
   SafeAreaView,
+  Dimensions,
 } from "react-native";
 import { auth } from "../Models/firebase";
 import { useNavigation } from "@react-navigation/core";
@@ -174,19 +175,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   titleContainer: {
-    width: 400,
+    width: Dimensions.get("window").width,
     alignItems: "center",
     marginTop: 15,
     padding: 15,
   },
-  title: {
-    fontSize: 50,
-    fontWeight: "bold",
-    textAlign: "center",
-    color: TitleColor,
-  },
   welcome: {
-    fontSize: 40,
+    fontSize: Dimensions.get("window").width / 10,
     fontWeight: "bold",
     textAlign: "center",
     color: TitleColor,
@@ -197,7 +192,7 @@ const styles = StyleSheet.create({
     padding: 15,
   },
   userDetails: {
-    fontSize: 20,
+    fontSize: Dimensions.get("window").width / 20,
     fontWeight: "bold",
     textAlign: "center",
     color: "black",
@@ -211,24 +206,22 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flex: 1,
     alignItems: "center",
-    height: 400,
-    width: 400,
     marginBottom: 20,
   },
   button: {
     backgroundColor: MainButtonColor,
     color: "white",
-    height: 50,
+    height: Dimensions.get("window").height / 12,
     padding: 10,
     margin: 10,
-    width: 300,
+    width: Dimensions.get("window").width - 80,
     borderRadius: 5,
     alignItems: "center",
     justifyContent: "center",
   },
   buttonText: {
     color: "black",
-    fontSize: 20,
+    fontSize: Dimensions.get("window").width / 18,
     fontWeight: "bold",
   },
 });

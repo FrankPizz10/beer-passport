@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   SafeAreaView,
+  Dimensions,
 } from "react-native";
 import { Collection } from "../Models/SQLData";
 import { fetchAllCollections } from "../Models/Requests";
@@ -63,7 +64,7 @@ const styles = StyleSheet.create({
     backgroundColor: BackgroundColor,
   },
   ScreenTitle: {
-    fontSize: 30,
+    fontSize: Dimensions.get("window").width * 0.1,
     fontWeight: "bold",
     textAlign: "center",
     margin: 20,

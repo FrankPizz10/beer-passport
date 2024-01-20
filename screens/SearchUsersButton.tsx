@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import { Dimensions, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/core";
 import { CommonNavButtonProps } from "../props";
 import { MainHighlightColor } from "../Styles/colors";
@@ -24,11 +24,11 @@ const styles = StyleSheet.create({
     backgroundColor: MainHighlightColor,
     borderRadius: 5,
     padding: 10,
-    width: 150,
+    width: Dimensions.get("window").width / 2,
     margin: 10,
   },
   text: {
-    fontSize: 20,
+    fontSize: Dimensions.get("window").width / 18,
     fontWeight: "bold",
     color: "white",
   },

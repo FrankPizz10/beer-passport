@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
+  Dimensions,
   ScrollView,
   StyleSheet,
   Text,
@@ -251,13 +252,13 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   title: {
-    fontSize: 40,
+    fontSize: Dimensions.get("window").width / 10,
     fontWeight: "bold",
     alignItems: "center",
     textAlign: "center",
   },
   breweryTitle: {
-    fontSize: 30,
+    fontSize: Dimensions.get("window").width / 15,
     alignItems: "center",
     textAlign: "center",
     marginTop: 10,
@@ -269,12 +270,12 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   style: {
-    fontSize: 20,
+    fontSize: Dimensions.get("window").width / 18,
     fontWeight: "bold",
   },
   description: {
-    fontSize: 20,
-    width: 350,
+    fontSize: Dimensions.get("window").width / 20,
+    width: Dimensions.get("window").width - 20,
   },
   descriptionContainer: {
     alignItems: "center",
@@ -282,7 +283,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   abv: {
-    fontSize: 20,
+    fontSize: Dimensions.get("window").width / 20,
     fontWeight: "bold",
   },
   abvContainer: {
@@ -291,7 +292,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   brewery: {
-    fontSize: 20,
+    fontSize: Dimensions.get("window").width / 20,
     fontWeight: "bold",
   },
   breweryContainer: {
@@ -319,22 +320,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   buttonText: {
-    fontSize: 20,
+    fontSize: Dimensions.get("window").width / 18,
     fontWeight: "bold",
     textAlign: "center",
-  },
-  triedLikedContainer: {
-    marginBottom: 20,
-  },
-  triedLiked: {
-    fontSize: 20,
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  HomeButton: {
-    alignItems: "flex-end",
-    justifyContent: "flex-end",
-    marginRight: 15,
-    height: 80,
   },
 });

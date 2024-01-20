@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
+  Dimensions,
 } from "react-native";
 import { auth } from "../Models/firebase";
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
@@ -161,7 +162,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     justifyContent: "center",
     alignItems: "center",
-    fontSize: 40,
+    fontSize: Dimensions.get("window").width / 10,
     padding: 10,
     textAlign: "center",
   },
@@ -170,7 +171,7 @@ const styles = StyleSheet.create({
     borderStyle: "solid",
     borderColor: "black",
     padding: 10,
-    width: 300,
+    width: Dimensions.get("window").width - 80,
   },
   input: {
     height: 40,
@@ -194,7 +195,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "white",
-    fontSize: 20,
+    fontSize: Dimensions.get("window").width / 18,
     fontWeight: "bold",
   },
   failed: {

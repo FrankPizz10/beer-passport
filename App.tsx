@@ -50,9 +50,9 @@ const CustomHeaderWithBack = () => {
   const navigation = useNavigation();
   const screenWidth = Dimensions.get("window").width;
   const screenHeight = Dimensions.get("window").height;
-  const backButtonPositionTop = screenHeight * 0.095;
+  const headerHeight = screenHeight * 0.15;
+  const backButtonPositionTop = headerHeight * 0.5;
   const backButtonPositionLeft = screenWidth * 0.03;
-  const headerHeight = screenHeight * 0.155;
   return (
     <SafeAreaView style={{ ...styles.headerContainer, height: headerHeight }}>
       <TouchableOpacity
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   headerTitle: {
-    fontSize: 40,
+    fontSize: Dimensions.get("window").width * 0.09,
     fontWeight: "bold",
     color: "white",
   },

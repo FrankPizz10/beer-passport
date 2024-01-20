@@ -14,6 +14,7 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
+  Dimensions,
 } from "react-native";
 import { auth } from "../Models/firebase";
 import { EXPO_PUBLIC_API_URL } from "@env";
@@ -168,19 +169,20 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   title: {
-    fontSize: 40,
+    fontSize: Dimensions.get("window").width / 10,
     fontWeight: "bold",
     marginBottom: 20,
   },
   inputContainer: {
-    width: 300,
+    width: Dimensions.get("window").width - 80,
     borderWidth: 1,
     borderStyle: "solid",
     borderColor: "black",
     padding: 10,
+    marginBottom: 20,
   },
   input: {
-    height: 40,
+    height: Dimensions.get("window").height / 18,
     margin: 12,
     borderWidth: 1,
     borderStyle: "solid",
@@ -198,7 +200,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "white",
-    fontSize: 20,
+    fontSize: Dimensions.get("window").width / 18,
     fontWeight: "bold",
   },
 });

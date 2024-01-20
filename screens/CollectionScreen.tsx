@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   SafeAreaView,
+  Dimensions,
 } from "react-native";
 import { Beer, Collection, CollectionBeer } from "../Models/SQLData";
 import {
@@ -84,20 +85,14 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   CollectionTitle: {
-    fontSize: 50,
+    fontSize: Dimensions.get("window").width * 0.1,
     fontWeight: "bold",
     textAlign: "center",
     margin: 10,
   },
   CollectionDetails: {
-    fontSize: 22,
+    fontSize: Dimensions.get("window").width * 0.06,
     textAlign: "center",
     margin: 10,
-  },
-  HomeButton: {
-    alignItems: "flex-end",
-    justifyContent: "flex-end",
-    marginRight: 15,
-    height: 80,
   },
 });

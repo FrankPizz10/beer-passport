@@ -6,12 +6,14 @@ import {
   ScrollView,
   TouchableOpacity,
   SafeAreaView,
+  Dimensions,
 } from "react-native";
 import { YourBeersProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
 import { useYourBeers } from "../Controllers/YourBeersController";
 import { BackgroundColor, MainHighlightColor } from "../Styles/colors";
 import { standardStyles } from "../Styles/styles";
+import BeerCard from "../components/BeerCard";
 
 const YourBeersScreen = (props: YourBeersProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
@@ -53,11 +55,7 @@ const YourBeersScreen = (props: YourBeersProps) => {
         {tried &&
           triedBeers?.map((beer) => {
             return (
-              <View key={beer.id} style={standardStyles.basicCard}>
-                <TouchableOpacity onPress={() => handleBeerPress(beer.id)}>
-                  <Text style={standardStyles.basicCardText}>{beer.name}</Text>
-                </TouchableOpacity>
-              </View>
+              <BeerCard key={beer.id} beer={beer} handleBeerPress={handleBeerPress} />
             );
           })}
         {tried && triedBeers?.length === 0 && (
@@ -71,11 +69,7 @@ const YourBeersScreen = (props: YourBeersProps) => {
           likedBeers &&
           likedBeers?.map((beer) => {
             return (
-              <View key={beer.id} style={standardStyles.basicCard}>
-                <TouchableOpacity onPress={() => handleBeerPress(beer.id)}>
-                  <Text style={standardStyles.basicCardText}>{beer.name}</Text>
-                </TouchableOpacity>
-              </View>
+              <BeerCard key={beer.id} beer={beer} handleBeerPress={handleBeerPress} />
             );
           })}
         {liked && likedBeers?.length === 0 && (
@@ -108,7 +102,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   title: {
-    fontSize: 50,
+    fontSize: Dimensions.get("window").width * 0.1,
     fontWeight: "bold",
   },
   buttonContainer: {
@@ -130,7 +124,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   buttonText: {
-    fontSize: 20,
+    fontSize: Dimensions.get("window").width * 0.05,
     fontWeight: "bold",
     color: "white",
   },

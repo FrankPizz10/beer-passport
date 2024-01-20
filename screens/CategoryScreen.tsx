@@ -5,6 +5,7 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
+  Dimensions,
 } from "react-native";
 import { CategoryProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
@@ -15,6 +16,7 @@ import { auth } from "../Models/firebase";
 import { BackgroundColor } from "../Styles/colors";
 import { Dropdown } from "react-native-element-dropdown";
 import { standardStyles } from "../Styles/styles";
+import BeerCard from "../components/BeerCard";
 
 interface CategoryMap {
   key: number;
@@ -83,11 +85,7 @@ const CategoryScreen = (props: CategoryProps) => {
       <ScrollView>
         {beersByCategory?.map((beer) => {
           return (
-            <View key={beer.id} style={standardStyles.basicCard}>
-              <TouchableOpacity onPress={() => handleBeerPress(beer.id)}>
-                <Text style={standardStyles.basicCardText}>{beer.name}</Text>
-              </TouchableOpacity>
-            </View>
+            <BeerCard key={beer.id} beer={beer} handleBeerPress={handleBeerPress} />
           );
         })}
       </ScrollView>
@@ -108,7 +106,7 @@ const styles = StyleSheet.create({
   placeholder: {
     color: "black",
     fontWeight: "bold",
-    fontSize: 30,
+    fontSize: Dimensions.get("window").width / 15,
   },
   dropDown: {
     backgroundColor: BackgroundColor,

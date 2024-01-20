@@ -1,4 +1,5 @@
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { UserBadge } from "./Models/SQLData";
 
 export type RootStackParamList = {
   Home: undefined;

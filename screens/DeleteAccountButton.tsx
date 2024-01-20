@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from "react-native";
 import { CommonNavButtonProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
 import { deleteAccount } from "../Models/Requests";
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "white",
-    fontSize: 20,
+    fontSize: Dimensions.get("window").width / 20,
     fontWeight: "bold",
   },
 });

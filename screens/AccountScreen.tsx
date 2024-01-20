@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from "react-native";
 import DeleteAccountButton from "./DeleteAccountButton";
 import { auth } from "../Models/firebase";
 import { useNavigation } from "@react-navigation/core";
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     padding: 15,
   },
   title: {
-    fontSize: 50,
+    fontSize: Dimensions.get("window").width / 10,
     fontWeight: "bold",
     textAlign: "center",
     color: "black",
@@ -90,14 +90,14 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "white",
-    fontSize: 20,
+    fontSize: Dimensions.get("window").width / 20,
     fontWeight: "bold",
   },
   deleteAccountText: {
-    fontSize: 20,
+    fontSize: Dimensions.get("window").width / 20,
     fontWeight: "bold",
     textAlign: "center",
-    width: 300,
+    width: Dimensions.get("window").width - 80,
     marginTop: 20,
   },
 });

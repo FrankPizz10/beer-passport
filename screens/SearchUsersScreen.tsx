@@ -8,6 +8,7 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   Keyboard,
+  Dimensions,
 } from "react-native";
 import { useNavigation } from "@react-navigation/core";
 import { SearchUsersProps } from "../props";
@@ -48,10 +49,7 @@ const SearchUsersScreen = (props: SearchUsersProps) => {
   };
 
   return (
-    <View style={styles.root}>
-      <View style={styles.container}>
-        <Text style={styles.ScreenTitle}>Find Users</Text>
-      </View>
+    <View style={styles.container}>
       <View>
         {/* Search Bar */}
         <TouchableWithoutFeedback onPress={dismissKeyboard}>
@@ -82,21 +80,19 @@ const SearchUsersScreen = (props: SearchUsersProps) => {
 };
 
 const styles = StyleSheet.create({
-  root: {
-    backgroundColor: BackgroundColor,
-  },
   container: {
     flex: 1,
-    marginTop: 10,
+    backgroundColor: BackgroundColor,
   },
   ScreenTitle: {
-    fontSize: 30,
+    fontSize: Dimensions.get("window").width / 10,
     fontWeight: "bold",
     textAlign: "center",
     margin: 10,
   },
   input: {
-    height: 40,
+    height: Dimensions.get("window").height / 15,
+    fontSize: Dimensions.get("window").width / 25,
     margin: 12,
     borderWidth: 1,
     borderStyle: "solid",

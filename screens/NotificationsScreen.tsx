@@ -5,6 +5,7 @@ import {
   ScrollView,
   TouchableOpacity,
   StyleSheet,
+  Dimensions,
 } from "react-native";
 import { fetchNotifications, fetchUserByUserName } from "../Models/Requests";
 import { Notification } from "../Models/SQLData";
@@ -50,7 +51,7 @@ const NotificationsScreen = (props: NotificationsProps) => {
               onPress={() => handleFriendPress(notification.id)}
               style={styles.notification}
             >
-              <Text>{notification.message}</Text>
+              <Text style={styles.message}>{notification.message}</Text>
             </TouchableOpacity>
           );
         })}
@@ -70,17 +71,20 @@ const styles = StyleSheet.create({
     margin: 10,
     borderWidth: 1,
     borderColor: "black",
-    height: 60,
+    height: Dimensions.get("window").height / 15,
     justifyContent: "center",
     borderRadius: 5,
   },
   container: {
     backgroundColor: BackgroundColor,
-    height: 80,
     justifyContent: "center",
   },
+  message: {
+    fontSize: Dimensions.get("window").width / 22,
+    textAlign: "center",
+  },
   ScreenTitle: {
-    fontSize: 30,
+    fontSize: Dimensions.get("window").width * 0.1,
     fontWeight: "bold",
     textAlign: "center",
     margin: 20,

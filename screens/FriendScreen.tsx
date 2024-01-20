@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   SafeAreaView,
+  Dimensions,
 } from "react-native";
 import { User } from "../Models/SQLData";
 import { fetchFriends } from "../Models/Requests";
@@ -67,14 +68,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   titleContainer: {
-    height: 150,
-    width: 400,
     alignItems: "center",
     margin: 15,
     padding: 15,
   },
   screenTitle: {
-    fontSize: 40,
+    fontSize: Dimensions.get("window").width / 10,
     fontWeight: "bold",
     textAlign: "center",
     margin: 10,
@@ -82,8 +81,7 @@ const styles = StyleSheet.create({
   friendContainer: {
     flex: 1,
     alignContent: "center",
-    height: 400,
-    width: 400,
+    width: Dimensions.get("window").width - 20,
     marginBottom: 20,
   },
 });

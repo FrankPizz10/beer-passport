@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from "react-native";
 import { BackgroundColor, MainButtonColor } from "../Styles/colors";
 import { ProfileProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
@@ -63,31 +63,29 @@ const styles = StyleSheet.create({
     padding: 15,
   },
   title: {
-    fontSize: 50,
+    fontSize: Dimensions.get("window").width / 10,
     fontWeight: "bold",
     textAlign: "center",
   },
   buttonContainer: {
     flex: 1,
     alignItems: "center",
-    height: 400,
-    width: 400,
     marginBottom: 20,
   },
   button: {
     backgroundColor: MainButtonColor,
     color: "white",
-    height: 50,
+    height: Dimensions.get("window").height / 12,
     padding: 10,
     margin: 10,
-    width: 300,
+    width: Dimensions.get("window").width - 80,
     borderRadius: 5,
     alignItems: "center",
     justifyContent: "center",
   },
   buttonText: {
     color: "black",
-    fontSize: 20,
+    fontSize: Dimensions.get("window").width / 18,
     fontWeight: "bold",
   },
 });

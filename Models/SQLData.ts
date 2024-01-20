@@ -110,3 +110,4 @@ export enum NotificationType {
   NEW_FRIEND = "NEW_FRIEND",
   BADGE_EARNED = "BADGE_EARNED",
 }
+

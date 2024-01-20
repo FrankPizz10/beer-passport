@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import { MainButtonColor } from "./colors";
 
 export const standardStyles = StyleSheet.create({
@@ -6,7 +6,7 @@ export const standardStyles = StyleSheet.create({
     backgroundColor: MainButtonColor,
     padding: 10,
     margin: 10,
-    height: 60,
+    height: Dimensions.get("window").height / 15,
     borderRadius: 5,
     alignContent: "center",
     justifyContent: "center",
@@ -19,7 +19,7 @@ export const standardStyles = StyleSheet.create({
     },
   },
   basicCardText: {
-    fontSize: 20,
+    fontSize: Dimensions.get("window").width * 0.05,
     fontWeight: "bold",
   },
 });
