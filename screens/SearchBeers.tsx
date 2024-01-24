@@ -86,6 +86,7 @@ const SearchBeerScreen = (props: SearchBeersProps) => {
           onChangeText={(text) => setSearchInput(text)}
           placeholder="Search for a beer"
           placeholderTextColor="gray"
+          maxFontSizeMultiplier={1.2}
         />
       </TouchableWithoutFeedback>
       {searchInput.length > 0 && (

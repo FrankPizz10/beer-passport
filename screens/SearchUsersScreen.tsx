@@ -66,7 +66,7 @@ const SearchUsersScreen = (props: SearchUsersProps) => {
             return (
               <View key={user.id} style={standardStyles.basicCard}>
                 <TouchableOpacity onPress={() => handleUserPress(user.id)}>
-                  <Text style={standardStyles.basicCardText}>
+                  <Text style={standardStyles.basicCardText} maxFontSizeMultiplier={1.2}>
                     {user.user_name}
                   </Text>
                 </TouchableOpacity>

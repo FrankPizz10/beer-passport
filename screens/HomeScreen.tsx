@@ -134,32 +134,32 @@ const HomeScreen = (props: HomeProps) => {
   return (
     <SafeAreaView style={styles.root}>
       <View style={styles.titleContainer}>
-        <Text style={styles.welcome}>Welcome {user!.user_name}</Text>
+        <Text style={styles.welcome} maxFontSizeMultiplier={1.1}>Welcome {user!.user_name}</Text>
       </View>
       <View style={styles.iconContainer}>
         <Ionicons name="beer-outline" size={80} color="gold" />
       </View>
       <View style={styles.userDetailsContainer}>
-        <Text style={styles.userDetails}>
+        <Text style={styles.userDetails} maxFontSizeMultiplier={1.2}>
           You have completed {badgeCount}{" "}
           {badgeCount === 1 ? "badge" : "badges"}!
         </Text>
-        <Text style={styles.userDetails}>
+        <Text style={styles.userDetails} maxFontSizeMultiplier={1.2}>
           You have tried {triedCount} {triedCount === 1 ? "beer" : "beers"}!
         </Text>
-        <Text style={styles.userDetails}>
+        <Text style={styles.userDetails} maxFontSizeMultiplier={1.2}>
           You have liked {likedCount} {likedCount === 1 ? "beer" : "beers"}!
         </Text>
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity onPress={handleCategoryScreen} style={styles.button}>
-          <Text style={styles.buttonText}>Find Beer By Category</Text>
+          <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>Find Beer By Category</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={handleCollectionsScreen}
           style={styles.button}
         >
-          <Text style={styles.buttonText}>Collections</Text>
+          <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>Collections</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

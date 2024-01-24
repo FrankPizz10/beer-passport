@@ -106,7 +106,7 @@ const LoginScreen = (props: LoginProps) => {
         <TouchableWithoutFeedback onPress={dismissKeyboard}>
           <KeyboardAvoidingView style={styles.root} behavior="padding">
             <View style={styles.title}>
-              <Text style={styles.title}>Login</Text>
+              <Text style={styles.title} maxFontSizeMultiplier={1.2}>Login</Text>
             </View>
             <View style={styles.inputContainer}>
               <TextInput
@@ -115,6 +115,7 @@ const LoginScreen = (props: LoginProps) => {
                 value={email}
                 onChangeText={(text) => setEmail(text)}
                 style={styles.input}
+                maxFontSizeMultiplier={1.2}
               />
               <TextInput
                 placeholder="Password"
@@ -122,15 +123,16 @@ const LoginScreen = (props: LoginProps) => {
                 value={password}
                 onChangeText={(text) => setPassword(text)}
                 style={styles.input}
+                maxFontSizeMultiplier={1.2}
                 secureTextEntry
               />
             </View>
             <View style={styles.buttonContainer}>
               <TouchableOpacity onPress={handleLogin} style={styles.button}>
-                <Text style={styles.buttonText}>Login</Text>
+                <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>Login</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={handleSignUp} style={styles.button}>
-                <Text style={styles.buttonText}>Register</Text>
+                <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>Register</Text>
               </TouchableOpacity>
             </View>
           </KeyboardAvoidingView>
@@ -138,7 +140,7 @@ const LoginScreen = (props: LoginProps) => {
       )}
       {!serverConnected && (
         <View style={styles.failed}>
-          <Text style={styles.title}>Unable to connect to server</Text>
+          <Text style={styles.title} maxFontSizeMultiplier={1.2}>Unable to connect to server</Text>
         </View>
       )}
     </>

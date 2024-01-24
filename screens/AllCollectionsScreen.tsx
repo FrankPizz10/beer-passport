@@ -36,7 +36,7 @@ const AllCollectionsScreen = (props: AllCollectionsProps) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.ScreenTitle}>Collections</Text>
+      <Text style={styles.ScreenTitle} maxFontSizeMultiplier={1.2}>Collections</Text>
       <ScrollView>
         {collections?.map((collection) => {
           return (
@@ -44,7 +44,7 @@ const AllCollectionsScreen = (props: AllCollectionsProps) => {
               <TouchableOpacity
                 onPress={() => handleCollectionPress(collection.id)}
               >
-                <Text style={standardStyles.basicCardText}>
+                <Text style={standardStyles.basicCardText} maxFontSizeMultiplier={1.2}>
                   {collection.name}
                 </Text>
               </TouchableOpacity>

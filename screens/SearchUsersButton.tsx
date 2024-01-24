@@ -13,7 +13,7 @@ const SearchUsersButton = (props: CommonNavButtonProps) => {
 
   return (
     <TouchableOpacity style={styles.button} onPress={handleFriendScreen}>
-      <Text style={styles.text}>Search Users</Text>
+      <Text style={styles.text} maxFontSizeMultiplier={1.2}>Search Users</Text>
     </TouchableOpacity>
   );
 };

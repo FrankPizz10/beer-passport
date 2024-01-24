@@ -51,9 +51,9 @@ const CollectionScreen = (props: CollectionProps) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.titleContainer}>
-        <Text style={styles.CollectionTitle}>{collection?.name}</Text>
-        <Text style={styles.CollectionDetails}>{collection?.description}</Text>
-        <Text style={styles.CollectionDetails}>
+        <Text style={styles.CollectionTitle} maxFontSizeMultiplier={1.1}>{collection?.name}</Text>
+        <Text style={styles.CollectionDetails} maxFontSizeMultiplier={1.2}>{collection?.description}</Text>
+        <Text style={styles.CollectionDetails} maxFontSizeMultiplier={1.2}>
           Difficulty: {collection?.difficulty}
         </Text>
       </View>
@@ -62,7 +62,7 @@ const CollectionScreen = (props: CollectionProps) => {
           return (
             <View key={beer.id} style={standardStyles.basicCard}>
               <TouchableOpacity onPress={() => handleBeerPress(beer.id)}>
-                <Text style={standardStyles.basicCardText}>{beer.name}</Text>
+                <Text style={standardStyles.basicCardText} maxFontSizeMultiplier={1.2}>{beer.name}</Text>
               </TouchableOpacity>
             </View>
           );

@@ -15,7 +15,7 @@ const DeleteAccountButton = (props: CommonNavButtonProps) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.button} onPress={handleDeleteAccount}>
-        <Text style={styles.buttonText}>Confirm Delete</Text>
+        <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>Confirm Delete</Text>
       </TouchableOpacity>
     </View>
   );

@@ -14,7 +14,7 @@ const ProfileScreen = (props: ProfileProps) => {
   return (
     <View style={styles.root}>
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>Profile Screen</Text>
+        <Text style={styles.title} maxFontSizeMultiplier={1.2}>Profile Screen</Text>
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity
@@ -23,7 +23,7 @@ const ProfileScreen = (props: ProfileProps) => {
           }}
           style={styles.button}
         >
-          <Text style={styles.buttonText}>My Beers</Text>
+          <Text style={styles.buttonText} maxFontSizeMultiplier={1.5}>My Beers</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
@@ -31,7 +31,7 @@ const ProfileScreen = (props: ProfileProps) => {
           }}
           style={styles.button}
         >
-          <Text style={styles.buttonText}>My Badges</Text>
+          <Text style={styles.buttonText} maxFontSizeMultiplier={1.5}>My Badges</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
@@ -39,10 +39,10 @@ const ProfileScreen = (props: ProfileProps) => {
           }}
           style={styles.button}
         >
-          <Text style={styles.buttonText}>My Friends</Text>
+          <Text style={styles.buttonText} maxFontSizeMultiplier={1.5}>My Friends</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={handleAccount} style={styles.button}>
-          <Text style={styles.buttonText}>Account</Text>
+          <Text style={styles.buttonText} maxFontSizeMultiplier={1.5}>Account</Text>
         </TouchableOpacity>
       </View>
     </View>

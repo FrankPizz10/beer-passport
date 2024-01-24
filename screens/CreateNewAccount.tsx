@@ -128,7 +128,7 @@ const CreateNewAccount = (props: CreateAccountProps) => {
   return (
     <TouchableWithoutFeedback onPress={dismissKeyboard}>
       <KeyboardAvoidingView style={styles.container} behavior="padding">
-        <Text style={styles.title}>Create Account</Text>
+        <Text style={styles.title} maxFontSizeMultiplier={1.2}>Create Account</Text>
         <View style={styles.inputContainer}>
           <TextInput
             placeholder="Email"
@@ -136,6 +136,7 @@ const CreateNewAccount = (props: CreateAccountProps) => {
             value={email}
             onChangeText={(text) => setEmail(text)}
             style={styles.input}
+            maxFontSizeMultiplier={1.2}
           />
           <TextInput
             placeholder="Password"
@@ -144,6 +145,7 @@ const CreateNewAccount = (props: CreateAccountProps) => {
             onChangeText={(text) => setPassword(text)}
             style={styles.input}
             secureTextEntry
+            maxFontSizeMultiplier={1.2}
           />
           <TextInput
             placeholder="Age"
@@ -152,6 +154,7 @@ const CreateNewAccount = (props: CreateAccountProps) => {
             value={age}
             onChangeText={(text) => setAge(text)}
             style={styles.input}
+            maxFontSizeMultiplier={1.2}
           />
           <TextInput
             placeholder="Username"
@@ -159,10 +162,11 @@ const CreateNewAccount = (props: CreateAccountProps) => {
             value={username}
             onChangeText={(text) => setUsername(text)}
             style={styles.input}
+            maxFontSizeMultiplier={1.2}
           />
         </View>
         <TouchableOpacity onPress={handleSignUp} style={styles.button}>
-          <Text style={styles.buttonText}>Register</Text>
+          <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>Register</Text>
         </TouchableOpacity>
       </KeyboardAvoidingView>
     </TouchableWithoutFeedback>

@@ -19,7 +19,7 @@ const BeerCard: React.FC<BeerCardProps> = ({ beer, handleBeerPress }) => {
     return (
         <View style={standardStyles.basicCard}>
           <TouchableOpacity onPress={() => handlePress()}>
-            <Text style={standardStyles.basicCardText}>{beer.name}</Text>
+            <Text style={standardStyles.basicCardText} maxFontSizeMultiplier={1.3}>{beer.name}</Text>
           </TouchableOpacity>
         </View>
       );

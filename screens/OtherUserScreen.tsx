@@ -99,32 +99,32 @@ const OtherUserScreen = (props: FriendProfileProps) => {
   return (
     <SafeAreaView style={styles.root}>
       <View style={styles.detailsContainer}>
-        <Text style={styles.friendName}>{user.user_name}</Text>
+        <Text style={styles.friendName} maxFontSizeMultiplier={1.2}>{user.user_name}</Text>
       </View>
       {isFriend && (
         <TouchableOpacity
           onPress={handleRemoveFriend}
           style={styles.friendButton}
         >
-          <Text style={styles.friendButtonTitle}>Remove Friend</Text>
+          <Text style={styles.friendButtonTitle} maxFontSizeMultiplier={1.2}>Remove Friend</Text>
         </TouchableOpacity>
       )}
       {!isFriend && (
         <TouchableOpacity onPress={handleAddFriend} style={styles.friendButton}>
-          <Text style={styles.friendButtonTitle}>Add Friend</Text>
+          <Text style={styles.friendButtonTitle} maxFontSizeMultiplier={1.2}>Add Friend</Text>
         </TouchableOpacity>
       )}
       {isFriend && (
         <>
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.button} onPress={handleTriedPress}>
-              <Text style={styles.friendButtonTitle}> Tried </Text>
+              <Text style={styles.friendButtonTitle} maxFontSizeMultiplier={1.1}> Tried </Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={handleLikedPress}>
-              <Text style={styles.friendButtonTitle}> Liked </Text>
+              <Text style={styles.friendButtonTitle} maxFontSizeMultiplier={1.1}> Liked </Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={handleBadgesPress}>
-              <Text style={styles.friendButtonTitle}> Badges </Text>
+              <Text style={styles.friendButtonTitle} maxFontSizeMultiplier={1.1}> Badges </Text>
             </TouchableOpacity>
           </View>
           <ScrollView style={styles.scrollables}>
@@ -136,7 +136,7 @@ const OtherUserScreen = (props: FriendProfileProps) => {
               })}
             {triedPressed && triedBeers?.length === 0 && (
               <View style={standardStyles.basicCard}>
-                <Text style={standardStyles.basicCardText}>
+                <Text style={standardStyles.basicCardText} maxFontSizeMultiplier={1.2}>
                   {user.user_name} has no tried beers yet!
                 </Text>
               </View>
@@ -149,7 +149,7 @@ const OtherUserScreen = (props: FriendProfileProps) => {
               })}
             {likedPressed && likedBeers?.length === 0 && (
               <View style={standardStyles.basicCard}>
-                <Text style={standardStyles.basicCardText}>
+                <Text style={standardStyles.basicCardText} maxFontSizeMultiplier={1.2}>
                   {user.user_name} has no liked beers yet!
                 </Text>
               </View>
@@ -163,7 +163,7 @@ const OtherUserScreen = (props: FriendProfileProps) => {
               })}
             {badgesPressed && badges?.length === 0 && (
               <View style={styles.badge}>
-                <Text style={styles.badgeTitle}>No badges yet!</Text>
+                <Text style={styles.badgeTitle} maxFontSizeMultiplier={1.2}>No badges yet!</Text>
               </View>
             )}
           </ScrollView>

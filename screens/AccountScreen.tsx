@@ -24,23 +24,23 @@ const AccountScreen = (props: AccountProps) => {
   return (
     <View style={styles.root}>
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>Account Screen</Text>
+        <Text style={styles.title} maxFontSizeMultiplier={1.2}>Account Screen</Text>
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity onPress={handleLogout} style={styles.button}>
-          <Text style={styles.buttonText}>Sign out</Text>
+          <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>Sign out</Text>
         </TouchableOpacity>
         {!deleteAccount && (
           <TouchableOpacity
             onPress={() => setDeleteAccount(!deleteAccount)}
             style={styles.button}
           >
-            <Text style={styles.buttonText}>Delete Account</Text>
+            <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>Delete Account</Text>
           </TouchableOpacity>
         )}
         {deleteAccount && (
           <View>
-            <Text style={styles.deleteAccountText}>
+            <Text style={styles.deleteAccountText} maxFontSizeMultiplier={1.2}>
               Are you sure you want to delete your account?
             </Text>
             <DeleteAccountButton navigation={navigation} />

@@ -17,10 +17,29 @@ import { BackgroundColor } from "../Styles/colors";
 import { Dropdown } from "react-native-element-dropdown";
 import { standardStyles } from "../Styles/styles";
 import BeerCard from "../components/BeerCard";
+import { PixelRatio } from "react-native";
 
 interface CategoryMap {
   key: number;
   value: string;
+}
+
+const getFontSizeFromPixelRatio = (pixelRatio: number) => {
+  if (pixelRatio < 1.5) {
+    return 22;
+  }
+  if (pixelRatio < 2) {
+    return 16;
+  }
+  if (pixelRatio < 3) {
+    return 10;
+  }
+  if (pixelRatio < 3.5) {
+    return 10;
+  }
+  else {
+    return 8;
+  }
 }
 
 const CategoryScreen = (props: CategoryProps) => {
@@ -31,6 +50,8 @@ const CategoryScreen = (props: CategoryProps) => {
   const beersByCategory = useCategory(selected);
 
   useEffect(() => {
+    console.log("Pixel Ratio", PixelRatio.getFontScale());
+    console.log("font size", getFontSizeFromPixelRatio(PixelRatio.getFontScale()));
     const fetchCatgeories = async () => {
       try {
         const url = `${EXPO_PUBLIC_API_URL}/api/categories`;
@@ -77,6 +98,7 @@ const CategoryScreen = (props: CategoryProps) => {
           onChange={(item) => handleSelected(item.key)}
           selectedTextStyle={styles.placeholder}
           containerStyle={styles.dropDown}
+          itemTextStyle={styles.items}
           labelField="value"
           valueField="key"
           mode="modal"
@@ -106,7 +128,13 @@ const styles = StyleSheet.create({
   placeholder: {
     color: "black",
     fontWeight: "bold",
-    fontSize: Dimensions.get("window").width / 15,
+    // fontSize: Dimensions.get("window").width / 15,
+    fontSize: getFontSizeFromPixelRatio(PixelRatio.getFontScale()),
+  },
+  items: {
+    color: "black",
+    fontWeight: "bold",
+    fontSize: getFontSizeFromPixelRatio(PixelRatio.getFontScale()),
   },
   dropDown: {
     backgroundColor: BackgroundColor,
@@ -114,5 +142,6 @@ const styles = StyleSheet.create({
     margin: 10,
     borderRadius: 5,
     justifyContent: "center",
+    height: Dimensions.get("window").height * 0.60,
   },
 });

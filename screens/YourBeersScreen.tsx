@@ -41,14 +41,14 @@ const YourBeersScreen = (props: YourBeersProps) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.titleContainer}>
-        <Text style={styles.title}> My Beers </Text>
+        <Text style={styles.title} maxFontSizeMultiplier={1.2}> My Beers </Text>
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={handleTriedPress}>
-          <Text style={styles.buttonText}> Tried </Text>
+          <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}> Tried </Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={handleLikedPress}>
-          <Text style={styles.buttonText}> Liked </Text>
+          <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}> Liked </Text>
         </TouchableOpacity>
       </View>
       <ScrollView>
@@ -60,7 +60,7 @@ const YourBeersScreen = (props: YourBeersProps) => {
           })}
         {tried && triedBeers?.length === 0 && (
           <View style={standardStyles.basicCard}>
-            <Text style={standardStyles.basicCardText}>
+            <Text style={standardStyles.basicCardText} maxFontSizeMultiplier={1.2}>
               You have no tried beers yet!
             </Text>
           </View>
@@ -74,7 +74,7 @@ const YourBeersScreen = (props: YourBeersProps) => {
           })}
         {liked && likedBeers?.length === 0 && (
           <View style={standardStyles.basicCard}>
-            <Text style={standardStyles.basicCardText}>
+            <Text style={standardStyles.basicCardText} maxFontSizeMultiplier={1.2}>
               You have no liked beers yet!
             </Text>
           </View>
