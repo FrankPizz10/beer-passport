@@ -40,15 +40,14 @@ const AllCollectionsScreen = (props: AllCollectionsProps) => {
       <ScrollView>
         {collections?.map((collection) => {
           return (
-            <View key={collection.id} style={standardStyles.basicCard}>
-              <TouchableOpacity
-                onPress={() => handleCollectionPress(collection.id)}
-              >
-                <Text style={standardStyles.basicCardText} maxFontSizeMultiplier={1.2}>
-                  {collection.name}
-                </Text>
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity
+              key={collection.id} style={standardStyles.basicCard}
+              onPress={() => handleCollectionPress(collection.id)}
+            >
+              <Text style={standardStyles.basicCardText} maxFontSizeMultiplier={1.2}>
+                {collection.name}
+              </Text>
+            </TouchableOpacity>
           );
         })}
       </ScrollView>

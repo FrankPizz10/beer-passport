@@ -6,7 +6,7 @@ export const standardStyles = StyleSheet.create({
     backgroundColor: MainButtonColor,
     padding: 10,
     margin: 10,
-    height: Dimensions.get("window").height / 15,
+    minHeight: Dimensions.get("window").height / 15,
     borderRadius: 5,
     alignContent: "center",
     justifyContent: "center",

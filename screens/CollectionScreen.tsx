@@ -60,11 +60,9 @@ const CollectionScreen = (props: CollectionProps) => {
       <ScrollView>
         {beers?.map((beer) => {
           return (
-            <View key={beer.id} style={standardStyles.basicCard}>
-              <TouchableOpacity onPress={() => handleBeerPress(beer.id)}>
-                <Text style={standardStyles.basicCardText} maxFontSizeMultiplier={1.2}>{beer.name}</Text>
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity key={beer.id} style={standardStyles.basicCard} onPress={() => handleBeerPress(beer.id)}>
+              <Text style={standardStyles.basicCardText} maxFontSizeMultiplier={1.2}>{beer.name}</Text>
+            </TouchableOpacity>
           );
         })}
       </ScrollView>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import {
   View,
   Text,
@@ -12,19 +12,22 @@ import { Notification } from "../Models/SQLData";
 import { NotificationsProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
 import { BackgroundColor } from "../Styles/colors";
+import { useFocusEffect } from "@react-navigation/native";
 
 const NotificationsScreen = (props: NotificationsProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
   const [notifications, setNotifications] = useState([] as Notification[]);
 
-  useEffect(() => {
-    const getNotificationData = async () => {
-      await fetchNotifications()
-        .then((data) => setNotifications(data))
-        .catch((error) => console.log(error));
-    };
-    getNotificationData();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      const getNotificationData = async () => {
+        await fetchNotifications()
+          .then((data) => setNotifications(data))
+          .catch((error) => console.log(error));
+      };
+      getNotificationData();
+    }, []),
+  );
 
   const handleFriendPress = async (notificationId: number) => {
     const notification = notifications.find(
@@ -71,7 +74,7 @@ const styles = StyleSheet.create({
     margin: 10,
     borderWidth: 1,
     borderColor: "black",
-    height: Dimensions.get("window").height / 15,
+    minHeight: Dimensions.get("window").height / 15,
     justifyContent: "center",
     borderRadius: 5,
   },
