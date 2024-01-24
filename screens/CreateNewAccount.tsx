@@ -21,7 +21,28 @@ import { EXPO_PUBLIC_API_URL } from "@env";
 import { getErrorMessage } from "./LoginScreen";
 import { MainHighlightColor } from "../Styles/colors";
 import { checkServerConnected } from "./LoginScreen";
-import { check } from "prettier";
+
+export interface UserExists {
+  exists: boolean;
+  type: "email" | "username";
+}
+
+export const checkUserExists = async (email: string, username: string) : Promise<UserExists> => {
+  const userExistsURL = `${EXPO_PUBLIC_API_URL}/userexists/`;
+  const userExists = await fetch(userExistsURL, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      email,
+      user_name: username,
+    }),
+  });
+  const existsRes = await userExists.json();
+  return existsRes;
+}
 
 const CreateNewAccount = (props: CreateAccountProps) => {
   const [email, setEmail] = useState("");
@@ -54,19 +75,7 @@ const CreateNewAccount = (props: CreateAccountProps) => {
       return;
     }
     try {
-      const userExistsURL = `${EXPO_PUBLIC_API_URL}/userexists/`;
-      const userExists = await fetch(userExistsURL, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          user_name: username,
-        }),
-      });
-      const existsRes = await userExists.json();
+      const existsRes = await checkUserExists(email, username);
       if (existsRes.exists) {
         if (existsRes.type === "email") {
           alert("Email already exists");

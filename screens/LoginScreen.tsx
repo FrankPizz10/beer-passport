@@ -16,6 +16,7 @@ import { useNavigation } from "@react-navigation/core";
 import { LoginProps } from "../props";
 import { EXPO_PUBLIC_API_URL } from "@env";
 import { BackgroundColor, MainHighlightColor } from "../Styles/colors";
+import { checkUserExists } from "./CreateNewAccount";
 
 export const getErrorMessage = (errorCode: string, serverConnected: boolean) => {
   if (!serverConnected) {
@@ -56,6 +57,7 @@ const LoginScreen = (props: LoginProps) => {
   const [password, setPassword] = useState("");
   const [loginPressed, setLoginPressed] = useState(false);
   const [serverConnected, setServerConnected] = useState(false);
+  const [userExists, setUserExists] = useState(false);
 
   const navigation = useNavigation<(typeof props)["navigation"]>();
 
@@ -71,7 +73,7 @@ const LoginScreen = (props: LoginProps) => {
 
   useEffect(() => {
     const unsibscribe = onAuthStateChanged(auth, (user) => {
-      if (user && serverConnected) {
+      if (user && serverConnected && userExists) {
         navigation.replace("BottomTabNavigator");
       }
     });
@@ -88,6 +90,8 @@ const LoginScreen = (props: LoginProps) => {
         alert("Server not connected");
         return;
       }
+      const existsRes = await checkUserExists(email, "_");
+      setUserExists(existsRes.exists);
       await signInWithEmailAndPassword(auth, email, password);
       setLoginPressed(true);
     } catch (error: any) {
