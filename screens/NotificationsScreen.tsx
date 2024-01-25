@@ -8,7 +8,7 @@ import {
   Dimensions,
 } from "react-native";
 import { fetchNotifications, fetchUserByUserName } from "../Models/Requests";
-import { Notification } from "../Models/SQLData";
+import { Notification, NotificationType } from "../Models/SQLData";
 import { NotificationsProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
 import { BackgroundColor } from "../Styles/colors";
@@ -29,16 +29,20 @@ const NotificationsScreen = (props: NotificationsProps) => {
     }, []),
   );
 
-  const handleFriendPress = async (notificationId: number) => {
+  const handleNotificationPress = async (notificationId: number) => {
     const notification = notifications.find(
       (notification) => notification.id === notificationId,
     );
-    const user = await fetchUserByUserName(
-      notification?.message.split(" ")[0]!,
-    );
-    navigation.navigate("FriendProfile", {
-      friend_id: user.id,
-    });
+    if (notification?.type === NotificationType.NEW_FRIEND) {
+      const user = await fetchUserByUserName(
+        notification?.message.split(" ")[0]!,
+      );
+      navigation.navigate("FriendProfile", {
+        friend_id: user.id,
+      });
+    } else if (notification?.type === NotificationType.BADGE_EARNED) {
+      navigation.navigate("YourBadges");
+    }
   };
 
   return (
@@ -51,7 +55,7 @@ const NotificationsScreen = (props: NotificationsProps) => {
           return (
             <TouchableOpacity
               key={notification.id}
-              onPress={() => handleFriendPress(notification.id)}
+              onPress={() => handleNotificationPress(notification.id)}
               style={styles.notification}
             >
               <Text style={styles.message} maxFontSizeMultiplier={1.2}>{notification.message}</Text>
