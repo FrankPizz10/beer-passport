@@ -18,9 +18,9 @@ import {
 } from "react-native";
 import { auth } from "../Models/firebase";
 import { EXPO_PUBLIC_API_URL } from "@env";
-import { getErrorMessage } from "./LoginScreen";
+import { getErrorMessage } from "../utils";
 import { MainHighlightColor } from "../Styles/colors";
-import { checkServerConnected } from "./LoginScreen";
+import { checkServerConnected } from "../Models/Requests";
 
 export interface UserExists {
   exists: boolean;

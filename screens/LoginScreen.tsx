@@ -17,40 +17,8 @@ import { LoginProps } from "../props";
 import { EXPO_PUBLIC_API_URL } from "@env";
 import { BackgroundColor, MainHighlightColor } from "../Styles/colors";
 import { checkUserExists } from "./CreateNewAccount";
-
-export const getErrorMessage = (errorCode: string, serverConnected: boolean) => {
-  if (!serverConnected) {
-    return "Server not connected";
-  }
-  switch (errorCode) {
-    case "auth/invalid-email":
-      return "Invalid email address format.";
-    case "auth/user-disabled":
-      return "User account disabled.";
-    case "auth/user-not-found":
-      return "User account not found.";
-    case "auth/wrong-password":
-      return "Incorrect password.";
-    case "auth/missing-password":
-      return "Missing password.";
-    case "auth/weak-password":
-      return "Password is too weak. Must be at least 6 characters long.";
-    case "auth/email-already-exists":
-      return "Email address already in use.";
-    default:
-      return "Unknown error occurred.";
-  }
-};
-
-export const checkServerConnected = async () => {
-  try {
-    const url = `${EXPO_PUBLIC_API_URL}/`;
-    const response = await fetch(url);
-    return response.status === 200;
-  } catch (error) {
-    return false;
-  }
-};
+import { checkServerConnected } from "../Models/Requests";
+import { getErrorMessage } from "../utils";
 
 const LoginScreen = (props: LoginProps) => {
   const [email, setEmail] = useState("");
