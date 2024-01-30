@@ -21,6 +21,7 @@ import { EXPO_PUBLIC_API_URL } from "@env";
 import { getErrorMessage } from "../utils";
 import { MainHighlightColor } from "../Styles/colors";
 import { checkServerConnected } from "../Models/Requests";
+import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
 
 export interface UserExists {
   exists: boolean;
@@ -59,17 +60,20 @@ const CreateNewAccount = (props: CreateAccountProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
 
   useEffect(() => {
-    const unsibscribe = onAuthStateChanged(auth, (user) => {
-      checkServerConnected().then((connected) => {
-        setServerConnected(connected);
+    const createAccount = async () => {
+      const serverConnected = await checkServerConnected();
+      setServerConnected(serverConnected);
+      const unsibscribe = onAuthStateChanged(auth, (user) => {
+        ReactNativeAsyncStorage.setItem("user", JSON.stringify(user));
+        if (user && accountVerified) {
+          navigation.replace("BottomTabNavigator");
+        } else if (user && deleteAccount) {
+          user.delete();
+        }
       });
-      if (user && accountVerified) {
-        navigation.replace("BottomTabNavigator");
-      } else if (user && deleteAccount) {
-        user.delete();
-      }
-    });
-    return unsibscribe;
+      return unsibscribe;
+    }
+    createAccount();
   }, [accountVerified, deleteAccount]);
 
   const handleSignUp = async () => {
