@@ -1,10 +1,8 @@
 import React, { useCallback, useState } from "react";
 import {
   StyleSheet,
-  Text,
   View,
   ScrollView,
-  TouchableOpacity,
   TextInput,
   TouchableWithoutFeedback,
   Keyboard,
@@ -16,7 +14,6 @@ import { BasicBeer } from "../Models/SQLData";
 import { fetchAllBeers } from "../Models/Requests";
 import { useSearchFilter } from "../Controllers/SearchController";
 import { BackgroundColor } from "../Styles/colors";
-import { standardStyles } from "../Styles/styles";
 import { EXPO_PUBLIC_API_URL } from "@env";
 import { auth } from "../Models/firebase";
 import { useFocusEffect } from "@react-navigation/native";
@@ -93,7 +90,11 @@ const SearchBeerScreen = (props: SearchBeersProps) => {
         <ScrollView>
           {filteredList?.map((beer) => {
             return (
-              <BeerCard key={beer.id} beer={beer} handleBeerPress={handleBeerPress} />
+              <BeerCard
+                key={beer.id}
+                beer={beer}
+                handleBeerPress={handleBeerPress}
+              />
             );
           })}
         </ScrollView>
@@ -102,7 +103,11 @@ const SearchBeerScreen = (props: SearchBeersProps) => {
         <ScrollView>
           {mostPopularBeers?.map((beer) => {
             return (
-              <BeerCard key={beer.id} beer={beer} handleBeerPress={handleBeerPress} />
+              <BeerCard
+                key={beer.id}
+                beer={beer}
+                handleBeerPress={handleBeerPress}
+              />
             );
           })}
         </ScrollView>

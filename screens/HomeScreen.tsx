@@ -11,7 +11,7 @@ import { auth } from "../Models/firebase";
 import { useNavigation } from "@react-navigation/core";
 import { HomeProps } from "../props";
 import { User } from "../Models/SQLData";
-import { EXPO_PUBLIC_API_URL, EXPO_ID, EXPO_PROJECT_ID } from "@env";
+import { EXPO_PUBLIC_API_URL, EXPO_PROJECT_ID } from "@env";
 import { BackgroundColor, MainButtonColor, TitleColor } from "../Styles/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect } from "@react-navigation/native";
@@ -134,7 +134,9 @@ const HomeScreen = (props: HomeProps) => {
   return (
     <SafeAreaView style={styles.root}>
       <View style={styles.titleContainer}>
-        <Text style={styles.welcome} maxFontSizeMultiplier={1.1}>Welcome {user!.user_name}</Text>
+        <Text style={styles.welcome} maxFontSizeMultiplier={1.1}>
+          Welcome {user!.user_name}
+        </Text>
       </View>
       <View style={styles.iconContainer}>
         <Ionicons name="beer-outline" size={80} color="gold" />
@@ -153,13 +155,17 @@ const HomeScreen = (props: HomeProps) => {
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity onPress={handleCategoryScreen} style={styles.button}>
-          <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>Find Beer By Category</Text>
+          <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>
+            Find Beer By Category
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={handleCollectionsScreen}
           style={styles.button}
         >
-          <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>Collections</Text>
+          <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>
+            Collections
+          </Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

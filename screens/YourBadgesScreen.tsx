@@ -26,16 +26,26 @@ const YourBadgesScreen = (props: YourBadgesProps) => {
   return (
     <SafeAreaView style={styles.root}>
       <View style={styles.titleContainer}>
-        <Text style={styles.pageTitle} maxFontSizeMultiplier={1.2}> My Badges </Text>
+        <Text style={styles.pageTitle} maxFontSizeMultiplier={1.2}>
+          {" "}
+          My Badges{" "}
+        </Text>
       </View>
       <ScrollView style={styles.badgeContainer}>
         {userBadges?.map((badge) => {
           return (
-            <Badge key={badge.id} badge={badge} handleBadgePress={handleBadgePress} />
-        )})}
+            <Badge
+              key={badge.id}
+              badge={badge}
+              handleBadgePress={handleBadgePress}
+            />
+          );
+        })}
         {userBadges?.length === 0 && (
           <View style={styles.badge}>
-            <Text style={styles.noBadgeTitle} maxFontSizeMultiplier={1.2}>You have no badges yet!</Text>
+            <Text style={styles.noBadgeTitle} maxFontSizeMultiplier={1.2}>
+              You have no badges yet!
+            </Text>
           </View>
         )}
       </ScrollView>

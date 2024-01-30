@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import {
-  View,
   Text,
   ScrollView,
   TouchableOpacity,
@@ -36,15 +35,21 @@ const AllCollectionsScreen = (props: AllCollectionsProps) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.ScreenTitle} maxFontSizeMultiplier={1.2}>Collections</Text>
+      <Text style={styles.ScreenTitle} maxFontSizeMultiplier={1.2}>
+        Collections
+      </Text>
       <ScrollView>
         {collections?.map((collection) => {
           return (
             <TouchableOpacity
-              key={collection.id} style={standardStyles.basicCard}
+              key={collection.id}
+              style={standardStyles.basicCard}
               onPress={() => handleCollectionPress(collection.id)}
             >
-              <Text style={standardStyles.basicCardText} maxFontSizeMultiplier={1.2}>
+              <Text
+                style={standardStyles.basicCardText}
+                maxFontSizeMultiplier={1.2}
+              >
                 {collection.name}
               </Text>
             </TouchableOpacity>

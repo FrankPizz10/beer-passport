@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions,
+} from "react-native";
 import DeleteAccountButton from "./DeleteAccountButton";
 import { auth } from "../Models/firebase";
 import { useNavigation } from "@react-navigation/core";
@@ -24,18 +30,24 @@ const AccountScreen = (props: AccountProps) => {
   return (
     <View style={styles.root}>
       <View style={styles.titleContainer}>
-        <Text style={styles.title} maxFontSizeMultiplier={1.2}>Account Screen</Text>
+        <Text style={styles.title} maxFontSizeMultiplier={1.2}>
+          Account Screen
+        </Text>
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity onPress={handleLogout} style={styles.button}>
-          <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>Sign out</Text>
+          <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>
+            Sign out
+          </Text>
         </TouchableOpacity>
         {!deleteAccount && (
           <TouchableOpacity
             onPress={() => setDeleteAccount(!deleteAccount)}
             style={styles.button}
           >
-            <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>Delete Account</Text>
+            <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>
+              Delete Account
+            </Text>
           </TouchableOpacity>
         )}
         {deleteAccount && (

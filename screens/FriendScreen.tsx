@@ -42,14 +42,19 @@ const FriendScreen = (props: FriendsProps) => {
 
   return (
     <SafeAreaView style={styles.root}>
-      <Text style={styles.screenTitle} maxFontSizeMultiplier={1.2}>My Friends</Text>
+      <Text style={styles.screenTitle} maxFontSizeMultiplier={1.2}>
+        My Friends
+      </Text>
       <SearchUsersButton navigation={navigation} />
       <ScrollView style={styles.friendContainer}>
         {friends.map((friend) => {
           return (
             <View key={friend.id} style={standardStyles.basicCard}>
               <TouchableOpacity onPress={() => handleFriendPress(friend.id)}>
-                <Text style={standardStyles.basicCardText} maxFontSizeMultiplier={1.2}>
+                <Text
+                  style={standardStyles.basicCardText}
+                  maxFontSizeMultiplier={1.2}
+                >
                   {friend.user_name}
                 </Text>
               </TouchableOpacity>

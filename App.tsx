@@ -41,7 +41,9 @@ const CustomHeader = () => {
   const headerHeight = screenHeight * 0.155;
   return (
     <SafeAreaView style={{ ...styles.headerContainer, height: headerHeight }}>
-      <Text style={styles.headerTitle} maxFontSizeMultiplier={1}>BEER PASSPORT</Text>
+      <Text style={styles.headerTitle} maxFontSizeMultiplier={1}>
+        BEER PASSPORT
+      </Text>
     </SafeAreaView>
   );
 };
@@ -67,7 +69,9 @@ const CustomHeaderWithBack = () => {
       >
         <AntDesign name="left" size={30} color="white" />
       </TouchableOpacity>
-      <Text style={styles.headerTitle} maxFontSizeMultiplier={1}>BEER PASSPORT</Text>
+      <Text style={styles.headerTitle} maxFontSizeMultiplier={1}>
+        BEER PASSPORT
+      </Text>
     </SafeAreaView>
   );
 };

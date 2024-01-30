@@ -51,8 +51,12 @@ const CollectionScreen = (props: CollectionProps) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.titleContainer}>
-        <Text style={styles.CollectionTitle} maxFontSizeMultiplier={1.1}>{collection?.name}</Text>
-        <Text style={styles.CollectionDetails} maxFontSizeMultiplier={1.2}>{collection?.description}</Text>
+        <Text style={styles.CollectionTitle} maxFontSizeMultiplier={1.1}>
+          {collection?.name}
+        </Text>
+        <Text style={styles.CollectionDetails} maxFontSizeMultiplier={1.2}>
+          {collection?.description}
+        </Text>
         <Text style={styles.CollectionDetails} maxFontSizeMultiplier={1.2}>
           Difficulty: {collection?.difficulty}
         </Text>
@@ -60,8 +64,17 @@ const CollectionScreen = (props: CollectionProps) => {
       <ScrollView>
         {beers?.map((beer) => {
           return (
-            <TouchableOpacity key={beer.id} style={standardStyles.basicCard} onPress={() => handleBeerPress(beer.id)}>
-              <Text style={standardStyles.basicCardText} maxFontSizeMultiplier={1.2}>{beer.name}</Text>
+            <TouchableOpacity
+              key={beer.id}
+              style={standardStyles.basicCard}
+              onPress={() => handleBeerPress(beer.id)}
+            >
+              <Text
+                style={standardStyles.basicCardText}
+                maxFontSizeMultiplier={1.2}
+              >
+                {beer.name}
+              </Text>
             </TouchableOpacity>
           );
         })}

@@ -48,7 +48,9 @@ const NotificationsScreen = (props: NotificationsProps) => {
   return (
     <>
       <View style={styles.container}>
-        <Text style={styles.ScreenTitle} maxFontSizeMultiplier={1.2}>Notifications</Text>
+        <Text style={styles.ScreenTitle} maxFontSizeMultiplier={1.2}>
+          Notifications
+        </Text>
       </View>
       <ScrollView style={styles.notificationContainer}>
         {notifications?.map((notification) => {
@@ -58,7 +60,9 @@ const NotificationsScreen = (props: NotificationsProps) => {
               onPress={() => handleNotificationPress(notification.id)}
               style={styles.notification}
             >
-              <Text style={styles.message} maxFontSizeMultiplier={1.2}>{notification.message}</Text>
+              <Text style={styles.message} maxFontSizeMultiplier={1.2}>
+                {notification.message}
+              </Text>
             </TouchableOpacity>
           );
         })}

@@ -11,14 +11,18 @@ import {
   Dimensions,
 } from "react-native";
 import { auth } from "../Models/firebase";
-import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
+import {
+  User,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import { useNavigation } from "@react-navigation/core";
 import { LoginProps } from "../props";
-import { EXPO_PUBLIC_API_URL } from "@env";
 import { BackgroundColor, MainHighlightColor } from "../Styles/colors";
 import { checkUserExists } from "./CreateNewAccount";
 import { checkServerConnected } from "../Models/Requests";
 import { getErrorMessage } from "../utils";
+import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
 
 const LoginScreen = (props: LoginProps) => {
   const [email, setEmail] = useState("");
@@ -26,7 +30,6 @@ const LoginScreen = (props: LoginProps) => {
   const [loginPressed, setLoginPressed] = useState(false);
   const [serverConnected, setServerConnected] = useState(false);
   const [userExists, setUserExists] = useState(false);
-
   const navigation = useNavigation<(typeof props)["navigation"]>();
 
   const dismissKeyboard = () => {
@@ -34,14 +37,31 @@ const LoginScreen = (props: LoginProps) => {
   };
 
   useEffect(() => {
-    checkServerConnected().then((connected) => {
-      setServerConnected(connected);
-    });
+    const tryStoredLogin = async () => {
+      try {
+        const serverConnected = await checkServerConnected();
+        setServerConnected(serverConnected);
+        const user = await ReactNativeAsyncStorage.getItem("user");
+        const userJson: User = user ? JSON.parse(user) : undefined;
+        const userExists = userJson
+          ? await checkUserExists(userJson.email!, "_")
+          : undefined;
+        onAuthStateChanged(auth, (user) => {
+          if (user && serverConnected && userExists) {
+            navigation.replace("BottomTabNavigator");
+          }
+        });
+      } catch (error) {
+        console.log("Error: ", error);
+      }
+    };
+    tryStoredLogin();
   }, []);
 
   useEffect(() => {
     const unsibscribe = onAuthStateChanged(auth, (user) => {
       if (user && serverConnected && userExists) {
+        ReactNativeAsyncStorage.setItem("user", JSON.stringify(user));
         navigation.replace("BottomTabNavigator");
       }
     });
@@ -52,6 +72,33 @@ const LoginScreen = (props: LoginProps) => {
     navigation.navigate("CreateNewAccount");
   };
 
+  // const verifyIdToken = async (token: string) => {
+  //   const url = `${EXPO_PUBLIC_API_URL}/users/verifyidtoken/`;
+  //   const res = await fetch(url, {
+  //     method: "POST",
+  //     headers: {
+  //       Accept: "application/json",
+  //       "Content-Type": "application/json",
+  //     },
+  //     body : JSON.stringify({
+  //       idToken: token,
+  //     }),
+  //   });
+  //   const decodedToken = await res.json();
+  //   return decodedToken;
+  // }
+
+  // const checkUserToken = async () => {
+  //   const token = await ReactNativeAsyncStorage.getItem("userToken");
+  //   console.log("Token: ", token?.length ?? 0);
+  //   if (token) {
+  //     const user = await verifyIdToken(token);
+  //     console.log("User: ", user);
+  //     const checkUserExistsRes = await checkUserExists(user.email, "_");
+  //     setUserExists(checkUserExistsRes.exists);
+  //   }
+  // }
+
   const handleLogin = async () => {
     try {
       if (!serverConnected) {
@@ -61,6 +108,9 @@ const LoginScreen = (props: LoginProps) => {
       const existsRes = await checkUserExists(email, "_");
       setUserExists(existsRes.exists);
       await signInWithEmailAndPassword(auth, email, password);
+      // const user = userCredentials.user;
+      // const token = await user.getIdToken();
+      // await ReactNativeAsyncStorage.setItem("userToken", token);
       setLoginPressed(true);
     } catch (error: any) {
       const errorCode = error.code;
@@ -74,7 +124,9 @@ const LoginScreen = (props: LoginProps) => {
         <TouchableWithoutFeedback onPress={dismissKeyboard}>
           <KeyboardAvoidingView style={styles.root} behavior="padding">
             <View style={styles.title}>
-              <Text style={styles.title} maxFontSizeMultiplier={1.2}>Login</Text>
+              <Text style={styles.title} maxFontSizeMultiplier={1.2}>
+                Login
+              </Text>
             </View>
             <View style={styles.inputContainer}>
               <TextInput
@@ -97,10 +149,14 @@ const LoginScreen = (props: LoginProps) => {
             </View>
             <View style={styles.buttonContainer}>
               <TouchableOpacity onPress={handleLogin} style={styles.button}>
-                <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>Login</Text>
+                <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>
+                  Login
+                </Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={handleSignUp} style={styles.button}>
-                <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>Register</Text>
+                <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>
+                  Register
+                </Text>
               </TouchableOpacity>
             </View>
           </KeyboardAvoidingView>
@@ -108,7 +164,9 @@ const LoginScreen = (props: LoginProps) => {
       )}
       {!serverConnected && (
         <View style={styles.failed}>
-          <Text style={styles.title} maxFontSizeMultiplier={1.2}>Unable to connect to server</Text>
+          <Text style={styles.title} maxFontSizeMultiplier={1.2}>
+            Unable to connect to server
+          </Text>
         </View>
       )}
     </>

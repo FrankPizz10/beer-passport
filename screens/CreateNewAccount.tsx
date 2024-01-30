@@ -27,7 +27,10 @@ export interface UserExists {
   type: "email" | "username";
 }
 
-export const checkUserExists = async (email: string, username: string) : Promise<UserExists> => {
+export const checkUserExists = async (
+  email: string,
+  username: string,
+): Promise<UserExists> => {
   const userExistsURL = `${EXPO_PUBLIC_API_URL}/userexists/`;
   const userExists = await fetch(userExistsURL, {
     method: "POST",
@@ -42,7 +45,7 @@ export const checkUserExists = async (email: string, username: string) : Promise
   });
   const existsRes = await userExists.json();
   return existsRes;
-}
+};
 
 const CreateNewAccount = (props: CreateAccountProps) => {
   const [email, setEmail] = useState("");
@@ -128,7 +131,9 @@ const CreateNewAccount = (props: CreateAccountProps) => {
   return (
     <TouchableWithoutFeedback onPress={dismissKeyboard}>
       <KeyboardAvoidingView style={styles.container} behavior="padding">
-        <Text style={styles.title} maxFontSizeMultiplier={1.2}>Create Account</Text>
+        <Text style={styles.title} maxFontSizeMultiplier={1.2}>
+          Create Account
+        </Text>
         <View style={styles.inputContainer}>
           <TextInput
             placeholder="Email"
@@ -166,7 +171,9 @@ const CreateNewAccount = (props: CreateAccountProps) => {
           />
         </View>
         <TouchableOpacity onPress={handleSignUp} style={styles.button}>
-          <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>Register</Text>
+          <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>
+            Register
+          </Text>
         </TouchableOpacity>
       </KeyboardAvoidingView>
     </TouchableWithoutFeedback>

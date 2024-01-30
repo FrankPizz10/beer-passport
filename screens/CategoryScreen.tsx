@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
-  Text,
   View,
   ScrollView,
-  TouchableOpacity,
   Dimensions,
+  PixelRatio,
 } from "react-native";
 import { CategoryProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
@@ -15,9 +14,7 @@ import { useCategory } from "../Controllers/CategoryController";
 import { auth } from "../Models/firebase";
 import { BackgroundColor } from "../Styles/colors";
 import { Dropdown } from "react-native-element-dropdown";
-import { standardStyles } from "../Styles/styles";
 import BeerCard from "../components/BeerCard";
-import { PixelRatio } from "react-native";
 
 interface CategoryMap {
   key: number;
@@ -36,11 +33,10 @@ const getFontSizeFromPixelRatio = (pixelRatio: number) => {
   }
   if (pixelRatio < 3.5) {
     return 10;
-  }
-  else {
+  } else {
     return 8;
   }
-}
+};
 
 const CategoryScreen = (props: CategoryProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
@@ -50,8 +46,6 @@ const CategoryScreen = (props: CategoryProps) => {
   const beersByCategory = useCategory(selected);
 
   useEffect(() => {
-    console.log("Pixel Ratio", PixelRatio.getFontScale());
-    console.log("font size", getFontSizeFromPixelRatio(PixelRatio.getFontScale()));
     const fetchCatgeories = async () => {
       try {
         const url = `${EXPO_PUBLIC_API_URL}/api/categories`;
@@ -107,7 +101,11 @@ const CategoryScreen = (props: CategoryProps) => {
       <ScrollView>
         {beersByCategory?.map((beer) => {
           return (
-            <BeerCard key={beer.id} beer={beer} handleBeerPress={handleBeerPress} />
+            <BeerCard
+              key={beer.id}
+              beer={beer}
+              handleBeerPress={handleBeerPress}
+            />
           );
         })}
       </ScrollView>
@@ -142,6 +140,6 @@ const styles = StyleSheet.create({
     margin: 10,
     borderRadius: 5,
     justifyContent: "center",
-    height: Dimensions.get("window").height * 0.60,
+    height: Dimensions.get("window").height * 0.6,
   },
 });

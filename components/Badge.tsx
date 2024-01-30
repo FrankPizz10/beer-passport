@@ -5,17 +5,15 @@ import { MainButtonColor } from "../Styles/colors";
 import { UserBadge } from "../Models/SQLData";
 
 interface BadgeProps {
-    badge: UserBadge;
-    handleBadgePress: (collectionId: number) => void;
+  badge: UserBadge;
+  handleBadgePress: (collectionId: number) => void;
 }
 
 const Badge: React.FC<BadgeProps> = ({ badge, handleBadgePress }) => {
-  const width = Dimensions.get("window").width;
-
   const handlePress = () => {
-      handleBadgePress(badge.collections.id);
+    handleBadgePress(badge.collections.id);
   };
-  
+
   return (
     <TouchableOpacity
       style={[styles.badge, badge.earned ? styles.goldenBadge : null]}
@@ -24,13 +22,22 @@ const Badge: React.FC<BadgeProps> = ({ badge, handleBadgePress }) => {
       <Text style={styles.badgeTitle} maxFontSizeMultiplier={1.2}>
         {badge.collections.name.toUpperCase()}
       </Text>
-      <Text style={[standardStyles.basicCardText, styles.badgeDescription]} maxFontSizeMultiplier={1.2}>
+      <Text
+        style={[standardStyles.basicCardText, styles.badgeDescription]}
+        maxFontSizeMultiplier={1.2}
+      >
         {badge.collections.description}
       </Text>
-      <Text style={[standardStyles.basicCardText, styles.badgeText]} maxFontSizeMultiplier={1.2}>
+      <Text
+        style={[standardStyles.basicCardText, styles.badgeText]}
+        maxFontSizeMultiplier={1.2}
+      >
         Difficulty: {badge.collections.difficulty}
       </Text>
-      <Text style={[standardStyles.basicCardText, styles.badgeText]} maxFontSizeMultiplier={1.2}>
+      <Text
+        style={[standardStyles.basicCardText, styles.badgeText]}
+        maxFontSizeMultiplier={1.2}
+      >
         Progress: {decimalToPercent(badge.progress)}
       </Text>
     </TouchableOpacity>
@@ -65,5 +72,5 @@ const styles = StyleSheet.create({
   },
   goldenBadge: {
     backgroundColor: "gold",
-  }
+  },
 });

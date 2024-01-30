@@ -3,7 +3,10 @@ export function decimalToPercent(decimal: number) {
   return percent + "%"; // Append "%" symbol
 }
 
-export const getErrorMessage = (errorCode: string, serverConnected: boolean) => {
+export const getErrorMessage = (
+  errorCode: string,
+  serverConnected: boolean,
+) => {
   if (!serverConnected) {
     return "Server not connected";
   }
