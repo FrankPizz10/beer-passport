@@ -66,6 +66,9 @@ export interface UserBeer {
   beer_id: number;
   liked: boolean;
   collection_id?: number;
+  beers?: Beer[];
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface Collection {

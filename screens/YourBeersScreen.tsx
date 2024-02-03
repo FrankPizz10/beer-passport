@@ -42,21 +42,18 @@ const YourBeersScreen = (props: YourBeersProps) => {
     <SafeAreaView style={styles.container}>
       <View style={styles.titleContainer}>
         <Text style={styles.title} maxFontSizeMultiplier={1.2}>
-          {" "}
-          My Beers{" "}
+          My Beers
         </Text>
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={handleTriedPress}>
           <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>
-            {" "}
-            Tried{" "}
+            Tried
           </Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={handleLikedPress}>
           <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>
-            {" "}
-            Liked{" "}
+            Liked
           </Text>
         </TouchableOpacity>
       </View>

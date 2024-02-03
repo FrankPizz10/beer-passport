@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { UserBadge } from "../Models/SQLData";
 import { EXPO_PUBLIC_API_URL } from "@env";
 import { auth } from "../Models/firebase";
+import { useFocusEffect } from "@react-navigation/core";
 
 export const useYourBadges = (userId?: number) => {
   const [badges, setBadges] = useState([] as UserBadge[]);
@@ -25,9 +26,11 @@ export const useYourBadges = (userId?: number) => {
     }
   };
 
-  useEffect(() => {
-    fetchBadges();
-  }, [userId]);
+  useFocusEffect(
+    useCallback(() => {
+      fetchBadges();
+    }, []),
+  );
 
   return badges;
 };
