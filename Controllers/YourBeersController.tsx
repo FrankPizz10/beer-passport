@@ -23,7 +23,6 @@ export const useYourBeers = (userId: number | undefined) => {
         // Use a conditional check to handle cases where beers is undefined
         return beers ? beers : [];
       });
-      console.log(filteredBeers[0].name);
       if (tried) {
         setTriedBeers(filteredBeers);
       }
