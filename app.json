@@ -2,7 +2,7 @@
   "expo": {
     "name": "Beer Passport",
     "slug": "beerpassport",
-    "version": "1.0.1",
+    "version": "1.0.4",
     "orientation": "portrait",
     "icon": "./assets/BeerIcon.png",
     "userInterfaceStyle": "dark",
@@ -33,6 +33,12 @@
         "projectId": "451c62c3-bd28-4fc1-8724-1571c640478c"
       }
     },
-    "owner": "frank_pizz10"
+    "owner": "frank_pizz10",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/451c62c3-bd28-4fc1-8724-1571c640478c"
+    }
   }
 }

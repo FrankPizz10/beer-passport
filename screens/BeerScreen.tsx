@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
+  Dimensions,
   ScrollView,
   StyleSheet,
   Text,
@@ -161,8 +162,12 @@ const BeerScreen = (props: BeerProps) => {
       {beer && (
         <View>
           <View style={styles.titleContainer}>
-            <Text style={styles.title}>{beer.name}</Text>
-            <Text style={styles.breweryTitle}>{beer?.brewery?.name}</Text>
+            <Text style={styles.title} maxFontSizeMultiplier={1.2}>
+              {beer.name}
+            </Text>
+            <Text style={styles.breweryTitle} maxFontSizeMultiplier={1.2}>
+              {beer?.brewery?.name}
+            </Text>
           </View>
           <View>
             {!tried && (
@@ -175,7 +180,10 @@ const BeerScreen = (props: BeerProps) => {
                   size={24}
                   color={MainHighlightColor}
                 />
-                <Text style={styles.buttonText}> Try </Text>
+                <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>
+                  {" "}
+                  Try{" "}
+                </Text>
               </TouchableOpacity>
             )}
             {!liked && (
@@ -184,7 +192,10 @@ const BeerScreen = (props: BeerProps) => {
                 onPress={handleLikedPress}
               >
                 <Entypo name="star-outlined" size={24} color="gold" />
-                <Text style={styles.buttonText}> Like </Text>
+                <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>
+                  {" "}
+                  Like{" "}
+                </Text>
               </TouchableOpacity>
             )}
             {tried && (
@@ -197,7 +208,10 @@ const BeerScreen = (props: BeerProps) => {
                   size={24}
                   color={MainHighlightColor}
                 />
-                <Text style={styles.buttonText}> Un Try </Text>
+                <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>
+                  {" "}
+                  Un Try{" "}
+                </Text>
               </TouchableOpacity>
             )}
             {liked && (
@@ -206,28 +220,37 @@ const BeerScreen = (props: BeerProps) => {
                 onPress={handleUnLikedPress}
               >
                 <Entypo name="star" size={24} color="gold" />
-                <Text style={styles.buttonText}> Un Like </Text>
+                <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>
+                  {" "}
+                  Un Like{" "}
+                </Text>
               </TouchableOpacity>
             )}
           </View>
           {beer.style && (
             <View style={styles.styleContainer}>
-              <Text style={styles.style}>{beer.style.style_name}</Text>
+              <Text style={styles.style} maxFontSizeMultiplier={1.2}>
+                {beer.style.style_name}
+              </Text>
             </View>
           )}
           {(beer.abv || beer.abv === 0) && (
             <View style={styles.abvContainer}>
-              <Text style={styles.abv}>ABV: {beer.abv}</Text>
+              <Text style={styles.abv} maxFontSizeMultiplier={1.2}>
+                ABV: {beer.abv}
+              </Text>
             </View>
           )}
           {!!beer.descript && (
             <View style={styles.descriptionContainer}>
-              <Text style={styles.description}>{beer.descript}</Text>
+              <Text style={styles.description} maxFontSizeMultiplier={1.2}>
+                {beer.descript}
+              </Text>
             </View>
           )}
           <View style={styles.breweryContainer}>
             {collectionNames.length > 0 && (
-              <Text style={styles.brewery}>
+              <Text style={styles.brewery} maxFontSizeMultiplier={1.2}>
                 Collections: {collectionNames.join(", ")}
               </Text>
             )}
@@ -251,13 +274,13 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   title: {
-    fontSize: 40,
+    fontSize: Dimensions.get("window").width / 10,
     fontWeight: "bold",
     alignItems: "center",
     textAlign: "center",
   },
   breweryTitle: {
-    fontSize: 30,
+    fontSize: Dimensions.get("window").width / 15,
     alignItems: "center",
     textAlign: "center",
     marginTop: 10,
@@ -269,12 +292,12 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   style: {
-    fontSize: 20,
+    fontSize: Dimensions.get("window").width / 18,
     fontWeight: "bold",
   },
   description: {
-    fontSize: 20,
-    width: 350,
+    fontSize: Dimensions.get("window").width / 20,
+    width: Dimensions.get("window").width - 60,
   },
   descriptionContainer: {
     alignItems: "center",
@@ -282,7 +305,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   abv: {
-    fontSize: 20,
+    fontSize: Dimensions.get("window").width / 20,
     fontWeight: "bold",
   },
   abvContainer: {
@@ -291,7 +314,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   brewery: {
-    fontSize: 20,
+    fontSize: Dimensions.get("window").width / 20,
     fontWeight: "bold",
   },
   breweryContainer: {
@@ -319,22 +342,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   buttonText: {
-    fontSize: 20,
+    fontSize: Dimensions.get("window").width / 18,
     fontWeight: "bold",
     textAlign: "center",
-  },
-  triedLikedContainer: {
-    marginBottom: 20,
-  },
-  triedLiked: {
-    fontSize: 20,
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  HomeButton: {
-    alignItems: "flex-end",
-    justifyContent: "flex-end",
-    marginRight: 15,
-    height: 80,
   },
 });

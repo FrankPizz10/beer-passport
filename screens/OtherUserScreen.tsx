@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   ScrollView,
+  Dimensions,
 } from "react-native";
 import { useNavigation } from "@react-navigation/core";
 import { FriendProfileProps } from "../props";
@@ -13,7 +14,6 @@ import { User } from "../Models/SQLData";
 import { addFriend, fetchUserById, removeFriend } from "../Models/Requests";
 import { useYourBeers } from "../Controllers/YourBeersController";
 import { useYourBadges } from "../Controllers/YourBadgesController";
-import { decimalToPercent } from "../utils";
 import { EXPO_PUBLIC_API_URL } from "@env";
 import {
   BackgroundColor,
@@ -22,6 +22,8 @@ import {
 } from "../Styles/colors";
 import { auth } from "../Models/firebase";
 import { standardStyles } from "../Styles/styles";
+import Badge from "../components/Badge";
+import BeerCard from "../components/BeerCard";
 
 const OtherUserScreen = (props: FriendProfileProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
@@ -34,6 +36,12 @@ const OtherUserScreen = (props: FriendProfileProps) => {
   const handleBeerPress = (beerId: number) => {
     navigation.navigate("Beer", {
       beer_id: beerId,
+    });
+  };
+
+  const handleBadgePress = (collectionId: number) => {
+    navigation.navigate("Collection", {
+      collection_id: collectionId,
     });
   };
 
@@ -96,50 +104,75 @@ const OtherUserScreen = (props: FriendProfileProps) => {
   return (
     <SafeAreaView style={styles.root}>
       <View style={styles.detailsContainer}>
-        <Text style={styles.friendName}>{user.user_name}</Text>
+        <Text style={styles.friendName} maxFontSizeMultiplier={1.2}>
+          {user.user_name}
+        </Text>
       </View>
       {isFriend && (
         <TouchableOpacity
           onPress={handleRemoveFriend}
           style={styles.friendButton}
         >
-          <Text style={styles.friendButtonTitle}>Remove Friend</Text>
+          <Text style={styles.friendButtonTitle} maxFontSizeMultiplier={1.2}>
+            Remove Friend
+          </Text>
         </TouchableOpacity>
       )}
       {!isFriend && (
         <TouchableOpacity onPress={handleAddFriend} style={styles.friendButton}>
-          <Text style={styles.friendButtonTitle}>Add Friend</Text>
+          <Text style={styles.friendButtonTitle} maxFontSizeMultiplier={1.2}>
+            Add Friend
+          </Text>
         </TouchableOpacity>
       )}
       {isFriend && (
-        <View style={styles.buttonAndItemsContainer}>
+        <>
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.button} onPress={handleTriedPress}>
-              <Text style={styles.friendButtonTitle}> Tried </Text>
+              <Text
+                style={styles.friendButtonTitle}
+                maxFontSizeMultiplier={1.1}
+              >
+                {" "}
+                Tried{" "}
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={handleLikedPress}>
-              <Text style={styles.friendButtonTitle}> Liked </Text>
+              <Text
+                style={styles.friendButtonTitle}
+                maxFontSizeMultiplier={1.1}
+              >
+                {" "}
+                Liked{" "}
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={handleBadgesPress}>
-              <Text style={styles.friendButtonTitle}> Badges </Text>
+              <Text
+                style={styles.friendButtonTitle}
+                maxFontSizeMultiplier={1.1}
+              >
+                {" "}
+                Badges{" "}
+              </Text>
             </TouchableOpacity>
           </View>
-          <ScrollView style={styles.friendBeersContainer}>
+          <ScrollView style={styles.scrollables}>
             {triedPressed &&
               triedBeers?.map((beer) => {
                 return (
-                  <View key={beer.id} style={standardStyles.basicCard}>
-                    <TouchableOpacity onPress={() => handleBeerPress(beer.id)}>
-                      <Text style={standardStyles.basicCardText}>
-                        {beer.name}
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
+                  <BeerCard
+                    key={beer.id}
+                    beer={beer}
+                    handleBeerPress={handleBeerPress}
+                  />
                 );
               })}
             {triedPressed && triedBeers?.length === 0 && (
               <View style={standardStyles.basicCard}>
-                <Text style={standardStyles.basicCardText}>
+                <Text
+                  style={standardStyles.basicCardText}
+                  maxFontSizeMultiplier={1.2}
+                >
                   {user.user_name} has no tried beers yet!
                 </Text>
               </View>
@@ -147,18 +180,19 @@ const OtherUserScreen = (props: FriendProfileProps) => {
             {likedPressed &&
               likedBeers?.map((beer) => {
                 return (
-                  <View key={beer.id} style={standardStyles.basicCard}>
-                    <TouchableOpacity onPress={() => handleBeerPress(beer.id)}>
-                      <Text style={standardStyles.basicCardText}>
-                        {beer.name}
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
+                  <BeerCard
+                    key={beer.id}
+                    beer={beer}
+                    handleBeerPress={handleBeerPress}
+                  />
                 );
               })}
             {likedPressed && likedBeers?.length === 0 && (
               <View style={standardStyles.basicCard}>
-                <Text style={standardStyles.basicCardText}>
+                <Text
+                  style={standardStyles.basicCardText}
+                  maxFontSizeMultiplier={1.2}
+                >
                   {user.user_name} has no liked beers yet!
                 </Text>
               </View>
@@ -167,23 +201,22 @@ const OtherUserScreen = (props: FriendProfileProps) => {
               badges &&
               badges?.map((badge) => {
                 return (
-                  <View key={badge.id} style={styles.badge}>
-                    <Text style={styles.badgeTitle}>
-                      {badge.collections.name.toUpperCase()}
-                    </Text>
-                    <Text>{badge.collections.description}</Text>
-                    <Text>Difficulty: {badge.collections.difficulty}</Text>
-                    <Text>Progress: {decimalToPercent(badge.progress)}</Text>
-                  </View>
+                  <Badge
+                    key={badge.id}
+                    badge={badge}
+                    handleBadgePress={handleBadgePress}
+                  />
                 );
               })}
             {badgesPressed && badges?.length === 0 && (
               <View style={styles.badge}>
-                <Text style={styles.badgeTitle}>No badges yet!</Text>
+                <Text style={styles.badgeTitle} maxFontSizeMultiplier={1.2}>
+                  No badges yet!
+                </Text>
               </View>
             )}
           </ScrollView>
-        </View>
+        </>
       )}
     </SafeAreaView>
   );
@@ -202,7 +235,7 @@ const styles = StyleSheet.create({
     padding: 15,
   },
   friendName: {
-    fontSize: 45,
+    fontSize: Dimensions.get("window").width / 10,
     fontWeight: "bold",
   },
   friendButton: {
@@ -210,7 +243,7 @@ const styles = StyleSheet.create({
     backgroundColor: MainHighlightColor,
     borderRadius: 5,
     padding: 10,
-    width: 150,
+    width: Dimensions.get("window").width - 80,
     margin: 15,
     shadowColor: "black",
     shadowOpacity: 0.5,
@@ -221,25 +254,10 @@ const styles = StyleSheet.create({
     },
   },
   friendButtonTitle: {
-    fontSize: 20,
+    fontSize: Dimensions.get("window").width / 18,
     fontWeight: "bold",
     textAlign: "center",
     color: "white",
-  },
-  details: {
-    fontSize: 22,
-    marginBottom: 5,
-  },
-  buttonAndItemsContainer: {
-    flex: 1,
-    alignItems: "center",
-  },
-  friendBeersContainer: {
-    flex: 1,
-    alignContent: "center",
-    height: 400,
-    width: 400,
-    marginBottom: 20,
   },
   buttonContainer: {
     flexDirection: "row",
@@ -260,7 +278,7 @@ const styles = StyleSheet.create({
     },
   },
   badgeTitle: {
-    fontSize: 25,
+    fontSize: Dimensions.get("window").width / 18,
     fontWeight: "bold",
     justifyContent: "center",
     marginBottom: 10,
@@ -272,6 +290,9 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     margin: 10,
     height: 150,
+  },
+  scrollables: {
+    width: "90%",
   },
 });
 

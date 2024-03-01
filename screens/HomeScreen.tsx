@@ -5,12 +5,13 @@ import {
   View,
   TouchableOpacity,
   SafeAreaView,
+  Dimensions,
 } from "react-native";
 import { auth } from "../Models/firebase";
 import { useNavigation } from "@react-navigation/core";
 import { HomeProps } from "../props";
 import { User } from "../Models/SQLData";
-import { EXPO_PUBLIC_API_URL, EXPO_ID, EXPO_PROJECT_ID } from "@env";
+import { EXPO_PUBLIC_API_URL, EXPO_PROJECT_ID } from "@env";
 import { BackgroundColor, MainButtonColor, TitleColor } from "../Styles/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect } from "@react-navigation/native";
@@ -133,32 +134,38 @@ const HomeScreen = (props: HomeProps) => {
   return (
     <SafeAreaView style={styles.root}>
       <View style={styles.titleContainer}>
-        <Text style={styles.welcome}>Welcome {user!.user_name}</Text>
+        <Text style={styles.welcome} maxFontSizeMultiplier={1.1}>
+          Welcome {user!.user_name}
+        </Text>
       </View>
       <View style={styles.iconContainer}>
         <Ionicons name="beer-outline" size={80} color="gold" />
       </View>
       <View style={styles.userDetailsContainer}>
-        <Text style={styles.userDetails}>
+        <Text style={styles.userDetails} maxFontSizeMultiplier={1.2}>
           You have completed {badgeCount}{" "}
           {badgeCount === 1 ? "badge" : "badges"}!
         </Text>
-        <Text style={styles.userDetails}>
+        <Text style={styles.userDetails} maxFontSizeMultiplier={1.2}>
           You have tried {triedCount} {triedCount === 1 ? "beer" : "beers"}!
         </Text>
-        <Text style={styles.userDetails}>
+        <Text style={styles.userDetails} maxFontSizeMultiplier={1.2}>
           You have liked {likedCount} {likedCount === 1 ? "beer" : "beers"}!
         </Text>
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity onPress={handleCategoryScreen} style={styles.button}>
-          <Text style={styles.buttonText}>Find Beer By Category</Text>
+          <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>
+            Find Beer By Category
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={handleCollectionsScreen}
           style={styles.button}
         >
-          <Text style={styles.buttonText}>Collections</Text>
+          <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>
+            Collections
+          </Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -174,19 +181,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   titleContainer: {
-    width: 400,
+    width: Dimensions.get("window").width,
     alignItems: "center",
     marginTop: 15,
     padding: 15,
   },
-  title: {
-    fontSize: 50,
-    fontWeight: "bold",
-    textAlign: "center",
-    color: TitleColor,
-  },
   welcome: {
-    fontSize: 40,
+    fontSize: Dimensions.get("window").width / 10,
     fontWeight: "bold",
     textAlign: "center",
     color: TitleColor,
@@ -197,7 +198,7 @@ const styles = StyleSheet.create({
     padding: 15,
   },
   userDetails: {
-    fontSize: 20,
+    fontSize: Dimensions.get("window").width / 20,
     fontWeight: "bold",
     textAlign: "center",
     color: "black",
@@ -211,24 +212,22 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flex: 1,
     alignItems: "center",
-    height: 400,
-    width: 400,
     marginBottom: 20,
   },
   button: {
     backgroundColor: MainButtonColor,
     color: "white",
-    height: 50,
+    height: Dimensions.get("window").height / 12,
     padding: 10,
     margin: 10,
-    width: 300,
+    width: Dimensions.get("window").width - 80,
     borderRadius: 5,
     alignItems: "center",
     justifyContent: "center",
   },
   buttonText: {
     color: "black",
-    fontSize: 20,
+    fontSize: Dimensions.get("window").width / 18,
     fontWeight: "bold",
   },
 });

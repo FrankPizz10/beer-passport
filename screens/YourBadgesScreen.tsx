@@ -1,19 +1,17 @@
 import React from "react";
 import {
+  Dimensions,
   SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from "react-native";
 import { YourBadgesProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
 import { useYourBadges } from "../Controllers/YourBadgesController";
-import { decimalToPercent } from "../utils";
 import { BackgroundColor, MainButtonColor } from "../Styles/colors";
-import { standardStyles } from "../Styles/styles";
-// import HomeButton from "./HomeButton";
+import Badge from "../components/Badge";
 
 const YourBadgesScreen = (props: YourBadgesProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
@@ -27,38 +25,27 @@ const YourBadgesScreen = (props: YourBadgesProps) => {
 
   return (
     <SafeAreaView style={styles.root}>
-      {/* <View style={styles.HomeButton}>
-        <HomeButton route={props.route} navigation={props.navigation} />
-      </View> */}
       <View style={styles.titleContainer}>
-        <Text style={styles.pageTitle}> My Badges </Text>
+        <Text style={styles.pageTitle} maxFontSizeMultiplier={1.2}>
+          {" "}
+          My Badges{" "}
+        </Text>
       </View>
       <ScrollView style={styles.badgeContainer}>
         {userBadges?.map((badge) => {
           return (
-            <TouchableOpacity
+            <Badge
               key={badge.id}
-              style={[styles.badge, badge.earned ? styles.goldenBadge : null]}
-              onPress={() => handleBadgePress(badge.collections.id)}
-            >
-              <Text style={styles.badgeTitle}>
-                {badge.collections.name.toUpperCase()}
-              </Text>
-              <Text style={standardStyles.basicCardText}>
-                {badge.collections.description}
-              </Text>
-              <Text style={standardStyles.basicCardText}>
-                Difficulty: {badge.collections.difficulty}
-              </Text>
-              <Text style={standardStyles.basicCardText}>
-                Progress: {decimalToPercent(badge.progress)}
-              </Text>
-            </TouchableOpacity>
+              badge={badge}
+              handleBadgePress={handleBadgePress}
+            />
           );
         })}
         {userBadges?.length === 0 && (
           <View style={styles.badge}>
-            <Text style={styles.noBadgeTitle}>You have no badges yet!</Text>
+            <Text style={styles.noBadgeTitle} maxFontSizeMultiplier={1.2}>
+              You have no badges yet!
+            </Text>
           </View>
         )}
       </ScrollView>
@@ -80,7 +67,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   pageTitle: {
-    fontSize: 50,
+    fontSize: Dimensions.get("window").width / 10,
     fontWeight: "bold",
   },
   badgeContainer: {
@@ -88,14 +75,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     alignContent: "center",
   },
-  badgeTitle: {
-    fontSize: 35,
-    fontWeight: "bold",
-    justifyContent: "center",
-    marginBottom: 10,
-  },
   noBadgeTitle: {
-    fontSize: 25,
+    fontSize: Dimensions.get("window").width / 15,
     fontWeight: "bold",
     justifyContent: "center",
     marginBottom: 10,
@@ -106,16 +87,7 @@ const styles = StyleSheet.create({
     backgroundColor: MainButtonColor,
     borderRadius: 12,
     margin: 5,
-    width: 350,
-    height: 160,
-  },
-  goldenBadge: {
-    backgroundColor: "gold",
-  },
-  HomeButton: {
-    alignItems: "flex-end",
-    justifyContent: "flex-end",
-    marginRight: 15,
-    height: 80,
+    width: Dimensions.get("window").width - 50,
+    height: Dimensions.get("window").height / 5,
   },
 });

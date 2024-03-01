@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   SafeAreaView,
+  Dimensions,
 } from "react-native";
 import { Beer, Collection, CollectionBeer } from "../Models/SQLData";
 import {
@@ -50,20 +51,31 @@ const CollectionScreen = (props: CollectionProps) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.titleContainer}>
-        <Text style={styles.CollectionTitle}>{collection?.name}</Text>
-        <Text style={styles.CollectionDetails}>{collection?.description}</Text>
-        <Text style={styles.CollectionDetails}>
+        <Text style={styles.CollectionTitle} maxFontSizeMultiplier={1.1}>
+          {collection?.name}
+        </Text>
+        <Text style={styles.CollectionDetails} maxFontSizeMultiplier={1.2}>
+          {collection?.description}
+        </Text>
+        <Text style={styles.CollectionDetails} maxFontSizeMultiplier={1.2}>
           Difficulty: {collection?.difficulty}
         </Text>
       </View>
       <ScrollView>
         {beers?.map((beer) => {
           return (
-            <View key={beer.id} style={standardStyles.basicCard}>
-              <TouchableOpacity onPress={() => handleBeerPress(beer.id)}>
-                <Text style={standardStyles.basicCardText}>{beer.name}</Text>
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity
+              key={beer.id}
+              style={standardStyles.basicCard}
+              onPress={() => handleBeerPress(beer.id)}
+            >
+              <Text
+                style={standardStyles.basicCardText}
+                maxFontSizeMultiplier={1.2}
+              >
+                {beer.name}
+              </Text>
+            </TouchableOpacity>
           );
         })}
       </ScrollView>
@@ -84,20 +96,14 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   CollectionTitle: {
-    fontSize: 50,
+    fontSize: Dimensions.get("window").width * 0.1,
     fontWeight: "bold",
     textAlign: "center",
     margin: 10,
   },
   CollectionDetails: {
-    fontSize: 22,
+    fontSize: Dimensions.get("window").width * 0.06,
     textAlign: "center",
     margin: 10,
-  },
-  HomeButton: {
-    alignItems: "flex-end",
-    justifyContent: "flex-end",
-    marginRight: 15,
-    height: 80,
   },
 });

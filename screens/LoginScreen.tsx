@@ -8,54 +8,28 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
+  Dimensions,
 } from "react-native";
 import { auth } from "../Models/firebase";
-import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
+import {
+  User,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import { useNavigation } from "@react-navigation/core";
 import { LoginProps } from "../props";
-import { EXPO_PUBLIC_API_URL } from "@env";
 import { BackgroundColor, MainHighlightColor } from "../Styles/colors";
-
-export const getErrorMessage = (errorCode: string, serverConnected: boolean) => {
-  if (!serverConnected) {
-    return "Server not connected";
-  }
-  switch (errorCode) {
-    case "auth/invalid-email":
-      return "Invalid email address format.";
-    case "auth/user-disabled":
-      return "User account disabled.";
-    case "auth/user-not-found":
-      return "User account not found.";
-    case "auth/wrong-password":
-      return "Incorrect password.";
-    case "auth/missing-password":
-      return "Missing password.";
-    case "auth/weak-password":
-      return "Password is too weak. Must be at least 6 characters long.";
-    case "auth/email-already-exists":
-      return "Email address already in use.";
-    default:
-      return "Unknown error occurred.";
-  }
-};
-
-export const checkServerConnected = async () => {
-  try {
-    const url = `${EXPO_PUBLIC_API_URL}/`;
-    const response = await fetch(url);
-    return response.status === 200;
-  } catch (error) {
-    return false;
-  }
-};
+import { checkUserExists } from "./CreateNewAccount";
+import { checkServerConnected } from "../Models/Requests";
+import { getErrorMessage } from "../utils";
+import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
 
 const LoginScreen = (props: LoginProps) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loginPressed, setLoginPressed] = useState(false);
   const [serverConnected, setServerConnected] = useState(false);
-
+  const [userExists, setUserExists] = useState(false);
   const navigation = useNavigation<(typeof props)["navigation"]>();
 
   const dismissKeyboard = () => {
@@ -63,14 +37,31 @@ const LoginScreen = (props: LoginProps) => {
   };
 
   useEffect(() => {
-    checkServerConnected().then((connected) => {
-      setServerConnected(connected);
-    });
+    const tryStoredLogin = async () => {
+      try {
+        const serverConnected = await checkServerConnected();
+        setServerConnected(serverConnected);
+        const user = await ReactNativeAsyncStorage.getItem("user");
+        const userJson: User = user ? JSON.parse(user) : undefined;
+        const userExists = userJson
+          ? await checkUserExists(userJson.email!, "_")
+          : undefined;
+        onAuthStateChanged(auth, (user) => {
+          if (user && serverConnected && userExists) {
+            navigation.replace("BottomTabNavigator");
+          }
+        });
+      } catch (error) {
+        console.log("Error: ", error);
+      }
+    };
+    tryStoredLogin();
   }, []);
 
   useEffect(() => {
     const unsibscribe = onAuthStateChanged(auth, (user) => {
-      if (user && serverConnected) {
+      if (user && serverConnected && userExists) {
+        ReactNativeAsyncStorage.setItem("user", JSON.stringify(user));
         navigation.replace("BottomTabNavigator");
       }
     });
@@ -81,13 +72,45 @@ const LoginScreen = (props: LoginProps) => {
     navigation.navigate("CreateNewAccount");
   };
 
+  // const verifyIdToken = async (token: string) => {
+  //   const url = `${EXPO_PUBLIC_API_URL}/users/verifyidtoken/`;
+  //   const res = await fetch(url, {
+  //     method: "POST",
+  //     headers: {
+  //       Accept: "application/json",
+  //       "Content-Type": "application/json",
+  //     },
+  //     body : JSON.stringify({
+  //       idToken: token,
+  //     }),
+  //   });
+  //   const decodedToken = await res.json();
+  //   return decodedToken;
+  // }
+
+  // const checkUserToken = async () => {
+  //   const token = await ReactNativeAsyncStorage.getItem("userToken");
+  //   console.log("Token: ", token?.length ?? 0);
+  //   if (token) {
+  //     const user = await verifyIdToken(token);
+  //     console.log("User: ", user);
+  //     const checkUserExistsRes = await checkUserExists(user.email, "_");
+  //     setUserExists(checkUserExistsRes.exists);
+  //   }
+  // }
+
   const handleLogin = async () => {
     try {
       if (!serverConnected) {
         alert("Server not connected");
         return;
       }
+      const existsRes = await checkUserExists(email, "_");
+      setUserExists(existsRes.exists);
       await signInWithEmailAndPassword(auth, email, password);
+      // const user = userCredentials.user;
+      // const token = await user.getIdToken();
+      // await ReactNativeAsyncStorage.setItem("userToken", token);
       setLoginPressed(true);
     } catch (error: any) {
       const errorCode = error.code;
@@ -101,7 +124,9 @@ const LoginScreen = (props: LoginProps) => {
         <TouchableWithoutFeedback onPress={dismissKeyboard}>
           <KeyboardAvoidingView style={styles.root} behavior="padding">
             <View style={styles.title}>
-              <Text style={styles.title}>Login</Text>
+              <Text style={styles.title} maxFontSizeMultiplier={1.2}>
+                Login
+              </Text>
             </View>
             <View style={styles.inputContainer}>
               <TextInput
@@ -110,6 +135,7 @@ const LoginScreen = (props: LoginProps) => {
                 value={email}
                 onChangeText={(text) => setEmail(text)}
                 style={styles.input}
+                maxFontSizeMultiplier={1.2}
               />
               <TextInput
                 placeholder="Password"
@@ -117,15 +143,20 @@ const LoginScreen = (props: LoginProps) => {
                 value={password}
                 onChangeText={(text) => setPassword(text)}
                 style={styles.input}
+                maxFontSizeMultiplier={1.2}
                 secureTextEntry
               />
             </View>
             <View style={styles.buttonContainer}>
               <TouchableOpacity onPress={handleLogin} style={styles.button}>
-                <Text style={styles.buttonText}>Login</Text>
+                <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>
+                  Login
+                </Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={handleSignUp} style={styles.button}>
-                <Text style={styles.buttonText}>Register</Text>
+                <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>
+                  Register
+                </Text>
               </TouchableOpacity>
             </View>
           </KeyboardAvoidingView>
@@ -133,7 +164,9 @@ const LoginScreen = (props: LoginProps) => {
       )}
       {!serverConnected && (
         <View style={styles.failed}>
-          <Text style={styles.title}>Unable to connect to server</Text>
+          <Text style={styles.title} maxFontSizeMultiplier={1.2}>
+            Unable to connect to server
+          </Text>
         </View>
       )}
     </>
@@ -161,7 +194,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     justifyContent: "center",
     alignItems: "center",
-    fontSize: 40,
+    fontSize: Dimensions.get("window").width / 10,
     padding: 10,
     textAlign: "center",
   },
@@ -170,7 +203,7 @@ const styles = StyleSheet.create({
     borderStyle: "solid",
     borderColor: "black",
     padding: 10,
-    width: 300,
+    width: Dimensions.get("window").width - 80,
   },
   input: {
     height: 40,
@@ -194,7 +227,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "white",
-    fontSize: 20,
+    fontSize: Dimensions.get("window").width / 18,
     fontWeight: "bold",
   },
   failed: {

@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   SafeAreaView,
+  Dimensions,
 } from "react-native";
 import { User } from "../Models/SQLData";
 import { fetchFriends } from "../Models/Requests";
@@ -41,14 +42,19 @@ const FriendScreen = (props: FriendsProps) => {
 
   return (
     <SafeAreaView style={styles.root}>
-      <Text style={styles.screenTitle}>My Friends</Text>
+      <Text style={styles.screenTitle} maxFontSizeMultiplier={1.2}>
+        My Friends
+      </Text>
       <SearchUsersButton navigation={navigation} />
       <ScrollView style={styles.friendContainer}>
         {friends.map((friend) => {
           return (
             <View key={friend.id} style={standardStyles.basicCard}>
               <TouchableOpacity onPress={() => handleFriendPress(friend.id)}>
-                <Text style={standardStyles.basicCardText}>
+                <Text
+                  style={standardStyles.basicCardText}
+                  maxFontSizeMultiplier={1.2}
+                >
                   {friend.user_name}
                 </Text>
               </TouchableOpacity>
@@ -67,14 +73,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   titleContainer: {
-    height: 150,
-    width: 400,
     alignItems: "center",
     margin: 15,
     padding: 15,
   },
   screenTitle: {
-    fontSize: 40,
+    fontSize: Dimensions.get("window").width / 10,
     fontWeight: "bold",
     textAlign: "center",
     margin: 10,
@@ -82,8 +86,7 @@ const styles = StyleSheet.create({
   friendContainer: {
     flex: 1,
     alignContent: "center",
-    height: 400,
-    width: 400,
+    width: Dimensions.get("window").width - 20,
     marginBottom: 20,
   },
 });

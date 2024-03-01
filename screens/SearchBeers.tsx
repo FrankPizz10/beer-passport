@@ -1,13 +1,12 @@
 import React, { useCallback, useState } from "react";
 import {
   StyleSheet,
-  Text,
   View,
   ScrollView,
-  TouchableOpacity,
   TextInput,
   TouchableWithoutFeedback,
   Keyboard,
+  Dimensions,
 } from "react-native";
 import { SearchBeersProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
@@ -15,10 +14,10 @@ import { BasicBeer } from "../Models/SQLData";
 import { fetchAllBeers } from "../Models/Requests";
 import { useSearchFilter } from "../Controllers/SearchController";
 import { BackgroundColor } from "../Styles/colors";
-import { standardStyles } from "../Styles/styles";
 import { EXPO_PUBLIC_API_URL } from "@env";
 import { auth } from "../Models/firebase";
 import { useFocusEffect } from "@react-navigation/native";
+import BeerCard from "../components/BeerCard";
 
 // const getNewestStoredBeer = async () => {
 //   const storedData = await AsyncStorage.getItem("beers");
@@ -84,17 +83,18 @@ const SearchBeerScreen = (props: SearchBeersProps) => {
           onChangeText={(text) => setSearchInput(text)}
           placeholder="Search for a beer"
           placeholderTextColor="gray"
+          maxFontSizeMultiplier={1.2}
         />
       </TouchableWithoutFeedback>
       {searchInput.length > 0 && (
         <ScrollView>
           {filteredList?.map((beer) => {
             return (
-              <View key={beer.id} style={standardStyles.basicCard}>
-                <TouchableOpacity onPress={() => handleBeerPress(beer.id)}>
-                  <Text style={standardStyles.basicCardText}>{beer.name}</Text>
-                </TouchableOpacity>
-              </View>
+              <BeerCard
+                key={beer.id}
+                beer={beer}
+                handleBeerPress={handleBeerPress}
+              />
             );
           })}
         </ScrollView>
@@ -103,11 +103,11 @@ const SearchBeerScreen = (props: SearchBeersProps) => {
         <ScrollView>
           {mostPopularBeers?.map((beer) => {
             return (
-              <View key={beer.id} style={standardStyles.basicCard}>
-                <TouchableOpacity onPress={() => handleBeerPress(beer.id)}>
-                  <Text style={standardStyles.basicCardText}>{beer.name}</Text>
-                </TouchableOpacity>
-              </View>
+              <BeerCard
+                key={beer.id}
+                beer={beer}
+                handleBeerPress={handleBeerPress}
+              />
             );
           })}
         </ScrollView>
@@ -130,7 +130,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   input: {
-    height: 40,
+    height: Dimensions.get("window").height / 20,
+    fontSize: Dimensions.get("window").width / 25,
     margin: 12,
     borderWidth: 1,
     borderStyle: "solid",

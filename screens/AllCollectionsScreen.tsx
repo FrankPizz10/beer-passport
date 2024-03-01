@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import {
-  View,
   Text,
   ScrollView,
   TouchableOpacity,
   StyleSheet,
   SafeAreaView,
+  Dimensions,
 } from "react-native";
 import { Collection } from "../Models/SQLData";
 import { fetchAllCollections } from "../Models/Requests";
@@ -35,19 +35,24 @@ const AllCollectionsScreen = (props: AllCollectionsProps) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.ScreenTitle}>Collections</Text>
+      <Text style={styles.ScreenTitle} maxFontSizeMultiplier={1.2}>
+        Collections
+      </Text>
       <ScrollView>
         {collections?.map((collection) => {
           return (
-            <View key={collection.id} style={standardStyles.basicCard}>
-              <TouchableOpacity
-                onPress={() => handleCollectionPress(collection.id)}
+            <TouchableOpacity
+              key={collection.id}
+              style={standardStyles.basicCard}
+              onPress={() => handleCollectionPress(collection.id)}
+            >
+              <Text
+                style={standardStyles.basicCardText}
+                maxFontSizeMultiplier={1.2}
               >
-                <Text style={standardStyles.basicCardText}>
-                  {collection.name}
-                </Text>
-              </TouchableOpacity>
-            </View>
+                {collection.name}
+              </Text>
+            </TouchableOpacity>
           );
         })}
       </ScrollView>
@@ -63,7 +68,7 @@ const styles = StyleSheet.create({
     backgroundColor: BackgroundColor,
   },
   ScreenTitle: {
-    fontSize: 30,
+    fontSize: Dimensions.get("window").width * 0.1,
     fontWeight: "bold",
     textAlign: "center",
     margin: 20,

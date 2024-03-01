@@ -1,5 +1,11 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions,
+} from "react-native";
 import { CommonNavButtonProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
 import { deleteAccount } from "../Models/Requests";
@@ -15,7 +21,9 @@ const DeleteAccountButton = (props: CommonNavButtonProps) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.button} onPress={handleDeleteAccount}>
-        <Text style={styles.buttonText}>Confirm Delete</Text>
+        <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>
+          Confirm Delete
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -39,7 +47,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "white",
-    fontSize: 20,
+    fontSize: Dimensions.get("window").width / 20,
     fontWeight: "bold",
   },
 });

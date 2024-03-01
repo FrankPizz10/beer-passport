@@ -14,13 +14,39 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
+  Dimensions,
 } from "react-native";
 import { auth } from "../Models/firebase";
 import { EXPO_PUBLIC_API_URL } from "@env";
-import { getErrorMessage } from "./LoginScreen";
+import { getErrorMessage } from "../utils";
 import { MainHighlightColor } from "../Styles/colors";
-import { checkServerConnected } from "./LoginScreen";
-import { check } from "prettier";
+import { checkServerConnected } from "../Models/Requests";
+import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
+
+export interface UserExists {
+  exists: boolean;
+  type: "email" | "username";
+}
+
+export const checkUserExists = async (
+  email: string,
+  username: string,
+): Promise<UserExists> => {
+  const userExistsURL = `${EXPO_PUBLIC_API_URL}/userexists/`;
+  const userExists = await fetch(userExistsURL, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      email,
+      user_name: username,
+    }),
+  });
+  const existsRes = await userExists.json();
+  return existsRes;
+};
 
 const CreateNewAccount = (props: CreateAccountProps) => {
   const [email, setEmail] = useState("");
@@ -34,17 +60,20 @@ const CreateNewAccount = (props: CreateAccountProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
 
   useEffect(() => {
-    const unsibscribe = onAuthStateChanged(auth, (user) => {
-      checkServerConnected().then((connected) => {
-        setServerConnected(connected);
+    const createAccount = async () => {
+      const serverConnected = await checkServerConnected();
+      setServerConnected(serverConnected);
+      const unsibscribe = onAuthStateChanged(auth, (user) => {
+        ReactNativeAsyncStorage.setItem("user", JSON.stringify(user));
+        if (user && accountVerified) {
+          navigation.replace("BottomTabNavigator");
+        } else if (user && deleteAccount) {
+          user.delete();
+        }
       });
-      if (user && accountVerified) {
-        navigation.replace("BottomTabNavigator");
-      } else if (user && deleteAccount) {
-        user.delete();
-      }
-    });
-    return unsibscribe;
+      return unsibscribe;
+    }
+    createAccount();
   }, [accountVerified, deleteAccount]);
 
   const handleSignUp = async () => {
@@ -53,19 +82,7 @@ const CreateNewAccount = (props: CreateAccountProps) => {
       return;
     }
     try {
-      const userExistsURL = `${EXPO_PUBLIC_API_URL}/userexists/`;
-      const userExists = await fetch(userExistsURL, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          user_name: username,
-        }),
-      });
-      const existsRes = await userExists.json();
+      const existsRes = await checkUserExists(email, username);
       if (existsRes.exists) {
         if (existsRes.type === "email") {
           alert("Email already exists");
@@ -118,7 +135,9 @@ const CreateNewAccount = (props: CreateAccountProps) => {
   return (
     <TouchableWithoutFeedback onPress={dismissKeyboard}>
       <KeyboardAvoidingView style={styles.container} behavior="padding">
-        <Text style={styles.title}>Create Account</Text>
+        <Text style={styles.title} maxFontSizeMultiplier={1.2}>
+          Create Account
+        </Text>
         <View style={styles.inputContainer}>
           <TextInput
             placeholder="Email"
@@ -126,6 +145,7 @@ const CreateNewAccount = (props: CreateAccountProps) => {
             value={email}
             onChangeText={(text) => setEmail(text)}
             style={styles.input}
+            maxFontSizeMultiplier={1.2}
           />
           <TextInput
             placeholder="Password"
@@ -134,6 +154,7 @@ const CreateNewAccount = (props: CreateAccountProps) => {
             onChangeText={(text) => setPassword(text)}
             style={styles.input}
             secureTextEntry
+            maxFontSizeMultiplier={1.2}
           />
           <TextInput
             placeholder="Age"
@@ -142,6 +163,7 @@ const CreateNewAccount = (props: CreateAccountProps) => {
             value={age}
             onChangeText={(text) => setAge(text)}
             style={styles.input}
+            maxFontSizeMultiplier={1.2}
           />
           <TextInput
             placeholder="Username"
@@ -149,10 +171,13 @@ const CreateNewAccount = (props: CreateAccountProps) => {
             value={username}
             onChangeText={(text) => setUsername(text)}
             style={styles.input}
+            maxFontSizeMultiplier={1.2}
           />
         </View>
         <TouchableOpacity onPress={handleSignUp} style={styles.button}>
-          <Text style={styles.buttonText}>Register</Text>
+          <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>
+            Register
+          </Text>
         </TouchableOpacity>
       </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
@@ -168,19 +193,20 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   title: {
-    fontSize: 40,
+    fontSize: Dimensions.get("window").width / 10,
     fontWeight: "bold",
     marginBottom: 20,
   },
   inputContainer: {
-    width: 300,
+    width: Dimensions.get("window").width - 80,
     borderWidth: 1,
     borderStyle: "solid",
     borderColor: "black",
     padding: 10,
+    marginBottom: 20,
   },
   input: {
-    height: 40,
+    height: Dimensions.get("window").height / 18,
     margin: 12,
     borderWidth: 1,
     borderStyle: "solid",
@@ -198,7 +224,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "white",
-    fontSize: 20,
+    fontSize: Dimensions.get("window").width / 18,
     fontWeight: "bold",
   },
 });

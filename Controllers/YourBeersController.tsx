@@ -1,37 +1,12 @@
-import { useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { Beer, UserBeer } from "../Models/SQLData";
 import { EXPO_PUBLIC_API_URL } from "@env";
 import { auth } from "../Models/firebase";
+import { useFocusEffect } from "@react-navigation/core";
 
 export const useYourBeers = (userId: number | undefined) => {
-  const [triedBeers, setTriedBeers] = useState([] as Beer[]);
-  const [likedBeers, setLikedBeers] = useState([] as Beer[]);
-
-  const fetchBeers = async (userBeers: UserBeer[], tried: boolean) => {
-    try {
-      userBeers.forEach(async (userBeer) => {
-        const url = `${EXPO_PUBLIC_API_URL}/api/beers/${userBeer.beer_id}`;
-        const token = await auth.currentUser?.getIdToken();
-        const response = await fetch(url, {
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        });
-        const beer = await response.json();
-        if (tried) {
-          if (triedBeers.find((b) => b.id === beer.id)) return;
-          setTriedBeers((prevTriedBeers) => [...prevTriedBeers, beer]);
-        } else {
-          if (likedBeers.find((b) => b.id === beer.id)) return;
-          setLikedBeers((prevLikeBeers) => [...prevLikeBeers, beer]);
-        }
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const [triedBeers, setTriedBeers] = useState<Beer[]>();
+  const [likedBeers, setLikedBeers] = useState<Beer[]>();
 
   const fetchBeersHelper = async (url: string, tried: boolean) => {
     try {
@@ -43,19 +18,30 @@ export const useYourBeers = (userId: number | undefined) => {
           Authorization: "Bearer " + token,
         },
       });
-      const userBeers = await response.json();
-      fetchBeers(userBeers, tried);
-    } catch (error) {
+      const responseData: UserBeer[] = await response.json();
+      const filteredBeers: Beer[] = responseData.flatMap(({ beers }) => {
+        // Use a conditional check to handle cases where beers is undefined
+        return beers ? beers : [];
+      });
+      if (tried) {
+        setTriedBeers(filteredBeers);
+      }
+      else {
+        setLikedBeers(filteredBeers);
+      }
+    } catch (error) { 
       console.log(error);
     }
   };
 
-  useEffect(() => {
-    const triedUrl = `${EXPO_PUBLIC_API_URL}/api/triedbeers/${userId}`;
-    const likedUrl = `${EXPO_PUBLIC_API_URL}/api/likedbeers/${userId}`;
-    fetchBeersHelper(triedUrl, true);
-    fetchBeersHelper(likedUrl, false);
-  }, [userId]);
+  useFocusEffect(
+    useCallback(() => {
+      const triedUrl = `${EXPO_PUBLIC_API_URL}/api/triedbeers/${userId}`;
+      const likedUrl = `${EXPO_PUBLIC_API_URL}/api/likedbeers/${userId}`;
+      fetchBeersHelper(triedUrl, true);
+      fetchBeersHelper(likedUrl, false);
+    }, []),
+  );
 
   return { triedBeers, likedBeers };
 };

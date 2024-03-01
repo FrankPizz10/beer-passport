@@ -264,3 +264,13 @@ export const fetchUserByUserName = async (userName: string): Promise<User> => {
   const user = await response.json();
   return user;
 };
+
+export const checkServerConnected = async () => {
+  try {
+    const url = `${EXPO_PUBLIC_API_URL}/`;
+    const response = await fetch(url);
+    return response.status === 200;
+  } catch (error) {
+    return false;
+  }
+};

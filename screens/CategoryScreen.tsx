@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
-  Text,
   View,
   ScrollView,
-  TouchableOpacity,
+  Dimensions,
+  PixelRatio,
 } from "react-native";
 import { CategoryProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
@@ -14,12 +14,29 @@ import { useCategory } from "../Controllers/CategoryController";
 import { auth } from "../Models/firebase";
 import { BackgroundColor } from "../Styles/colors";
 import { Dropdown } from "react-native-element-dropdown";
-import { standardStyles } from "../Styles/styles";
+import BeerCard from "../components/BeerCard";
 
 interface CategoryMap {
   key: number;
   value: string;
 }
+
+const getFontSizeFromPixelRatio = (pixelRatio: number) => {
+  if (pixelRatio < 1.5) {
+    return 22;
+  }
+  if (pixelRatio < 2) {
+    return 16;
+  }
+  if (pixelRatio < 3) {
+    return 10;
+  }
+  if (pixelRatio < 3.5) {
+    return 10;
+  } else {
+    return 8;
+  }
+};
 
 const CategoryScreen = (props: CategoryProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
@@ -75,6 +92,7 @@ const CategoryScreen = (props: CategoryProps) => {
           onChange={(item) => handleSelected(item.key)}
           selectedTextStyle={styles.placeholder}
           containerStyle={styles.dropDown}
+          itemTextStyle={styles.items}
           labelField="value"
           valueField="key"
           mode="modal"
@@ -83,11 +101,11 @@ const CategoryScreen = (props: CategoryProps) => {
       <ScrollView>
         {beersByCategory?.map((beer) => {
           return (
-            <View key={beer.id} style={standardStyles.basicCard}>
-              <TouchableOpacity onPress={() => handleBeerPress(beer.id)}>
-                <Text style={standardStyles.basicCardText}>{beer.name}</Text>
-              </TouchableOpacity>
-            </View>
+            <BeerCard
+              key={beer.id}
+              beer={beer}
+              handleBeerPress={handleBeerPress}
+            />
           );
         })}
       </ScrollView>
@@ -108,7 +126,13 @@ const styles = StyleSheet.create({
   placeholder: {
     color: "black",
     fontWeight: "bold",
-    fontSize: 30,
+    // fontSize: Dimensions.get("window").width / 15,
+    fontSize: getFontSizeFromPixelRatio(PixelRatio.getFontScale()),
+  },
+  items: {
+    color: "black",
+    fontWeight: "bold",
+    fontSize: getFontSizeFromPixelRatio(PixelRatio.getFontScale()),
   },
   dropDown: {
     backgroundColor: BackgroundColor,
@@ -116,5 +140,6 @@ const styles = StyleSheet.create({
     margin: 10,
     borderRadius: 5,
     justifyContent: "center",
+    height: Dimensions.get("window").height * 0.6,
   },
 });
