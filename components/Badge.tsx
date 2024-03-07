@@ -11,7 +11,7 @@ interface BadgeProps {
 
 const Badge: React.FC<BadgeProps> = ({ badge, handleBadgePress }) => {
   const handlePress = () => {
-    handleBadgePress(badge.collections.id);
+    handleBadgePress(badge.collection.id);
   };
 
   return (
@@ -20,19 +20,19 @@ const Badge: React.FC<BadgeProps> = ({ badge, handleBadgePress }) => {
       onPress={() => handlePress()}
     >
       <Text style={styles.badgeTitle} maxFontSizeMultiplier={1.2}>
-        {badge.collections.name.toUpperCase()}
+        {badge.collection.name.toUpperCase()}
       </Text>
       <Text
         style={[standardStyles.basicCardText, styles.badgeDescription]}
         maxFontSizeMultiplier={1.2}
       >
-        {badge.collections.description}
+        {badge.collection.description}
       </Text>
       <Text
         style={[standardStyles.basicCardText, styles.badgeText]}
         maxFontSizeMultiplier={1.2}
       >
-        Difficulty: {badge.collections.difficulty}
+        Difficulty: {badge.collection.difficulty}
       </Text>
       <Text
         style={[standardStyles.basicCardText, styles.badgeText]}
