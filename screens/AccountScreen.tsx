@@ -31,7 +31,7 @@ const AccountScreen = (props: AccountProps) => {
     <View style={styles.root}>
       <View style={styles.titleContainer}>
         <Text style={styles.title} maxFontSizeMultiplier={1.2}>
-          Account Screen!
+          Account Screen
         </Text>
       </View>
       <View style={styles.buttonContainer}>
