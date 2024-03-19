@@ -11,7 +11,7 @@ import { auth } from "../Models/firebase";
 import { useNavigation } from "@react-navigation/core";
 import { HomeProps } from "../props";
 import { User } from "../Models/SQLData";
-import { EXPO_PUBLIC_API_URL, EXPO_PROJECT_ID } from "@env";
+import { EXPO_PUBLIC_API_URL, EXPO_PUBLIC_EXPO_PROJECT_ID } from "@env";
 import { BackgroundColor, MainButtonColor, TitleColor } from "../Styles/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect } from "@react-navigation/native";
@@ -43,7 +43,7 @@ async function registerForPushNotificationsAsync() {
   }
   const token = (
     await Notifications.getExpoPushTokenAsync({
-      projectId: EXPO_PROJECT_ID,
+      projectId: EXPO_PUBLIC_EXPO_PROJECT_ID,
     })
   ).data;
   return token;
