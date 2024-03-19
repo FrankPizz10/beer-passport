@@ -79,12 +79,12 @@ export interface Collection {
 }
 
 export interface UserBadge {
-  id: number;
+  id: string;
   user_id: number;
-  collection_id: number;
   earned: boolean;
   progress: number;
-  collections: Collection;
+  updated_at: Date;
+  collection: Collection
 }
 
 export interface CollectionBeer {
