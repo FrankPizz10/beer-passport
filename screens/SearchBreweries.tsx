@@ -8,56 +8,55 @@ import {
   Keyboard,
   Dimensions,
 } from "react-native";
-import { SearchBeersProps } from "../props";
+import { SearchBreweriesProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
-import { BasicBeer } from "../Models/SQLData";
-import { fetchAllBeers } from "../Models/Requests";
+import { BasicBrewery } from "../Models/SQLData";
+import { fetchAllBreweries } from "../Models/Requests";
 import { useSearchFilter } from "../Controllers/SearchController";
 import { BackgroundColor } from "../Styles/colors";
-import { EXPO_PUBLIC_API_URL } from "@env";
-import { auth } from "../Models/firebase";
 import { useFocusEffect } from "@react-navigation/native";
 import SimpleCard from "../components/SimpleCard";
 
-const SearchBeerScreen = (props: SearchBeersProps) => {
+const SearchBreweriesScreen = (props: SearchBreweriesProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
-  const [beers, setBeers] = useState<BasicBeer[]>([] as BasicBeer[]);
-  const [mostPopularBeers, setMostPopularBeers] = useState<BasicBeer[]>([]);
+  const [breweries, setBreweries] = useState<BasicBrewery[]>(
+    [] as BasicBrewery[],
+  );
+  const [initalBrweries, setInitialBreweries] = useState<BasicBrewery[]>(
+    [] as BasicBrewery[],
+  );
 
   const dismissKeyboard = () => {
     Keyboard.dismiss();
   };
 
-  const handleBeerPress = (beerId: number) => {
-    navigation.navigate("Beer", {
-      beer_id: beerId,
+  const handleBreweryPress = (breweryId: number) => {
+    navigation.navigate("Brewery", {
+      brewery_id: breweryId,
     });
   };
 
   const { searchInput, setSearchInput, filteredList } = useSearchFilter({
-    initialList: beers,
+    initialList: breweries,
     nameKey: "name",
-    defaultResults: mostPopularBeers,
+    defaultResults: [],
   });
 
   useFocusEffect(
     useCallback(() => {
-      const getMostPopularBeers = async () => {
-        const url = `${EXPO_PUBLIC_API_URL}/api/toplikedbeers`;
-        const token = await auth.currentUser?.getIdToken();
-        const response = await fetch(url, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        });
-        const mostPopularBeers = await response.json();
-        setMostPopularBeers(mostPopularBeers);
-        fetchAllBeers().then((beers) => {
-          setBeers(beers);
-        });
-      };
-      getMostPopularBeers();
+      fetchAllBreweries().then((breweries) => {
+        if (breweries && breweries.length === 0) {
+          return;
+        }
+        setBreweries(breweries!);
+        // Populate initial breweries with random 20 breweries
+        const randomBreweries = new Set<BasicBrewery>();
+        while (randomBreweries.size < 20) {
+          const randomIndex = Math.floor(Math.random() * breweries!.length);
+          randomBreweries.add(breweries![randomIndex]);
+        }
+        setInitialBreweries(Array.from(randomBreweries));
+      });
     }, []),
   );
 
@@ -69,32 +68,32 @@ const SearchBeerScreen = (props: SearchBeersProps) => {
           style={styles.input}
           value={searchInput}
           onChangeText={(text) => setSearchInput(text)}
-          placeholder="Search for a beer"
+          placeholder="Search for a brewery"
           placeholderTextColor="gray"
           maxFontSizeMultiplier={1.2}
         />
       </TouchableWithoutFeedback>
       {searchInput.length > 0 && (
         <ScrollView>
-          {filteredList?.map((beer) => {
+          {filteredList?.map((brewery) => {
             return (
               <SimpleCard
-                key={beer.id}
-                item={beer}
-                handleCardPress={handleBeerPress}
+                key={brewery.id}
+                item={brewery}
+                handleCardPress={handleBreweryPress}
               />
             );
           })}
         </ScrollView>
       )}
-      {searchInput.length === 0 && mostPopularBeers.length > 0 && (
+      {searchInput.length === 0 && initalBrweries.length > 0 && (
         <ScrollView>
-          {mostPopularBeers?.map((beer) => {
+          {initalBrweries?.map((brewery) => {
             return (
               <SimpleCard
-                key={beer.id}
-                item={beer}
-                handleCardPress={handleBeerPress}
+                key={brewery.id}
+                item={brewery}
+                handleCardPress={handleBreweryPress}
               />
             );
           })}
@@ -104,7 +103,7 @@ const SearchBeerScreen = (props: SearchBeersProps) => {
   );
 };
 
-export default SearchBeerScreen;
+export default SearchBreweriesScreen;
 
 const styles = StyleSheet.create({
   container: {

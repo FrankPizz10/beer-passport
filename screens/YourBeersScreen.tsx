@@ -13,7 +13,7 @@ import { useNavigation } from "@react-navigation/core";
 import { useYourBeers } from "../Controllers/YourBeersController";
 import { BackgroundColor, MainHighlightColor } from "../Styles/colors";
 import { standardStyles } from "../Styles/styles";
-import BeerCard from "../components/BeerCard";
+import SimpleCard from "../components/SimpleCard";
 
 const YourBeersScreen = (props: YourBeersProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
@@ -61,10 +61,10 @@ const YourBeersScreen = (props: YourBeersProps) => {
         {tried &&
           triedBeers?.map((beer) => {
             return (
-              <BeerCard
+              <SimpleCard
                 key={beer.id}
-                beer={beer}
-                handleBeerPress={handleBeerPress}
+                item={beer}
+                handleCardPress={handleBeerPress}
               />
             );
           })}
@@ -79,13 +79,12 @@ const YourBeersScreen = (props: YourBeersProps) => {
           </View>
         )}
         {liked &&
-          likedBeers &&
           likedBeers?.map((beer) => {
             return (
-              <BeerCard
+              <SimpleCard
                 key={beer.id}
-                beer={beer}
-                handleBeerPress={handleBeerPress}
+                item={beer}
+                handleCardPress={handleBeerPress}
               />
             );
           })}

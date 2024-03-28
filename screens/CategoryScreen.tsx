@@ -14,7 +14,7 @@ import { useCategory } from "../Controllers/CategoryController";
 import { auth } from "../Models/firebase";
 import { BackgroundColor } from "../Styles/colors";
 import { Dropdown } from "react-native-element-dropdown";
-import BeerCard from "../components/BeerCard";
+import SimpleCard from "../components/SimpleCard";
 
 interface CategoryMap {
   key: number;
@@ -101,10 +101,10 @@ const CategoryScreen = (props: CategoryProps) => {
       <ScrollView>
         {beersByCategory?.map((beer) => {
           return (
-            <BeerCard
+            <SimpleCard
               key={beer.id}
-              beer={beer}
-              handleBeerPress={handleBeerPress}
+              item={beer}
+              handleCardPress={handleBeerPress}
             />
           );
         })}

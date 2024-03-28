@@ -5,9 +5,11 @@ export type RootStackParamList = {
   Login: undefined;
   Category: undefined;
   Beer: { beer_id: number };
+  Brewery: { brewery_id: number };
   CreateNewAccount: undefined;
   YourBeers: undefined;
   SearchBeers: undefined;
+  SearchBreweries: undefined;
   YourBadges: undefined;
   AllCollections: undefined;
   Collection: { collection_id: number };
@@ -35,18 +37,31 @@ export type CategoryProps = NativeStackScreenProps<
   "Category"
 >;
 export type BeerProps = NativeStackScreenProps<RootStackParamList, "Beer">;
+export type BreweryProps = NativeStackScreenProps<
+  RootStackParamList,
+  "Brewery"
+>;
+
 export type CreateAccountProps = NativeStackScreenProps<
   RootStackParamList,
   "CreateNewAccount"
 >;
+
 export type YourBeersProps = NativeStackScreenProps<
   RootStackParamList,
   "YourBeers"
 >;
+
 export type SearchBeersProps = NativeStackScreenProps<
   RootStackParamList,
   "SearchBeers"
 >;
+
+export type SearchBreweriesProps = NativeStackScreenProps<
+  RootStackParamList,
+  "SearchBreweries"
+>;
+
 export type YourBadgesProps = NativeStackScreenProps<
   RootStackParamList,
   "YourBadges"

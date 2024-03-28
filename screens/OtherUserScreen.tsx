@@ -23,7 +23,7 @@ import {
 import { auth } from "../Models/firebase";
 import { standardStyles } from "../Styles/styles";
 import Badge from "../components/Badge";
-import BeerCard from "../components/BeerCard";
+import SimpleCard from "../components/SimpleCard";
 
 const OtherUserScreen = (props: FriendProfileProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
@@ -160,10 +160,10 @@ const OtherUserScreen = (props: FriendProfileProps) => {
             {triedPressed &&
               triedBeers?.map((beer) => {
                 return (
-                  <BeerCard
+                  <SimpleCard
                     key={beer.id}
-                    beer={beer}
-                    handleBeerPress={handleBeerPress}
+                    item={beer}
+                    handleCardPress={handleBeerPress}
                   />
                 );
               })}
@@ -180,10 +180,10 @@ const OtherUserScreen = (props: FriendProfileProps) => {
             {likedPressed &&
               likedBeers?.map((beer) => {
                 return (
-                  <BeerCard
+                  <SimpleCard
                     key={beer.id}
-                    beer={beer}
-                    handleBeerPress={handleBeerPress}
+                    item={beer}
+                    handleCardPress={handleBeerPress}
                   />
                 );
               })}

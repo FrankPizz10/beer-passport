@@ -9,6 +9,7 @@ import {
   UserBeer,
   BasicBeer,
   Notification,
+  BasicBrewery,
 } from "./SQLData";
 import { auth } from "../Models/firebase";
 
@@ -23,6 +24,23 @@ export const fetchAllBeers = async (): Promise<BasicBeer[]> => {
   });
   const beers = await response.json();
   return beers;
+};
+
+export const fetchAllBreweries = async (): Promise<BasicBrewery[] | undefined> => {
+  try {
+    const url = `${EXPO_PUBLIC_API_URL}/api/breweries/basic`;
+    const token = await auth.currentUser?.getIdToken();
+    const response = await fetch(url, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
+    const breweries = await response.json();
+    return breweries;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const fetchNewestBeer = async (): Promise<number | undefined> => {

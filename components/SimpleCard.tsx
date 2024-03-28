@@ -1,30 +1,30 @@
 import { Text, View, TouchableOpacity } from "react-native";
 import { standardStyles } from "../Styles/styles";
 
-type BeerCardT = {
+type CardT = {
   id: number;
   name: string;
 };
 
-interface BeerCardProps {
-  beer: BeerCardT;
-  handleBeerPress: (beerId: number) => void;
+interface CardProps {
+  item: CardT;
+  handleCardPress: (beerId: number) => void;
 }
 
-const BeerCard: React.FC<BeerCardProps> = ({ beer, handleBeerPress }) => {
+const SimpleCard: React.FC<CardProps> = ({ item, handleCardPress }) => {
   const handlePress = () => {
-    handleBeerPress(beer.id);
+    handleCardPress(item.id);
   };
 
   return (
     <View style={standardStyles.basicCard}>
       <TouchableOpacity onPress={() => handlePress()}>
         <Text style={standardStyles.basicCardText} maxFontSizeMultiplier={1.3}>
-          {beer.name}
+          {item.name}
         </Text>
       </TouchableOpacity>
     </View>
   );
 };
 
-export default BeerCard;
+export default SimpleCard;
