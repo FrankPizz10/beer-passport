@@ -186,18 +186,6 @@ const BeerScreen = (props: BeerProps) => {
                 </Text>
               </TouchableOpacity>
             )}
-            {!liked && (
-              <TouchableOpacity
-                style={styles.button}
-                onPress={handleLikedPress}
-              >
-                <Entypo name="star-outlined" size={24} color="gold" />
-                <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>
-                  {" "}
-                  Like{" "}
-                </Text>
-              </TouchableOpacity>
-            )}
             {tried && (
               <TouchableOpacity
                 style={styles.button}
@@ -211,6 +199,18 @@ const BeerScreen = (props: BeerProps) => {
                 <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>
                   {" "}
                   Un Try{" "}
+                </Text>
+              </TouchableOpacity>
+            )}
+            {!liked && (
+              <TouchableOpacity
+                style={styles.button}
+                onPress={handleLikedPress}
+              >
+                <Entypo name="star-outlined" size={24} color="gold" />
+                <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>
+                  {" "}
+                  Like{" "}
                 </Text>
               </TouchableOpacity>
             )}

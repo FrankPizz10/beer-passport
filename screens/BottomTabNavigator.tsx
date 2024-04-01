@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { RootStackParamList } from "../props";
 import HomeScreen from "./HomeScreen";
-import SearchBeers from "./SearchBeers";
+import SearchBeers from "./SearchScreen";
 import NotificationsScreen from "./NotificationsScreen";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Entypo, MaterialIcons, FontAwesome5 } from "@expo/vector-icons";

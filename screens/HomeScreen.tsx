@@ -82,10 +82,6 @@ const HomeScreen = (props: HomeProps) => {
     navigation.navigate("AllCollections");
   };
 
-  const handleBreweryScreen = () => {
-    navigation.navigate("SearchBreweries");
-  };
-
   useEffect(() => {
     const getUserData = async () => {
       const cur_user = await getUser();
@@ -161,11 +157,6 @@ const HomeScreen = (props: HomeProps) => {
         <TouchableOpacity onPress={handleCategoryScreen} style={styles.button}>
           <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>
             Find Beer By Category
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={handleBreweryScreen} style={styles.button}>
-          <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>
-            Find Beer By Brewery
           </Text>
         </TouchableOpacity>
         <TouchableOpacity

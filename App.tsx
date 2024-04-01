@@ -27,7 +27,6 @@ import {
   TouchableOpacity,
   Dimensions,
 } from "react-native";
-import SearchBreweries from "./screens/SearchBreweries";
 import BreweryScreen from "./screens/BreweryScreen";
 
 Notifications.setNotificationHandler({
@@ -114,7 +113,6 @@ export default function App() {
         <Stack.Screen name="CreateNewAccount" component={CreatNewAccount} />
         <Stack.Screen name="Category" component={CategoryScreen} />
         <Stack.Screen name="Beer" component={BeerScreen} />
-        <Stack.Screen name="SearchBreweries" component={SearchBreweries} />
         <Stack.Screen name="Brewery" component={BreweryScreen} />
         <Stack.Screen name="YourBeers" component={YourBeersScreen} />
         <Stack.Screen name="YourBadges" component={YourBadgesScreen} />
