@@ -46,13 +46,37 @@ const YourBeersScreen = (props: YourBeersProps) => {
         </Text>
       </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={{...styles.button, ...(tried ? styles.clickedFilterButton : {})}} onPress={handleTriedPress}>
-          <Text style={{...styles.buttonText, ...(tried ? styles.clickedButtonText : {})}} maxFontSizeMultiplier={1.2}>
+        <TouchableOpacity
+          style={{
+            ...styles.button,
+            ...(tried ? styles.clickedFilterButton : {}),
+          }}
+          onPress={handleTriedPress}
+        >
+          <Text
+            style={{
+              ...styles.buttonText,
+              ...(tried ? styles.clickedButtonText : {}),
+            }}
+            maxFontSizeMultiplier={1.2}
+          >
             Tried
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={{...styles.button, ...(liked ? styles.clickedFilterButton : {})}} onPress={handleLikedPress}>
-          <Text style={{...styles.buttonText, ...(liked ? styles.clickedButtonText : {})}} maxFontSizeMultiplier={1.2}>
+        <TouchableOpacity
+          style={{
+            ...styles.button,
+            ...(liked ? styles.clickedFilterButton : {}),
+          }}
+          onPress={handleLikedPress}
+        >
+          <Text
+            style={{
+              ...styles.buttonText,
+              ...(liked ? styles.clickedButtonText : {}),
+            }}
+            maxFontSizeMultiplier={1.2}
+          >
             Liked
           </Text>
         </TouchableOpacity>

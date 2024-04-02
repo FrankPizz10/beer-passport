@@ -12,8 +12,12 @@ import {
 } from "react-native";
 import { SearchBeersProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
-import { BasicBeer, BasicBrewery } from "../Models/SQLData";
-import { fetchAllBeers, fetchAllBreweries } from "../Models/Requests";
+import { BasicBeer, BasicBrewery, Category } from "../Models/SQLData";
+import {
+  fetchAllBeers,
+  fetchAllBreweries,
+  fetchMostPopularBreweries,
+} from "../Models/Requests";
 import { useSearchFilter } from "../Controllers/SearchController";
 import { BackgroundColor, MainHighlightColor } from "../Styles/colors";
 import { EXPO_PUBLIC_API_URL } from "@env";
@@ -29,9 +33,10 @@ const SearchScreen = (props: SearchBeersProps) => {
   const [breweries, setBreweries] = useState<BasicBrewery[]>(
     [] as BasicBrewery[],
   );
-  const [initalBrweries, setInitialBreweries] = useState<BasicBrewery[]>(
-    [] as BasicBrewery[],
-  );
+  const [mostPopularBreweries, setMostPopularBreweries] = useState<
+    BasicBrewery[]
+  >([] as BasicBrewery[]);
+  const [categories, setCategories] = useState<Category[]>([] as Category[]);
   const [searchInput, setSearchInput] = useState("");
 
   const dismissKeyboard = () => {
@@ -50,9 +55,14 @@ const SearchScreen = (props: SearchBeersProps) => {
     });
   };
 
+  const handleCategoryPress = (categoryId: number) => {
+    navigation.navigate("Category", {
+      cat_id: categoryId,
+    });
+  };
+
   const filteredBeerList = useSearchFilter({
     searchInput,
-    setSearchInput,
     initialList: beers,
     nameKey: "name",
     defaultResults: mostPopularBeers,
@@ -60,10 +70,16 @@ const SearchScreen = (props: SearchBeersProps) => {
 
   const filteredBreweryList = useSearchFilter({
     searchInput,
-    setSearchInput,
     initialList: breweries,
     nameKey: "name",
-    defaultResults: [],
+    defaultResults: mostPopularBreweries,
+  });
+
+  const filteredCategoryList = useSearchFilter({
+    searchInput,
+    initialList: categories,
+    nameKey: "cat_name",
+    defaultResults: categories,
   });
 
   useFocusEffect(
@@ -83,20 +99,33 @@ const SearchScreen = (props: SearchBeersProps) => {
           setBeers(beers);
         });
       };
-      getMostPopularBeers();
-      fetchAllBreweries().then((breweries) => {
+      const getAllCategories = async () => {
+        const url = `${EXPO_PUBLIC_API_URL}/api/categories`;
+        const token = await auth.currentUser?.getIdToken();
+        const response = await fetch(url, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        });
+        const categories = await response.json();
+        setCategories(categories);
+      };
+      const fetchData = async () => {
+        await getMostPopularBeers();
+        await getAllCategories();
+        const breweries = await fetchAllBreweries();
         if (breweries && breweries.length === 0) {
           return;
         }
         setBreweries(breweries!);
-        // Populate initial breweries with random 20 breweries
-        const randomBreweries = new Set<BasicBrewery>();
-        while (randomBreweries.size < 20) {
-          const randomIndex = Math.floor(Math.random() * breweries!.length);
-          randomBreweries.add(breweries![randomIndex]);
+        const mostPopularBreweries = await fetchMostPopularBreweries();
+        if (mostPopularBreweries && mostPopularBreweries.length === 0) {
+          return;
         }
-        setInitialBreweries(Array.from(randomBreweries));
-      });
+        setMostPopularBreweries(mostPopularBreweries!);
+      };
+      fetchData();
     }, []),
   );
 
@@ -111,14 +140,57 @@ const SearchScreen = (props: SearchBeersProps) => {
           placeholder="Search for a beer, brewery, or category"
           placeholderTextColor="gray"
           maxFontSizeMultiplier={1.2}
+          autoFocus
         />
       </TouchableWithoutFeedback>
       <View style={styles.filterButtons}>
-        <TouchableOpacity style={{...styles.filterButton, ...(filterButtonClicked === 0 ? styles.clickedFilterButton : {} )}} onPress={() => setFilterButtonClicked(0)}>
-          <Text style={{...styles.buttonText, ...(filterButtonClicked === 0 ? styles.clickedButtonText : {} )}}>Beers</Text>
+        <TouchableOpacity
+          style={{
+            ...styles.filterButton,
+            ...(filterButtonClicked === 0 ? styles.clickedFilterButton : {}),
+          }}
+          onPress={() => setFilterButtonClicked(0)}
+        >
+          <Text
+            style={{
+              ...styles.buttonText,
+              ...(filterButtonClicked === 0 ? styles.clickedButtonText : {}),
+            }}
+          >
+            Beers
+          </Text>
         </TouchableOpacity>
-        <TouchableOpacity  style={{...styles.filterButton, ...(filterButtonClicked === 1 ? styles.clickedFilterButton : {} )}} onPress={() => setFilterButtonClicked(1)}>
-          <Text style={{...styles.buttonText, ...(filterButtonClicked === 1 ? styles.clickedButtonText : {} )}}>Breweries</Text>
+        <TouchableOpacity
+          style={{
+            ...styles.filterButton,
+            ...(filterButtonClicked === 1 ? styles.clickedFilterButton : {}),
+          }}
+          onPress={() => setFilterButtonClicked(1)}
+        >
+          <Text
+            style={{
+              ...styles.buttonText,
+              ...(filterButtonClicked === 1 ? styles.clickedButtonText : {}),
+            }}
+          >
+            Breweries
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            ...styles.filterButton,
+            ...(filterButtonClicked === 2 ? styles.clickedFilterButton : {}),
+          }}
+          onPress={() => setFilterButtonClicked(2)}
+        >
+          <Text
+            style={{
+              ...styles.buttonText,
+              ...(filterButtonClicked === 2 ? styles.clickedButtonText : {}),
+            }}
+          >
+            Categories
+          </Text>
         </TouchableOpacity>
       </View>
       {filterButtonClicked === 0 && searchInput.length > 0 && (
@@ -134,19 +206,21 @@ const SearchScreen = (props: SearchBeersProps) => {
           })}
         </ScrollView>
       )}
-      {filterButtonClicked === 0 && searchInput.length === 0 && mostPopularBeers.length > 0 && (
-        <ScrollView>
-          {mostPopularBeers?.map((beer) => {
-            return (
-              <SimpleCard
-                key={beer.id}
-                item={beer}
-                handleCardPress={handleBeerPress}
-              />
-            );
-          })}
-        </ScrollView>
-      )}
+      {filterButtonClicked === 0 &&
+        searchInput.length === 0 &&
+        mostPopularBeers.length > 0 && (
+          <ScrollView>
+            {mostPopularBeers?.map((beer) => {
+              return (
+                <SimpleCard
+                  key={beer.id}
+                  item={beer}
+                  handleCardPress={handleBeerPress}
+                />
+              );
+            })}
+          </ScrollView>
+        )}
       {filterButtonClicked === 1 && searchInput.length > 0 && (
         <ScrollView>
           {filteredBreweryList?.map((brewery) => {
@@ -160,14 +234,32 @@ const SearchScreen = (props: SearchBeersProps) => {
           })}
         </ScrollView>
       )}
-      {filterButtonClicked === 1 && searchInput.length === 0 && mostPopularBeers.length > 0 && (
+      {filterButtonClicked === 1 &&
+        searchInput.length === 0 &&
+        mostPopularBreweries.length > 0 && (
+          <ScrollView>
+            {mostPopularBreweries?.map((brewery) => {
+              return (
+                <SimpleCard
+                  key={brewery.id}
+                  item={brewery}
+                  handleCardPress={handleBreweryPress}
+                />
+              );
+            })}
+          </ScrollView>
+        )}
+      {filterButtonClicked === 2 && (
         <ScrollView>
-          {initalBrweries?.map((brewery) => {
+          {filteredCategoryList?.map((category) => {
             return (
               <SimpleCard
-                key={brewery.id}
-                item={brewery}
-                handleCardPress={handleBreweryPress}
+                key={category.id}
+                item={{
+                  id: category.id,
+                  name: category.cat_name,
+                }}
+                handleCardPress={handleCategoryPress}
               />
             );
           })}
@@ -198,6 +290,7 @@ const styles = StyleSheet.create({
     borderStyle: "solid",
     borderColor: "black",
     padding: 10,
+    borderRadius: 5,
   },
   filterButtons: {
     flexDirection: "row",
@@ -223,7 +316,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   buttonText: {
-    fontSize: Dimensions.get("window").width * 0.05,
+    fontSize: Dimensions.get("window").width * 0.04,
     color: "black",
   },
   clickedButtonText: {
@@ -232,5 +325,5 @@ const styles = StyleSheet.create({
   },
   clickedFilterButton: {
     backgroundColor: MainHighlightColor,
-  }
+  },
 });

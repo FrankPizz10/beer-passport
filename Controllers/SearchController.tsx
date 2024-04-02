@@ -1,13 +1,13 @@
-import { useState, useMemo } from "react";
+import { useMemo } from "react";
 
 type ItemWithName = {
   name?: string;
   user_name?: string;
+  cat_name?: string;
 };
 
 type SearchableObject<T> = {
   searchInput: string;
-  setSearchInput: (input: string) => void;
   initialList: T[];
   nameKey: keyof T;
   defaultResults: T[];
@@ -15,12 +15,10 @@ type SearchableObject<T> = {
 
 export const useSearchFilter = <T extends ItemWithName>({
   searchInput,
-  setSearchInput,
   initialList,
   nameKey,
   defaultResults,
 }: SearchableObject<T>) => {
-
   const filteredList = useMemo(() => {
     if (searchInput.length === 0) {
       return defaultResults;

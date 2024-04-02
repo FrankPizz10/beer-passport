@@ -7,7 +7,7 @@ export type BasicBeer = {
 export type BasicBrewery = {
   id: number;
   name: string;
-  last_mod: number;
+  last_mod?: number;
 };
 
 export interface Brewery extends BasicBrewery {
@@ -42,23 +42,6 @@ export interface Beer extends BasicBeer {
 export interface Category {
   id: number;
   cat_name: string;
-  last_mod: number;
-}
-
-export interface Brewery {
-  id: number;
-  name: string;
-  address1: string;
-  address2: string;
-  city: string;
-  state: string;
-  code: string;
-  country: string;
-  phone: string;
-  website: string;
-  filepath: string;
-  descript: string;
-  add_user: number;
   last_mod: number;
 }
 

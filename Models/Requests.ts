@@ -26,9 +26,30 @@ export const fetchAllBeers = async (): Promise<BasicBeer[]> => {
   return beers;
 };
 
-export const fetchAllBreweries = async (): Promise<BasicBrewery[] | undefined> => {
+export const fetchAllBreweries = async (): Promise<
+  BasicBrewery[] | undefined
+> => {
   try {
     const url = `${EXPO_PUBLIC_API_URL}/api/breweries/basic`;
+    const token = await auth.currentUser?.getIdToken();
+    const response = await fetch(url, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
+    const breweries = await response.json();
+    return breweries;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const fetchMostPopularBreweries = async (): Promise<
+  BasicBrewery[] | undefined
+> => {
+  try {
+    const url = `${EXPO_PUBLIC_API_URL}/api/breweries/popular`;
     const token = await auth.currentUser?.getIdToken();
     const response = await fetch(url, {
       headers: {

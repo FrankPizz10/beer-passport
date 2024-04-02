@@ -1,80 +1,24 @@
-import React, { useState, useEffect } from "react";
-import {
-  StyleSheet,
-  View,
-  ScrollView,
-  Dimensions,
-  PixelRatio,
-} from "react-native";
-import { CategoryProps } from "../props";
-import { useNavigation } from "@react-navigation/core";
-import { Category } from "../Models/SQLData";
 import { EXPO_PUBLIC_API_URL } from "@env";
-import { useCategory } from "../Controllers/CategoryController";
+import { BasicBeer, Category } from "../Models/SQLData";
+import { CategoryProps } from "../props";
+import { useEffect, useState } from "react";
 import { auth } from "../Models/firebase";
-import { BackgroundColor } from "../Styles/colors";
-import { Dropdown } from "react-native-element-dropdown";
+import { StyleSheet, View, Text, Dimensions, ScrollView } from "react-native";
+import {
+  BackgroundColor,
+  MainButtonColor,
+  TitleColor,
+  TryLikeButtonColor,
+} from "../Styles/colors";
 import SimpleCard from "../components/SimpleCard";
-
-interface CategoryMap {
-  key: number;
-  value: string;
-}
-
-const getFontSizeFromPixelRatio = (pixelRatio: number) => {
-  if (pixelRatio < 1.5) {
-    return 22;
-  }
-  if (pixelRatio < 2) {
-    return 16;
-  }
-  if (pixelRatio < 3) {
-    return 10;
-  }
-  if (pixelRatio < 3.5) {
-    return 10;
-  } else {
-    return 8;
-  }
-};
+import { useNavigation } from "@react-navigation/core";
 
 const CategoryScreen = (props: CategoryProps) => {
+  const [category, setCategory] = useState<Category>({} as Category);
+  const [categoryBeers, setCategoryBeers] = useState<BasicBeer[]>(
+    [] as BasicBeer[],
+  );
   const navigation = useNavigation<(typeof props)["navigation"]>();
-  const [selected, setSelected] = useState("");
-  const [categories, setCategories] = useState([] as CategoryMap[]);
-
-  const beersByCategory = useCategory(selected);
-
-  useEffect(() => {
-    const fetchCatgeories = async () => {
-      try {
-        const url = `${EXPO_PUBLIC_API_URL}/api/categories`;
-        async function fetchCategoriesHelper(): Promise<CategoryMap[]> {
-          const token = await auth.currentUser?.getIdToken();
-          const response = await fetch(url, {
-            headers: {
-              Authorization: "Bearer " + token,
-            },
-          });
-          const data = await response.json();
-          const categories: CategoryMap[] = data.map((item: Category) => {
-            return { key: item.id, value: item.cat_name };
-          });
-          return categories;
-        }
-        const categories = await fetchCategoriesHelper();
-        setCategories(categories);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchCatgeories();
-  }, []);
-
-  const handleSelected = (item: number) => {
-    const cat = categories.find((cat) => cat.key === item)?.value.toString();
-    setSelected(cat!);
-  };
 
   const handleBeerPress = (beerId: number) => {
     navigation.navigate("Beer", {
@@ -82,24 +26,50 @@ const CategoryScreen = (props: CategoryProps) => {
     });
   };
 
+  useEffect(() => {
+    const fetchCategory = async () => {
+      try {
+        const url = `${EXPO_PUBLIC_API_URL}/api/categories/${props.route.params.cat_id}`;
+        const token = await auth.currentUser?.getIdToken();
+        const response = await fetch(url, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        });
+        const category = await response.json();
+        setCategory(category);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchCategory();
+    const fetchCategoryBeers = async () => {
+      try {
+        const url = `${EXPO_PUBLIC_API_URL}/api/categories/${props.route.params.cat_id}/beers`;
+        const token = await auth.currentUser?.getIdToken();
+        const response = await fetch(url, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        });
+        const beers = await response.json();
+        setCategoryBeers(beers);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchCategoryBeers();
+  }, [props.route.params.cat_id]);
+
   return (
-    <View style={styles.root}>
-      <View style={styles.container}>
-        <Dropdown
-          placeholder="Select a category"
-          placeholderStyle={styles.placeholder}
-          data={categories}
-          onChange={(item) => handleSelected(item.key)}
-          selectedTextStyle={styles.placeholder}
-          containerStyle={styles.dropDown}
-          itemTextStyle={styles.items}
-          labelField="value"
-          valueField="key"
-          mode="modal"
-        />
+    <View style={styles.container}>
+      <View style={styles.titleContainer}>
+        <Text style={styles.title}>{category.cat_name}</Text>
       </View>
-      <ScrollView>
-        {beersByCategory?.map((beer) => {
+      <ScrollView style={styles.scrollViewContainer}>
+        {categoryBeers?.map((beer) => {
           return (
             <SimpleCard
               key={beer.id}
@@ -116,30 +86,90 @@ const CategoryScreen = (props: CategoryProps) => {
 export default CategoryScreen;
 
 const styles = StyleSheet.create({
-  root: {
-    backgroundColor: BackgroundColor,
-    flex: 1,
-  },
   container: {
-    padding: 16,
-  },
-  placeholder: {
-    color: "black",
-    fontWeight: "bold",
-    // fontSize: Dimensions.get("window").width / 15,
-    fontSize: getFontSizeFromPixelRatio(PixelRatio.getFontScale()),
-  },
-  items: {
-    color: "black",
-    fontWeight: "bold",
-    fontSize: getFontSizeFromPixelRatio(PixelRatio.getFontScale()),
-  },
-  dropDown: {
+    flex: 1,
     backgroundColor: BackgroundColor,
+  },
+  titleContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 20,
+    marginTop: 10,
+  },
+  title: {
+    fontSize: Dimensions.get("window").width / 12,
+    fontWeight: "bold",
+    alignItems: "center",
+    textAlign: "center",
+  },
+  breweryTitle: {
+    fontSize: Dimensions.get("window").width / 15,
+    alignItems: "center",
+    textAlign: "center",
+    marginTop: 10,
+  },
+  styleContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 20,
+    marginTop: 10,
+  },
+  style: {
+    fontSize: Dimensions.get("window").width / 18,
+    fontWeight: "bold",
+  },
+  description: {
+    fontSize: Dimensions.get("window").width / 20,
+    width: Dimensions.get("window").width - 60,
+  },
+  descriptionContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 20,
+  },
+  abv: {
+    fontSize: Dimensions.get("window").width / 20,
+    fontWeight: "bold",
+  },
+  abvContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 20,
+  },
+  brewery: {
+    fontSize: Dimensions.get("window").width / 20,
+    fontWeight: "bold",
+  },
+  breweryContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 20,
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+  },
+  scrollViewContainer: {
+    marginBottom: 20,
+  },
+  button: {
+    backgroundColor: TryLikeButtonColor,
     padding: 10,
     margin: 10,
     borderRadius: 5,
-    justifyContent: "center",
-    height: Dimensions.get("window").height * 0.6,
+    shadowColor: "black",
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    shadowOffset: {
+      width: 1,
+      height: 1,
+    },
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  buttonText: {
+    fontSize: Dimensions.get("window").width / 18,
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });
