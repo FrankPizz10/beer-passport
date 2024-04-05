@@ -310,6 +310,7 @@ export const checkServerConnected = async () => {
     const response = await fetch(url);
     return response.status === 200;
   } catch (error) {
+    console.log(error);
     return false;
   }
 };

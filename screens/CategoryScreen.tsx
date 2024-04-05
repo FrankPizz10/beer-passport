@@ -4,12 +4,7 @@ import { CategoryProps } from "../props";
 import { useEffect, useState } from "react";
 import { auth } from "../Models/firebase";
 import { StyleSheet, View, Text, Dimensions, ScrollView } from "react-native";
-import {
-  BackgroundColor,
-  MainButtonColor,
-  TitleColor,
-  TryLikeButtonColor,
-} from "../Styles/colors";
+import { BackgroundColor, TryLikeButtonColor } from "../Styles/colors";
 import SimpleCard from "../components/SimpleCard";
 import { useNavigation } from "@react-navigation/core";
 
