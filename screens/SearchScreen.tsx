@@ -276,12 +276,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: BackgroundColor,
   },
-  dropDown: {
-    backgroundColor: BackgroundColor,
-    padding: 10,
-    margin: 10,
-    borderRadius: 5,
-  },
   input: {
     height: Dimensions.get("window").height / 20,
     fontSize: Dimensions.get("window").width / 25,

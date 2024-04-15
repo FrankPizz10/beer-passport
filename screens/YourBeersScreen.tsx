@@ -134,12 +134,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: BackgroundColor,
   },
-  HomeButton: {
-    alignItems: "flex-end",
-    justifyContent: "flex-end",
-    marginRight: 15,
-    height: 80,
-  },
   titleContainer: {
     alignItems: "center",
     justifyContent: "center",
@@ -176,11 +170,5 @@ const styles = StyleSheet.create({
   },
   clickedFilterButton: {
     backgroundColor: MainHighlightColor,
-  },
-  dropDown: {
-    backgroundColor: BackgroundColor,
-    padding: 10,
-    margin: 10,
-    borderRadius: 5,
   },
 });

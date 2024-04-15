@@ -10,7 +10,7 @@ import {
   Keyboard,
   Dimensions,
 } from "react-native";
-import { auth } from "../Models/firebase";
+import { auth, analytics } from "../Models/firebase";
 import {
   User,
   onAuthStateChanged,
@@ -23,6 +23,7 @@ import { checkUserExists } from "./CreateNewAccount";
 import { checkServerConnected } from "../Models/Requests";
 import { getErrorMessage } from "../utils";
 import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
+import { logEvent } from "firebase/analytics";
 
 const LoginScreen = (props: LoginProps) => {
   const [email, setEmail] = useState("");
@@ -48,6 +49,13 @@ const LoginScreen = (props: LoginProps) => {
           : undefined;
         onAuthStateChanged(auth, (user) => {
           if (user && serverConnected && userExists) {
+            try {
+              analytics.then((gTag) => {
+                gTag && logEvent(gTag, `LOGIN EMAIL: ${user.email} UID: ${user.uid}`, { method: "email" });
+              });
+            } catch (error) {
+              console.log("Error: ", error);
+            }
             navigation.replace("BottomTabNavigator");
           }
         });
@@ -62,6 +70,13 @@ const LoginScreen = (props: LoginProps) => {
     const unsibscribe = onAuthStateChanged(auth, (user) => {
       if (user && serverConnected && userExists) {
         ReactNativeAsyncStorage.setItem("user", JSON.stringify(user));
+        try {
+          analytics.then((gTag) => {
+            gTag && logEvent(gTag, `LOGIN EMAIL: ${user.email} UID: ${user.uid}`, { method: "email" });
+          });
+        } catch (error) {
+          console.log("Error: ", error);
+        }
         navigation.replace("BottomTabNavigator");
       }
     });

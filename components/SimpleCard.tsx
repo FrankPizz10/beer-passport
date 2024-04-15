@@ -8,7 +8,7 @@ type CardT = {
 
 interface CardProps {
   item: CardT;
-  handleCardPress: (beerId: number) => void;
+  handleCardPress: (itemId: number) => void;
 }
 
 const SimpleCard: React.FC<CardProps> = ({ item, handleCardPress }) => {
