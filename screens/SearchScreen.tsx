@@ -140,7 +140,6 @@ const SearchScreen = (props: SearchBeersProps) => {
           placeholder="Search for a beer, brewery, or category"
           placeholderTextColor="gray"
           maxFontSizeMultiplier={1.2}
-          autoFocus
         />
       </TouchableWithoutFeedback>
       <View style={styles.filterButtons}>
