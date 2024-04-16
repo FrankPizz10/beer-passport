@@ -51,7 +51,12 @@ const LoginScreen = (props: LoginProps) => {
           if (user && serverConnected && userExists) {
             try {
               analytics.then((gTag) => {
-                gTag && logEvent(gTag, `LOGIN EMAIL: ${user.email} UID: ${user.uid}`, { method: "email" });
+                gTag &&
+                  logEvent(
+                    gTag,
+                    `LOGIN EMAIL: ${user.email} UID: ${user.uid}`,
+                    { method: "email" },
+                  );
               });
             } catch (error) {
               console.log("Error: ", error);
@@ -72,7 +77,10 @@ const LoginScreen = (props: LoginProps) => {
         ReactNativeAsyncStorage.setItem("user", JSON.stringify(user));
         try {
           analytics.then((gTag) => {
-            gTag && logEvent(gTag, `LOGIN EMAIL: ${user.email} UID: ${user.uid}`, { method: "email" });
+            gTag &&
+              logEvent(gTag, `LOGIN EMAIL: ${user.email} UID: ${user.uid}`, {
+                method: "email",
+              });
           });
         } catch (error) {
           console.log("Error: ", error);

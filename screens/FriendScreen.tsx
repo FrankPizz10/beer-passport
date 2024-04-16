@@ -1,9 +1,7 @@
 import React, { useState, useCallback } from "react";
 import {
-  View,
   Text,
   ScrollView,
-  TouchableOpacity,
   StyleSheet,
   SafeAreaView,
   Dimensions,
@@ -15,7 +13,7 @@ import SearchUsersButton from "./SearchUsersButton";
 import { useNavigation } from "@react-navigation/core";
 import { useFocusEffect } from "@react-navigation/native";
 import { BackgroundColor } from "../Styles/colors";
-import { standardStyles } from "../Styles/styles";
+import SimpleCard from "../components/SimpleCard";
 
 const FriendScreen = (props: FriendsProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
@@ -49,16 +47,14 @@ const FriendScreen = (props: FriendsProps) => {
       <ScrollView style={styles.friendContainer}>
         {friends.map((friend) => {
           return (
-            <View key={friend.id} style={standardStyles.basicCard}>
-              <TouchableOpacity onPress={() => handleFriendPress(friend.id)}>
-                <Text
-                  style={standardStyles.basicCardText}
-                  maxFontSizeMultiplier={1.2}
-                >
-                  {friend.user_name}
-                </Text>
-              </TouchableOpacity>
-            </View>
+            <SimpleCard
+              key={friend.id}
+              item={{
+                id: friend.id,
+                name: friend.user_name,
+              }}
+              handleCardPress={handleFriendPress}
+            />
           );
         })}
       </ScrollView>

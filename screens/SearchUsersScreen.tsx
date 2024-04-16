@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
-  Text,
   View,
-  TouchableOpacity,
   TextInput,
   ScrollView,
   TouchableWithoutFeedback,
@@ -17,7 +15,6 @@ import { useSearchFilter } from "../Controllers/SearchController";
 import { fetchAllUsers } from "../Models/Requests";
 import { BackgroundColor } from "../Styles/colors";
 import { getUser } from "./HomeScreen";
-import { standardStyles } from "../Styles/styles";
 import SimpleCard from "../components/SimpleCard";
 
 const SearchUsersScreen = (props: SearchUsersProps) => {
@@ -53,30 +50,30 @@ const SearchUsersScreen = (props: SearchUsersProps) => {
 
   return (
     <View style={styles.container}>
-        {/* Search Bar */}
-        <TouchableWithoutFeedback onPress={dismissKeyboard}>
-          <TextInput
-            style={styles.input}
-            value={searchInput}
-            onChangeText={(text) => setSearchInput(text)}
-            placeholder="Search for a user"
-            placeholderTextColor="gray"
-          />
-        </TouchableWithoutFeedback>
-        <ScrollView>
-          {filteredUserList?.map((user) => {
-            return (
-              <SimpleCard
-                key={user.id}
-                item={{
-                  id: user.id,
-                  name: user.user_name,
-                }}
-                handleCardPress={handleUserPress}
-              />
-            )
-          })}
-        </ScrollView>
+      {/* Search Bar */}
+      <TouchableWithoutFeedback onPress={dismissKeyboard}>
+        <TextInput
+          style={styles.input}
+          value={searchInput}
+          onChangeText={(text) => setSearchInput(text)}
+          placeholder="Search for a user"
+          placeholderTextColor="gray"
+        />
+      </TouchableWithoutFeedback>
+      <ScrollView>
+        {filteredUserList?.map((user) => {
+          return (
+            <SimpleCard
+              key={user.id}
+              item={{
+                id: user.id,
+                name: user.user_name,
+              }}
+              handleCardPress={handleUserPress}
+            />
+          );
+        })}
+      </ScrollView>
     </View>
   );
 };

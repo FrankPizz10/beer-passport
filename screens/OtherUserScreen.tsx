@@ -128,31 +128,55 @@ const OtherUserScreen = (props: FriendProfileProps) => {
       {isFriend && (
         <>
           <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.button} onPress={handleTriedPress}>
+            <TouchableOpacity
+              style={{
+                ...styles.button,
+                ...(triedPressed ? styles.clickedFilterButton : {}),
+              }}
+              onPress={handleTriedPress}
+            >
               <Text
-                style={styles.friendButtonTitle}
+                style={{
+                  ...styles.buttonText,
+                  ...(triedPressed ? styles.clickedButtonText : {}),
+                }}
                 maxFontSizeMultiplier={1.1}
               >
-                {" "}
-                Tried{" "}
+                Tried
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={handleLikedPress}>
+            <TouchableOpacity
+              style={{
+                ...styles.button,
+                ...(likedPressed ? styles.clickedFilterButton : {}),
+              }}
+              onPress={handleLikedPress}
+            >
               <Text
-                style={styles.friendButtonTitle}
+                style={{
+                  ...styles.buttonText,
+                  ...(likedPressed ? styles.clickedButtonText : {}),
+                }}
                 maxFontSizeMultiplier={1.1}
               >
-                {" "}
-                Liked{" "}
+                Liked
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={handleBadgesPress}>
+            <TouchableOpacity
+              style={{
+                ...styles.button,
+                ...(badgesPressed ? styles.clickedFilterButton : {}),
+              }}
+              onPress={handleBadgesPress}
+            >
               <Text
-                style={styles.friendButtonTitle}
+                style={{
+                  ...styles.buttonText,
+                  ...(badgesPressed ? styles.clickedButtonText : {}),
+                }}
                 maxFontSizeMultiplier={1.1}
               >
-                {" "}
-                Badges{" "}
+                Badges
               </Text>
             </TouchableOpacity>
           </View>
@@ -231,8 +255,8 @@ const styles = StyleSheet.create({
   detailsContainer: {
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 15,
-    padding: 15,
+    padding: 10,
+    marginTop: 5,
   },
   friendName: {
     fontSize: Dimensions.get("window").width / 10,
@@ -244,7 +268,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     width: Dimensions.get("window").width - 80,
-    margin: 15,
+    margin: 10,
     shadowColor: "black",
     shadowOpacity: 0.5,
     shadowRadius: 5,
@@ -262,20 +286,25 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: "row",
     justifyContent: "space-around",
-    marginBottom: 15,
+    padding: 10,
+    width: "100%",
   },
   button: {
-    backgroundColor: MainHighlightColor,
     padding: 10,
-    margin: 10,
+    marginTop: 10,
+    marginBottom: 5,
     borderRadius: 5,
+    borderWidth: 1,
     shadowColor: "black",
     shadowOpacity: 0.5,
     shadowRadius: 5,
+    width: "27%",
+    height: 50,
     shadowOffset: {
       width: 1,
       height: 1,
     },
+    justifyContent: "center",
   },
   badgeTitle: {
     fontSize: Dimensions.get("window").width / 18,
@@ -292,7 +321,19 @@ const styles = StyleSheet.create({
     height: 150,
   },
   scrollables: {
-    width: "90%",
+    width: "95%",
+  },
+  buttonText: {
+    fontSize: Dimensions.get("window").width * 0.05,
+    textAlign: "center",
+    color: "black",
+  },
+  clickedButtonText: {
+    color: "white",
+    fontWeight: "bold",
+  },
+  clickedFilterButton: {
+    backgroundColor: MainHighlightColor,
   },
 });
 
