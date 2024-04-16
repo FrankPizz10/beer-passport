@@ -1,9 +1,10 @@
 // Import the functions you need from the SDKs you need
-import { FirebaseApp, initializeApp } from "firebase/app";
+import { FirebaseApp, getApp, getApps, initializeApp } from "firebase/app";
 import {
   initializeAuth,
   getReactNativePersistence,
   Auth,
+  getAuth,
 } from "firebase/auth/react-native";
 // import { getFirestore } from "firebase/firestore";
 import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
@@ -18,6 +19,7 @@ import {
   EXPO_PUBLIC_APP_ID,
   EXPO_PUBLIC_MEASUREMENT_ID,
 } from "@env";
+import { getAnalytics, isSupported } from "firebase/analytics";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -31,10 +33,31 @@ const firebaseConfig = {
   measurementId: EXPO_PUBLIC_MEASUREMENT_ID,
 };
 
-export const app: FirebaseApp = initializeApp(firebaseConfig);
-export const auth: Auth = initializeAuth(app, {
-  persistence: getReactNativePersistence(ReactNativeAsyncStorage),
-});
+// export const app: FirebaseApp = initializeApp(firebaseConfig);
+// export const auth: Auth = initializeAuth(app, {
+//   persistence: getReactNativePersistence(ReactNativeAsyncStorage),
+// });
+
+export let app: FirebaseApp | undefined, auth: Auth;
+
+if (!getApps().length) {
+  try {
+    app = initializeApp(firebaseConfig);
+    auth = initializeAuth(app, {
+      persistence: getReactNativePersistence(ReactNativeAsyncStorage),
+    });
+  } catch (error) {
+    console.log("Error initializing app: " + error);
+  }
+} else {
+  app = getApp();
+  auth = getAuth(app);
+}
 
 // Initalize Firebase Firestore
 // export const db = getFirestore(app);
+
+// Initialize Google Analytics
+export const analytics = isSupported().then((yes) =>
+  yes ? getAnalytics(app) : null,
+);

@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
-  Text,
   View,
-  TouchableOpacity,
   TextInput,
   ScrollView,
   TouchableWithoutFeedback,
@@ -17,11 +15,12 @@ import { useSearchFilter } from "../Controllers/SearchController";
 import { fetchAllUsers } from "../Models/Requests";
 import { BackgroundColor } from "../Styles/colors";
 import { getUser } from "./HomeScreen";
-import { standardStyles } from "../Styles/styles";
+import SimpleCard from "../components/SimpleCard";
 
 const SearchUsersScreen = (props: SearchUsersProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
   const [users, setUsers] = useState([] as User[]);
+  const [searchInput, setSearchInput] = useState("");
 
   useEffect(() => {
     const getAllUsers = async () => {
@@ -32,7 +31,8 @@ const SearchUsersScreen = (props: SearchUsersProps) => {
     getAllUsers();
   }, []);
 
-  const { searchInput, setSearchInput, filteredList } = useSearchFilter({
+  const filteredUserList = useSearchFilter({
+    searchInput,
     initialList: users,
     nameKey: "user_name",
     defaultResults: [],
@@ -50,34 +50,30 @@ const SearchUsersScreen = (props: SearchUsersProps) => {
 
   return (
     <View style={styles.container}>
-      <View>
-        {/* Search Bar */}
-        <TouchableWithoutFeedback onPress={dismissKeyboard}>
-          <TextInput
-            style={styles.input}
-            value={searchInput}
-            onChangeText={(text) => setSearchInput(text)}
-            placeholder="Search for a user"
-            placeholderTextColor="gray"
-          />
-        </TouchableWithoutFeedback>
-        <ScrollView>
-          {filteredList?.map((user) => {
-            return (
-              <View key={user.id} style={standardStyles.basicCard}>
-                <TouchableOpacity onPress={() => handleUserPress(user.id)}>
-                  <Text
-                    style={standardStyles.basicCardText}
-                    maxFontSizeMultiplier={1.2}
-                  >
-                    {user.user_name}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            );
-          })}
-        </ScrollView>
-      </View>
+      {/* Search Bar */}
+      <TouchableWithoutFeedback onPress={dismissKeyboard}>
+        <TextInput
+          style={styles.input}
+          value={searchInput}
+          onChangeText={(text) => setSearchInput(text)}
+          placeholder="Search for a user"
+          placeholderTextColor="gray"
+        />
+      </TouchableWithoutFeedback>
+      <ScrollView>
+        {filteredUserList?.map((user) => {
+          return (
+            <SimpleCard
+              key={user.id}
+              item={{
+                id: user.id,
+                name: user.user_name,
+              }}
+              handleCardPress={handleUserPress}
+            />
+          );
+        })}
+      </ScrollView>
     </View>
   );
 };
@@ -87,20 +83,15 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: BackgroundColor,
   },
-  ScreenTitle: {
-    fontSize: Dimensions.get("window").width / 10,
-    fontWeight: "bold",
-    textAlign: "center",
-    margin: 10,
-  },
   input: {
-    height: Dimensions.get("window").height / 15,
+    height: Dimensions.get("window").height / 20,
     fontSize: Dimensions.get("window").width / 25,
     margin: 12,
     borderWidth: 1,
     borderStyle: "solid",
     borderColor: "black",
     padding: 10,
+    borderRadius: 5,
   },
 });
 

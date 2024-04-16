@@ -13,7 +13,7 @@ import { useNavigation } from "@react-navigation/core";
 import { useYourBeers } from "../Controllers/YourBeersController";
 import { BackgroundColor, MainHighlightColor } from "../Styles/colors";
 import { standardStyles } from "../Styles/styles";
-import BeerCard from "../components/BeerCard";
+import SimpleCard from "../components/SimpleCard";
 
 const YourBeersScreen = (props: YourBeersProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
@@ -46,13 +46,37 @@ const YourBeersScreen = (props: YourBeersProps) => {
         </Text>
       </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={handleTriedPress}>
-          <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>
+        <TouchableOpacity
+          style={{
+            ...styles.button,
+            ...(tried ? styles.clickedFilterButton : {}),
+          }}
+          onPress={handleTriedPress}
+        >
+          <Text
+            style={{
+              ...styles.buttonText,
+              ...(tried ? styles.clickedButtonText : {}),
+            }}
+            maxFontSizeMultiplier={1.2}
+          >
             Tried
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={handleLikedPress}>
-          <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>
+        <TouchableOpacity
+          style={{
+            ...styles.button,
+            ...(liked ? styles.clickedFilterButton : {}),
+          }}
+          onPress={handleLikedPress}
+        >
+          <Text
+            style={{
+              ...styles.buttonText,
+              ...(liked ? styles.clickedButtonText : {}),
+            }}
+            maxFontSizeMultiplier={1.2}
+          >
             Liked
           </Text>
         </TouchableOpacity>
@@ -61,10 +85,10 @@ const YourBeersScreen = (props: YourBeersProps) => {
         {tried &&
           triedBeers?.map((beer) => {
             return (
-              <BeerCard
+              <SimpleCard
                 key={beer.id}
-                beer={beer}
-                handleBeerPress={handleBeerPress}
+                item={beer}
+                handleCardPress={handleBeerPress}
               />
             );
           })}
@@ -79,13 +103,12 @@ const YourBeersScreen = (props: YourBeersProps) => {
           </View>
         )}
         {liked &&
-          likedBeers &&
           likedBeers?.map((beer) => {
             return (
-              <BeerCard
+              <SimpleCard
                 key={beer.id}
-                beer={beer}
-                handleBeerPress={handleBeerPress}
+                item={beer}
+                handleCardPress={handleBeerPress}
               />
             );
           })}
@@ -111,12 +134,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: BackgroundColor,
   },
-  HomeButton: {
-    alignItems: "flex-end",
-    justifyContent: "flex-end",
-    marginRight: 15,
-    height: 80,
-  },
   titleContainer: {
     alignItems: "center",
     justifyContent: "center",
@@ -130,10 +147,10 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
   },
   button: {
-    backgroundColor: MainHighlightColor,
     padding: 10,
     margin: 10,
     borderRadius: 5,
+    borderWidth: 1,
     shadowColor: "black",
     shadowOpacity: 0.5,
     shadowRadius: 5,
@@ -145,13 +162,13 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: Dimensions.get("window").width * 0.05,
-    fontWeight: "bold",
-    color: "white",
+    color: "black",
   },
-  dropDown: {
-    backgroundColor: BackgroundColor,
-    padding: 10,
-    margin: 10,
-    borderRadius: 5,
+  clickedButtonText: {
+    color: "white",
+    fontWeight: "bold",
+  },
+  clickedFilterButton: {
+    backgroundColor: MainHighlightColor,
   },
 });

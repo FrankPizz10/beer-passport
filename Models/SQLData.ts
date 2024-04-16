@@ -4,6 +4,25 @@ export type BasicBeer = {
   last_mod: number;
 };
 
+export type BasicBrewery = {
+  id: number;
+  name: string;
+  last_mod?: number;
+};
+
+export interface Brewery extends BasicBrewery {
+  address1: string;
+  address2: string;
+  city: string;
+  state: string;
+  code: string;
+  country: string;
+  phone: string;
+  website: string;
+  descript: string;
+  add_user: number;
+}
+
 export interface Beer extends BasicBeer {
   brewery_id: number;
   cat_id: number;
@@ -23,23 +42,6 @@ export interface Beer extends BasicBeer {
 export interface Category {
   id: number;
   cat_name: string;
-  last_mod: number;
-}
-
-export interface Brewery {
-  id: number;
-  name: string;
-  address1: string;
-  address2: string;
-  city: string;
-  state: string;
-  code: string;
-  country: string;
-  phone: string;
-  website: string;
-  filepath: string;
-  descript: string;
-  add_user: number;
   last_mod: number;
 }
 
@@ -84,7 +86,7 @@ export interface UserBadge {
   earned: boolean;
   progress: number;
   updated_at: Date;
-  collection: Collection
+  collection: Collection;
 }
 
 export interface CollectionBeer {

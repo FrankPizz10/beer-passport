@@ -35,7 +35,7 @@ const ProfileScreen = (props: ProfileProps) => {
             My Beers
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => {
             navigation.navigate("YourBadges");
           }}
@@ -44,7 +44,7 @@ const ProfileScreen = (props: ProfileProps) => {
           <Text style={styles.buttonText} maxFontSizeMultiplier={1.5}>
             My Badges
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity
           onPress={() => {
             navigation.navigate("Friends");

@@ -9,6 +9,7 @@ import {
   UserBeer,
   BasicBeer,
   Notification,
+  BasicBrewery,
 } from "./SQLData";
 import { auth } from "../Models/firebase";
 
@@ -23,6 +24,44 @@ export const fetchAllBeers = async (): Promise<BasicBeer[]> => {
   });
   const beers = await response.json();
   return beers;
+};
+
+export const fetchAllBreweries = async (): Promise<
+  BasicBrewery[] | undefined
+> => {
+  try {
+    const url = `${EXPO_PUBLIC_API_URL}/api/breweries/basic`;
+    const token = await auth.currentUser?.getIdToken();
+    const response = await fetch(url, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
+    const breweries = await response.json();
+    return breweries;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const fetchMostPopularBreweries = async (): Promise<
+  BasicBrewery[] | undefined
+> => {
+  try {
+    const url = `${EXPO_PUBLIC_API_URL}/api/breweries/popular`;
+    const token = await auth.currentUser?.getIdToken();
+    const response = await fetch(url, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
+    const breweries = await response.json();
+    return breweries;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const fetchNewestBeer = async (): Promise<number | undefined> => {
@@ -271,6 +310,7 @@ export const checkServerConnected = async () => {
     const response = await fetch(url);
     return response.status === 200;
   } catch (error) {
+    console.log(error);
     return false;
   }
 };

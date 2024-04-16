@@ -25,11 +25,10 @@ export const useYourBeers = (userId: number | undefined) => {
       });
       if (tried) {
         setTriedBeers(filteredBeers);
-      }
-      else {
+      } else {
         setLikedBeers(filteredBeers);
       }
-    } catch (error) { 
+    } catch (error) {
       console.log(error);
     }
   };

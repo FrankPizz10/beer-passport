@@ -3,8 +3,9 @@ import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 export type RootStackParamList = {
   Home: undefined;
   Login: undefined;
-  Category: undefined;
+  Category: { cat_id: number };
   Beer: { beer_id: number };
+  Brewery: { brewery_id: number };
   CreateNewAccount: undefined;
   YourBeers: undefined;
   SearchBeers: undefined;
@@ -35,18 +36,26 @@ export type CategoryProps = NativeStackScreenProps<
   "Category"
 >;
 export type BeerProps = NativeStackScreenProps<RootStackParamList, "Beer">;
+export type BreweryProps = NativeStackScreenProps<
+  RootStackParamList,
+  "Brewery"
+>;
+
 export type CreateAccountProps = NativeStackScreenProps<
   RootStackParamList,
   "CreateNewAccount"
 >;
+
 export type YourBeersProps = NativeStackScreenProps<
   RootStackParamList,
   "YourBeers"
 >;
+
 export type SearchBeersProps = NativeStackScreenProps<
   RootStackParamList,
   "SearchBeers"
 >;
+
 export type YourBadgesProps = NativeStackScreenProps<
   RootStackParamList,
   "YourBadges"
