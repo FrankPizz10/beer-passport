@@ -74,9 +74,9 @@ const HomeScreen = (props: HomeProps) => {
   const [likedCount, setLikedCount] = useState(0);
   const [triedCount, setTriedCount] = useState(0);
 
-  const handleCategoryScreen = () => {
-    navigation.navigate("Category");
-  };
+  // const handleCategoryScreen = () => {
+  //   navigation.navigate("Category");
+  // };
 
   const handleCollectionsScreen = () => {
     navigation.navigate("AllCollections");
@@ -154,17 +154,27 @@ const HomeScreen = (props: HomeProps) => {
         </Text>
       </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={handleCategoryScreen} style={styles.button}>
+        {/* <TouchableOpacity onPress={handleCategoryScreen} style={styles.button}>
           <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>
             Find Beer By Category
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity
           onPress={handleCollectionsScreen}
           style={styles.button}
         >
           <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>
             Collections
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("YourBadges");
+          }}
+          style={styles.button}
+        >
+          <Text style={styles.buttonText} maxFontSizeMultiplier={1.5}>
+            My Badges
           </Text>
         </TouchableOpacity>
       </View>

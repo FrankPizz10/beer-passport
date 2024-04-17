@@ -1,6 +1,6 @@
 import { EXPO_PUBLIC_API_URL } from "@env";
-import { BasicBeer, Category } from "../Models/SQLData";
-import { CategoryProps } from "../props";
+import { BasicBeer, Brewery } from "../Models/SQLData";
+import { BreweryProps } from "../props";
 import { useEffect, useState } from "react";
 import { auth } from "../Models/firebase";
 import { StyleSheet, View, Text, Dimensions, ScrollView } from "react-native";
@@ -8,9 +8,9 @@ import { BackgroundColor, TryLikeButtonColor } from "../Styles/colors";
 import SimpleCard from "../components/SimpleCard";
 import { useNavigation } from "@react-navigation/core";
 
-const CategoryScreen = (props: CategoryProps) => {
-  const [category, setCategory] = useState<Category>({} as Category);
-  const [categoryBeers, setCategoryBeers] = useState<BasicBeer[]>(
+const BreweryScreen = (props: BreweryProps) => {
+  const [brewery, setBrewery] = useState<Brewery>({} as Brewery);
+  const [breweryBeers, setBreweryBeers] = useState<BasicBeer[]>(
     [] as BasicBeer[],
   );
   const navigation = useNavigation<(typeof props)["navigation"]>();
@@ -22,9 +22,9 @@ const CategoryScreen = (props: CategoryProps) => {
   };
 
   useEffect(() => {
-    const fetchCategory = async () => {
+    const fetchBrewery = async () => {
       try {
-        const url = `${EXPO_PUBLIC_API_URL}/api/categories/${props.route.params.cat_id}`;
+        const url = `${EXPO_PUBLIC_API_URL}/api/breweries/${props.route.params.brewery_id}`;
         const token = await auth.currentUser?.getIdToken();
         const response = await fetch(url, {
           headers: {
@@ -32,16 +32,16 @@ const CategoryScreen = (props: CategoryProps) => {
             Authorization: "Bearer " + token,
           },
         });
-        const category = await response.json();
-        setCategory(category);
+        const brewery = await response.json();
+        setBrewery(brewery);
       } catch (error) {
         console.log(error);
       }
     };
-    fetchCategory();
-    const fetchCategoryBeers = async () => {
+    fetchBrewery();
+    const fetchBreweryBeers = async () => {
       try {
-        const url = `${EXPO_PUBLIC_API_URL}/api/categories/${props.route.params.cat_id}/beers`;
+        const url = `${EXPO_PUBLIC_API_URL}/api/breweries/${props.route.params.brewery_id}/beers`;
         const token = await auth.currentUser?.getIdToken();
         const response = await fetch(url, {
           headers: {
@@ -50,21 +50,26 @@ const CategoryScreen = (props: CategoryProps) => {
           },
         });
         const beers = await response.json();
-        setCategoryBeers(beers);
+        setBreweryBeers(beers);
       } catch (error) {
         console.log(error);
       }
     };
-    fetchCategoryBeers();
-  }, [props.route.params.cat_id]);
+    fetchBreweryBeers();
+  }, [props.route.params.brewery_id]);
 
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>{category.cat_name}</Text>
+        <Text style={styles.title}>{brewery.name}</Text>
+      </View>
+      <View style={styles.breweryContainer}>
+        <Text style={styles.style}>{brewery.city}</Text>
+        <Text style={styles.style}>{brewery.state}</Text>
+        <Text style={styles.style}>{brewery.country}</Text>
       </View>
       <ScrollView style={styles.scrollViewContainer}>
-        {categoryBeers?.map((beer) => {
+        {breweryBeers?.map((beer) => {
           return (
             <SimpleCard
               key={beer.id}
@@ -78,7 +83,7 @@ const CategoryScreen = (props: CategoryProps) => {
   );
 };
 
-export default CategoryScreen;
+export default BreweryScreen;
 
 const styles = StyleSheet.create({
   container: {

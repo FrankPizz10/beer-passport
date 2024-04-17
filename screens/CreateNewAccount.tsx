@@ -72,7 +72,7 @@ const CreateNewAccount = (props: CreateAccountProps) => {
         }
       });
       return unsibscribe;
-    }
+    };
     createAccount();
   }, [accountVerified, deleteAccount]);
 
