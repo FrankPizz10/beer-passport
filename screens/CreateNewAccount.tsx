@@ -57,6 +57,7 @@ export const checkUserExists = async (
 const CreateNewAccount = (props: CreateAccountProps) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [age, setAge] = useState("");
   const [username, setUsername] = useState("");
   const [accountVerified, setAccountVerified] = useState(false);
@@ -93,7 +94,41 @@ const CreateNewAccount = (props: CreateAccountProps) => {
     createAccount();
   }, [accountVerified, deleteAccount]);
 
+  const validateInputs = () => {
+    if (email.length < 1) {
+      alert("Please enter an email");
+      return false;
+    }
+    const ageInt = parseInt(age);
+    if (isNaN(ageInt)) {
+      alert("Enter a valid Age");
+      return false;
+    }
+    if (ageInt < 21) {
+      alert("Must be at least 21 years old");
+      return false;
+    }
+    if (username.length < 1) {
+      alert("Please enter a username");
+      return false;
+    }
+    if (password.length < 1) {
+      alert("Please enter a password");
+      return false;
+    }
+    if (confirmPassword.length < 1) {
+      alert("Please confirm your password");
+      return false;
+    }
+    if (confirmPassword !== password) {
+      alert("Passwords do not match");
+      return false;
+    }
+    return true;
+  }
+
   const handleSignUp = async () => {
+    if (!validateInputs()) return;
     if (!serverConnected) {
       alert("Server not connected");
       return;
@@ -165,15 +200,6 @@ const CreateNewAccount = (props: CreateAccountProps) => {
             maxFontSizeMultiplier={1.2}
           />
           <TextInput
-            placeholder="Password"
-            placeholderTextColor="gray"
-            value={password}
-            onChangeText={(text) => setPassword(text)}
-            style={styles.input}
-            secureTextEntry
-            maxFontSizeMultiplier={1.2}
-          />
-          <TextInput
             placeholder="Age"
             placeholderTextColor="gray"
             keyboardType="numeric"
@@ -188,6 +214,24 @@ const CreateNewAccount = (props: CreateAccountProps) => {
             value={username}
             onChangeText={(text) => handleSetUserName(text)}
             style={styles.input}
+            maxFontSizeMultiplier={1.2}
+          />
+          <TextInput
+            placeholder="Password"
+            placeholderTextColor="gray"
+            value={password}
+            onChangeText={(text) => setPassword(text)}
+            style={styles.input}
+            secureTextEntry
+            maxFontSizeMultiplier={1.2}
+          />
+          <TextInput
+            placeholder="Confirm Password"
+            placeholderTextColor="gray"
+            value={confirmPassword}
+            onChangeText={(text) => setConfirmPassword(text)}
+            style={styles.input}
+            secureTextEntry
             maxFontSizeMultiplier={1.2}
           />
         </View>
