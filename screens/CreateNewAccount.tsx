@@ -22,6 +22,12 @@ import { getErrorMessage } from "../utils";
 import { MainHighlightColor } from "../Styles/colors";
 import { checkServerConnected } from "../Models/Requests";
 import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
+import { RegExpMatcher, englishDataset, englishRecommendedTransformers } from 'obscenity';
+
+const matcher = new RegExpMatcher({
+	...englishDataset.build(),
+	...englishRecommendedTransformers,
+});
 
 export interface UserExists {
   exists: boolean;
@@ -58,6 +64,17 @@ const CreateNewAccount = (props: CreateAccountProps) => {
   const [serverConnected, setServerConnected] = useState(false);
 
   const navigation = useNavigation<(typeof props)["navigation"]>();
+
+  const handleSetUserName = (text: string) => {
+    // Remove spaces from username
+    text = text.replace(/\s/g, "");
+    // Deny profanity in username
+    if (matcher.hasMatch(text)) {
+      alert("Username contains profanity");
+      return;
+    }
+    setUsername(text);
+  }
 
   useEffect(() => {
     const createAccount = async () => {
@@ -169,7 +186,7 @@ const CreateNewAccount = (props: CreateAccountProps) => {
             placeholder="Username"
             placeholderTextColor="gray"
             value={username}
-            onChangeText={(text) => setUsername(text)}
+            onChangeText={(text) => handleSetUserName(text)}
             style={styles.input}
             maxFontSizeMultiplier={1.2}
           />
