@@ -1,3 +1,5 @@
+import { User } from "./Models/SQLData";
+
 export function decimalToPercent(decimal: number) {
   const percent = Math.round(decimal * 100); // Multiply by 100 and round to 2 decimal places
   return percent + "%"; // Append "%" symbol
@@ -29,3 +31,12 @@ export const getErrorMessage = (
       return "Unknown error occurred.";
   }
 };
+
+export const isEmpty = (obj: object | undefined) => {
+  if (obj === undefined) return true;
+  return Object.keys(obj).length === 0;
+}
+
+export const isUser = (obj: object): obj is User => {
+  return 'user_name' in obj;
+}

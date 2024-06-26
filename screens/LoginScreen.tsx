@@ -21,9 +21,10 @@ import { LoginProps } from "../props";
 import { BackgroundColor, MainHighlightColor } from "../Styles/colors";
 import { checkUserExists } from "./CreateNewAccount";
 import { checkServerConnected } from "../Models/Requests";
-import { getErrorMessage } from "../utils";
+import { getErrorMessage, isEmpty } from "../utils";
 import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
 import { logEvent } from "firebase/analytics";
+import { getUser } from "./HomeScreen";
 
 const LoginScreen = (props: LoginProps) => {
   const [email, setEmail] = useState("");
@@ -47,8 +48,8 @@ const LoginScreen = (props: LoginProps) => {
         const userExists = userJson
           ? await checkUserExists(userJson.email!, "_")
           : undefined;
-        onAuthStateChanged(auth, (user) => {
-          if (user && serverConnected && userExists) {
+        onAuthStateChanged(auth, async (user) => {
+          if (user && serverConnected && userExists && !isEmpty(getUser())) {
             try {
               analytics.then((gTag) => {
                 gTag &&
@@ -73,7 +74,7 @@ const LoginScreen = (props: LoginProps) => {
 
   useEffect(() => {
     const unsibscribe = onAuthStateChanged(auth, (user) => {
-      if (user && serverConnected && userExists) {
+      if (user && serverConnected && userExists && !isEmpty(getUser())) {
         ReactNativeAsyncStorage.setItem("user", JSON.stringify(user));
         try {
           analytics.then((gTag) => {

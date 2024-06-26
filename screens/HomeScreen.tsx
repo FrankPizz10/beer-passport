@@ -16,6 +16,7 @@ import { BackgroundColor, MainButtonColor, TitleColor } from "../Styles/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect } from "@react-navigation/native";
 import * as Notifications from "expo-notifications";
+import { isUser } from "../utils";
 
 export const getUser = async (): Promise<User | undefined> => {
   try {
@@ -27,6 +28,9 @@ export const getUser = async (): Promise<User | undefined> => {
       },
     });
     const cur_user = await response.json();
+    if (!isUser(cur_user)) {
+      return undefined;
+    }
     return cur_user;
   } catch (error) {
     console.log("GetUserError", error);
