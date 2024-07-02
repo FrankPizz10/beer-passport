@@ -9,12 +9,14 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Dimensions,
+  Modal,
 } from "react-native";
 import { auth, analytics } from "../Models/firebase";
 import {
   User,
   onAuthStateChanged,
   signInWithEmailAndPassword,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import { useNavigation } from "@react-navigation/core";
 import { LoginProps } from "../props";
@@ -25,6 +27,7 @@ import { getErrorMessage, isEmpty } from "../utils";
 import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
 import { logEvent } from "firebase/analytics";
 import { getUser } from "./HomeScreen";
+import { FirebaseError } from "firebase/app";
 
 const LoginScreen = (props: LoginProps) => {
   const [email, setEmail] = useState("");
@@ -32,6 +35,9 @@ const LoginScreen = (props: LoginProps) => {
   const [loginPressed, setLoginPressed] = useState(false);
   const [serverConnected, setServerConnected] = useState(false);
   const [userExists, setUserExists] = useState(false);
+  const [forgotPassword, setForgotPassword] = useState(false);
+  const [resetEmailSent, setResetEmailSent] = useState(false);
+  const [emailError, setEmailError] = useState("");
   const navigation = useNavigation<(typeof props)["navigation"]>();
 
   const dismissKeyboard = () => {
@@ -142,6 +148,27 @@ const LoginScreen = (props: LoginProps) => {
     }
   };
 
+  const handleResetPassword = async () => {
+    if (!email || email === "") {
+      setEmailError("Please enter an email");
+      return;
+    }
+    try {
+      await sendPasswordResetEmail(auth, email);
+      setResetEmailSent(true);
+    } catch (error) {
+      if (error instanceof FirebaseError) {
+        setEmailError(getErrorMessage(error.code, true));
+      }
+    }
+  };
+
+  const closeModal = async () => {
+    setForgotPassword(false);
+    setEmailError("");
+    setResetEmailSent(false);
+  };
+
   return (
     <>
       {serverConnected && (
@@ -182,6 +209,11 @@ const LoginScreen = (props: LoginProps) => {
                   Register
                 </Text>
               </TouchableOpacity>
+              <TouchableOpacity onPress={() => setForgotPassword(true)}>
+                <Text maxFontSizeMultiplier={1.2} style={styles.forgotPassword}>
+                  Forgot Password?
+                </Text>
+              </TouchableOpacity>
             </View>
           </KeyboardAvoidingView>
         </TouchableWithoutFeedback>
@@ -193,6 +225,49 @@ const LoginScreen = (props: LoginProps) => {
           </Text>
         </View>
       )}
+      <Modal
+        animationType="none"
+        transparent
+        visible={forgotPassword}
+        onRequestClose={() => setForgotPassword(false)}
+      >
+        {!resetEmailSent && (
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
+                <Text style={styles.closeButtonText}>x</Text>
+              </TouchableOpacity>
+              <TextInput
+                placeholder="Email"
+                placeholderTextColor="gray"
+                value={email}
+                onChangeText={(text) => setEmail(text)}
+                style={styles.modalInput}
+                maxFontSizeMultiplier={1.2}
+              />
+              {emailError.length > 0 && (
+                <Text style={styles.modalErrorMessage}>{emailError}</Text>
+              )}
+              <TouchableOpacity
+                style={styles.modalButton}
+                onPress={handleResetPassword}
+              >
+                <Text style={styles.modalButtonText}>Reset Password</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
+        {resetEmailSent && (
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
+                <Text style={styles.closeButtonText}>x</Text>
+              </TouchableOpacity>
+              <Text style={styles.confirmationMessage}>Email Sent!</Text>
+            </View>
+          </View>
+        )}
+      </Modal>
     </>
   );
 };
@@ -260,5 +335,76 @@ const styles = StyleSheet.create({
     alignItems: "center",
     alignContent: "center",
     justifyContent: "center",
+  },
+  forgotPassword: {
+    marginTop: 20,
+    fontSize: Dimensions.get("window").width / 22,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.5)",
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 15,
+    padding: 30,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  closeButton: {
+    position: "absolute",
+    top: Dimensions.get("window").height / 100,
+    right: Dimensions.get("window").width / 50,
+    width: Dimensions.get("window").width / 12,
+    height: Dimensions.get("window").width / 12,
+    borderRadius: 20,
+    backgroundColor: "gray",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 1,
+  },
+  closeButtonText: {
+    fontSize: Dimensions.get("window").width / 25,
+    color: "white",
+  },
+  modalInput: {
+    width: Dimensions.get("window").width / 2,
+    height: Dimensions.get("window").height / 20,
+    borderColor: "gray",
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    margin: 10,
+  },
+  modalButton: {
+    backgroundColor: MainHighlightColor,
+    color: "white",
+    padding: 10,
+    margin: 10,
+    borderRadius: 5,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  modalButtonText: {
+    fontSize: Dimensions.get("window").width / 22,
+    color: "white",
+    fontWeight: "bold",
+  },
+  modalErrorMessage: {
+    color: "red",
+  },
+  confirmationMessage: {
+    fontSize: Dimensions.get("window").width / 18,
+    padding: 15,
   },
 });

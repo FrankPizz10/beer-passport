@@ -19,7 +19,7 @@ import {
   EXPO_PUBLIC_MESSAGE_SENDER_ID,
   EXPO_PUBLIC_APP_ID,
   EXPO_PUBLIC_MEASUREMENT_ID,
-  EXPO_PUBLIC_ENV
+  EXPO_PUBLIC_ENV,
 } from "@env";
 import { getAnalytics, isSupported } from "firebase/analytics";
 
@@ -50,7 +50,7 @@ if (!getApps().length) {
     });
 
     // Connect to Auth Emulator
-    if (EXPO_PUBLIC_ENV === 'DEV') {
+    if (EXPO_PUBLIC_ENV === "DEV") {
       connectAuthEmulator(auth, "http://localhost:9099");
     }
   } catch (error) {

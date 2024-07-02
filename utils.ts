@@ -35,8 +35,8 @@ export const getErrorMessage = (
 export const isEmpty = (obj: object | undefined) => {
   if (obj === undefined) return true;
   return Object.keys(obj).length === 0;
-}
+};
 
 export const isUser = (obj: object): obj is User => {
-  return 'user_name' in obj;
-}
+  return "user_name" in obj;
+};

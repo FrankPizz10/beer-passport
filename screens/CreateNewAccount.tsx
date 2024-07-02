@@ -22,11 +22,15 @@ import { getErrorMessage } from "../utils";
 import { MainHighlightColor } from "../Styles/colors";
 import { checkServerConnected } from "../Models/Requests";
 import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
-import { RegExpMatcher, englishDataset, englishRecommendedTransformers } from 'obscenity';
+import {
+  RegExpMatcher,
+  englishDataset,
+  englishRecommendedTransformers,
+} from "obscenity";
 
 const matcher = new RegExpMatcher({
-	...englishDataset.build(),
-	...englishRecommendedTransformers,
+  ...englishDataset.build(),
+  ...englishRecommendedTransformers,
 });
 
 export interface UserExists {
@@ -75,7 +79,7 @@ const CreateNewAccount = (props: CreateAccountProps) => {
       return;
     }
     setUsername(text);
-  }
+  };
 
   useEffect(() => {
     const createAccount = async () => {
@@ -125,7 +129,7 @@ const CreateNewAccount = (props: CreateAccountProps) => {
       return false;
     }
     return true;
-  }
+  };
 
   const handleSignUp = async () => {
     if (!validateInputs()) return;
@@ -166,6 +170,7 @@ const CreateNewAccount = (props: CreateAccountProps) => {
         }),
       });
       if (response.status === 200) {
+        // sendEmailVerification(userCredentials.user);
         alert("Account created!");
         setAccountVerified(true);
       } else {
