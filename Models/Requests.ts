@@ -314,3 +314,24 @@ export const checkServerConnected = async () => {
     return false;
   }
 };
+
+export const updateEmailInDB = async (email: string) => {
+  try {
+    const url = `${EXPO_PUBLIC_API_URL}/api/users/email`;
+    const token = await auth.currentUser?.getIdToken();
+    const response = await fetch(url, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+      body: JSON.stringify({ email: email })
+    });
+    const user = await response.json();
+    if (user.email !== email) {
+      throw new Error('Failed to update Email in db');
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}

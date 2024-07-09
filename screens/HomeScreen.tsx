@@ -155,7 +155,7 @@ const HomeScreen = (props: HomeProps) => {
       <SafeAreaView style={styles.root}>
         <View style={styles.titleContainer}>
           <Text style={styles.welcome} maxFontSizeMultiplier={1.1}>
-            Welcome {user!.user_name}
+            Welcome {user?.user_name}
           </Text>
         </View>
         <View style={styles.iconContainer}>

@@ -28,7 +28,7 @@ import {
   englishRecommendedTransformers,
 } from "obscenity";
 
-const matcher = new RegExpMatcher({
+export const ProfanityMatcher = new RegExpMatcher({
   ...englishDataset.build(),
   ...englishRecommendedTransformers,
 });
@@ -70,17 +70,6 @@ const CreateNewAccount = (props: CreateAccountProps) => {
 
   const navigation = useNavigation<(typeof props)["navigation"]>();
 
-  const handleSetUserName = (text: string) => {
-    // Remove spaces from username
-    text = text.replace(/\s/g, "");
-    // Deny profanity in username
-    if (matcher.hasMatch(text)) {
-      alert("Username contains profanity");
-      return;
-    }
-    setUsername(text);
-  };
-
   useEffect(() => {
     const createAccount = async () => {
       const serverConnected = await checkServerConnected();
@@ -114,6 +103,14 @@ const CreateNewAccount = (props: CreateAccountProps) => {
     }
     if (username.length < 1) {
       alert("Please enter a username");
+      return false;
+    }
+    if (username.length > 16) {
+      alert("Email cannot be longer than 16 characters");
+      return false;
+    }
+    if (ProfanityMatcher.hasMatch(username)) {
+      alert("Username contains profanity");
       return false;
     }
     if (password.length < 1) {
@@ -200,7 +197,7 @@ const CreateNewAccount = (props: CreateAccountProps) => {
             placeholder="Email"
             placeholderTextColor="gray"
             value={email}
-            onChangeText={(text) => setEmail(text)}
+            onChangeText={(text) => setEmail(text.replace(/\s/g, ""))}
             style={styles.input}
             maxFontSizeMultiplier={1.2}
           />
@@ -209,7 +206,7 @@ const CreateNewAccount = (props: CreateAccountProps) => {
             placeholderTextColor="gray"
             keyboardType="numeric"
             value={age}
-            onChangeText={(text) => setAge(text)}
+            onChangeText={(text) => setAge(text.replace(/\s/g, ""))}
             style={styles.input}
             maxFontSizeMultiplier={1.2}
           />
@@ -217,7 +214,7 @@ const CreateNewAccount = (props: CreateAccountProps) => {
             placeholder="Username"
             placeholderTextColor="gray"
             value={username}
-            onChangeText={(text) => handleSetUserName(text)}
+            onChangeText={(text) => setUsername(text.replace(/\s/g, ""))}
             style={styles.input}
             maxFontSizeMultiplier={1.2}
           />
