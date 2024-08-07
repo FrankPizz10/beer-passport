@@ -106,7 +106,7 @@ const CreateNewAccount = (props: CreateAccountProps) => {
       return false;
     }
     if (username.length > 16) {
-      alert("Email cannot be longer than 16 characters");
+      alert("Username cannot be longer than 16 characters");
       return false;
     }
     if (ProfanityMatcher.hasMatch(username)) {
@@ -166,9 +166,10 @@ const CreateNewAccount = (props: CreateAccountProps) => {
           email,
         }),
       });
+      await response.json();
+      // await a successful response before verifying account
       if (response.status === 200) {
-        // sendEmailVerification(userCredentials.user);
-        alert("Account created!");
+        //sendEmailVerification(userCredentials.user);
         setAccountVerified(true);
       } else {
         alert("Account creation failed");

@@ -8,7 +8,12 @@ import {
   Modal,
   TextInput,
 } from "react-native";
-import { EmailAuthProvider, reauthenticateWithCredential, updateEmail, updatePassword } from "firebase/auth";
+import {
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+  updateEmail,
+  updatePassword,
+} from "firebase/auth";
 import DeleteAccountButton from "./DeleteAccountButton";
 import { auth } from "../Models/firebase";
 import { useNavigation } from "@react-navigation/core";
@@ -28,17 +33,23 @@ const AccountScreen = (props: AccountProps) => {
     updatePassword: boolean;
   }>({ updateUsername: false, updateEmail: false, updatePassword: false });
   const [accountDetails, setAccountDetails] = useState<{
-    email: string,
-    username: string,
-    oldPassword: string,
-    password: string,
-    confirmPassword: string
-  }>({email: '', username: '', oldPassword: '', password: '', confirmPassword: ''});
+    email: string;
+    username: string;
+    oldPassword: string;
+    password: string;
+    confirmPassword: string;
+  }>({
+    email: "",
+    username: "",
+    oldPassword: "",
+    password: "",
+    confirmPassword: "",
+  });
   const [successDetails, setSuccessDetails] = useState<{
-    emailUpdated: boolean,
-    passwordUpdated: boolean,
-    usernameUpdated: boolean
-  }>({emailUpdated: false, passwordUpdated: false, usernameUpdated: false})
+    emailUpdated: boolean;
+    passwordUpdated: boolean;
+    usernameUpdated: boolean;
+  }>({ emailUpdated: false, passwordUpdated: false, usernameUpdated: false });
 
   const handleLogout = () => {
     auth
@@ -53,7 +64,10 @@ const AccountScreen = (props: AccountProps) => {
 
   const handleUpdateUsername = async () => {
     if (!auth.currentUser?.email) return;
-    const existRes = await checkUserExists(auth.currentUser.email, accountDetails.username);
+    const existRes = await checkUserExists(
+      auth.currentUser.email,
+      accountDetails.username,
+    );
     if (!existRes.exists) return;
     if (existRes.exists && existRes.type !== "email") {
       setModalErrorMessage("Username is already taken");
@@ -73,20 +87,45 @@ const AccountScreen = (props: AccountProps) => {
     if (!auth.currentUser?.email) return;
     if (!validatePassword()) return;
     // UpdatePassword
-    updatePassword(auth.currentUser, accountDetails.password).then(() => {
-      if (!auth.currentUser || !auth.currentUser.email) return;
-        const credential = EmailAuthProvider.credential(
-          auth.currentUser.email, accountDetails.password);
-      reauthenticateWithCredential(auth.currentUser, credential).then(() => {
-        setSuccessDetails(prevSuccessState => ({...prevSuccessState, passwordUpdated: true}));
-        setUpdateAccountInfo(prevAccountState => ({...prevAccountState, updatePassword: false}));
-      }).catch((error) => {
+    const oldCredential = EmailAuthProvider.credential(
+      auth.currentUser.email,
+      accountDetails.oldPassword,
+    );
+    reauthenticateWithCredential(auth.currentUser, oldCredential)
+      .then(() => {
+        if (!auth.currentUser?.email) return;
+        updatePassword(auth.currentUser, accountDetails.password)
+          .then(() => {
+            if (!auth.currentUser?.email) return;
+            const newCredential = EmailAuthProvider.credential(
+              auth.currentUser.email,
+              accountDetails.password,
+            );
+            reauthenticateWithCredential(auth.currentUser, newCredential)
+              .then(() => {
+                setSuccessDetails((prevSuccessState) => ({
+                  ...prevSuccessState,
+                  passwordUpdated: true,
+                }));
+                setUpdateAccountInfo((prevAccountState) => ({
+                  ...prevAccountState,
+                  updatePassword: false,
+                }));
+              })
+              .catch((error) => {
+                console.log(error);
+                setModalErrorMessage(getErrorMessage(error.code, true));
+              });
+          })
+          .catch((error) => {
+            console.log(error);
+            setModalErrorMessage(getErrorMessage(error.code, true));
+          });
+      })
+      .catch((error) => {
         console.log(error);
         setModalErrorMessage(getErrorMessage(error.code, true));
       });
-    }).catch((error) => {
-      setModalErrorMessage(getErrorMessage(error.code, true));
-    });
   };
 
   const validatePassword = () => {
@@ -118,34 +157,71 @@ const AccountScreen = (props: AccountProps) => {
       setModalErrorMessage("Please enter a password");
       return false;
     }
-    if (!auth.currentUser) return;
-    updateEmail(auth.currentUser, accountDetails.email)
+    if (!auth.currentUser?.email) return;
+    const oldCredential = EmailAuthProvider.credential(
+      auth.currentUser.email,
+      accountDetails.password,
+    );
+    reauthenticateWithCredential(auth.currentUser, oldCredential)
       .then(() => {
         if (!auth.currentUser) return;
-        const credential = EmailAuthProvider.credential(
-          accountDetails.email, accountDetails.password);
-        reauthenticateWithCredential(auth.currentUser, credential).then(() => {
-          updateEmailInDB(accountDetails.email).then(() => {
-            setSuccessDetails(prevSuccessState => ({...prevSuccessState, emailUpdated: true}))
-            setUpdateAccountInfo(prevAccountState => ({...prevAccountState, updateEmail: false}))
-          }).catch(() => {
-            setModalErrorMessage('Internal Error');
+        updateEmail(auth.currentUser, accountDetails.email)
+          .then(() => {
+            if (!auth.currentUser) return;
+            const newCredential = EmailAuthProvider.credential(
+              accountDetails.email,
+              accountDetails.password,
+            );
+            reauthenticateWithCredential(auth.currentUser, newCredential)
+              .then(() => {
+                updateEmailInDB(accountDetails.email)
+                  .then(() => {
+                    setSuccessDetails((prevSuccessState) => ({
+                      ...prevSuccessState,
+                      emailUpdated: true,
+                    }));
+                    setUpdateAccountInfo((prevAccountState) => ({
+                      ...prevAccountState,
+                      updateEmail: false,
+                    }));
+                  })
+                  .catch(() => {
+                    setModalErrorMessage("Internal Error");
+                  });
+              })
+              .catch((error) => {
+                setModalErrorMessage(getErrorMessage(error.code, true));
+              });
           })
-        })
-        .catch((error) => {
-          setModalErrorMessage(getErrorMessage(error.code, true));
-        });
-       })
+          .catch((error) => {
+            setModalErrorMessage(getErrorMessage(error.code, true));
+          });
+      })
       .catch((error) => {
+        console.log(error);
         setModalErrorMessage(getErrorMessage(error.code, true));
       });
   };
 
   const closeModal = async () => {
     setModalErrorMessage("");
-    setUpdateAccountInfo({updateEmail: false, updateUsername: false, updatePassword: false})
-    setAccountDetails({username: '', email: '', oldPassword: '', password: '', confirmPassword: ''});
-    setSuccessDetails({emailUpdated: false, passwordUpdated: false, usernameUpdated: false});
+    setUpdateAccountInfo({
+      updateEmail: false,
+      updateUsername: false,
+      updatePassword: false,
+    });
+    setAccountDetails({
+      username: "",
+      email: "",
+      oldPassword: "",
+      password: "",
+      confirmPassword: "",
+    });
+    setSuccessDetails({
+      emailUpdated: false,
+      passwordUpdated: false,
+      usernameUpdated: false,
+    });
   };
 
   return (
@@ -167,10 +243,12 @@ const AccountScreen = (props: AccountProps) => {
           </Text>
         </TouchableOpacity> */}
         <TouchableOpacity
-          onPress={() => setUpdateAccountInfo(prevAccountState => ({
-            ...prevAccountState,
-            updateEmail: true
-          }))}
+          onPress={() =>
+            setUpdateAccountInfo((prevAccountState) => ({
+              ...prevAccountState,
+              updateEmail: true,
+            }))
+          }
           style={styles.button}
         >
           <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>
@@ -178,10 +256,12 @@ const AccountScreen = (props: AccountProps) => {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => setUpdateAccountInfo(prevAccountState => ({
-            ...prevAccountState,
-            updatePassword: true
-          }))}
+          onPress={() =>
+            setUpdateAccountInfo((prevAccountState) => ({
+              ...prevAccountState,
+              updatePassword: true,
+            }))
+          }
           style={styles.button}
         >
           <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>
@@ -211,10 +291,12 @@ const AccountScreen = (props: AccountProps) => {
         animationType="none"
         transparent
         visible={updateAccountInfo.updateEmail}
-        onRequestClose={() => setUpdateAccountInfo(prevAccountState => ({
-          ...prevAccountState,
-          updateEmail: false
-        }))}
+        onRequestClose={() =>
+          setUpdateAccountInfo((prevAccountState) => ({
+            ...prevAccountState,
+            updateEmail: false,
+          }))
+        }
         id="EmailModal"
       >
         <View style={styles.centeredView}>
@@ -226,10 +308,12 @@ const AccountScreen = (props: AccountProps) => {
               placeholder="New Email"
               placeholderTextColor="gray"
               value={accountDetails.email}
-              onChangeText={(text) => setAccountDetails(prevAccountDetails => ({
-                ...prevAccountDetails,
-                email: text.replace(/\s/g, '')
-              }))}
+              onChangeText={(text) =>
+                setAccountDetails((prevAccountDetails) => ({
+                  ...prevAccountDetails,
+                  email: text.replace(/\s/g, ""),
+                }))
+              }
               style={styles.modalInput}
               maxFontSizeMultiplier={1.2}
             />
@@ -237,10 +321,12 @@ const AccountScreen = (props: AccountProps) => {
               placeholder="Current Password"
               placeholderTextColor="gray"
               value={accountDetails.password}
-              onChangeText={(text) => setAccountDetails(prevAccountDetails => ({
-                ...prevAccountDetails,
-                password: text
-              }))}
+              onChangeText={(text) =>
+                setAccountDetails((prevAccountDetails) => ({
+                  ...prevAccountDetails,
+                  password: text,
+                }))
+              }
               style={styles.modalInput}
               secureTextEntry
               maxFontSizeMultiplier={1.2}
@@ -261,10 +347,12 @@ const AccountScreen = (props: AccountProps) => {
         animationType="none"
         transparent
         visible={updateAccountInfo.updateUsername}
-        onRequestClose={() => setUpdateAccountInfo(prevAccountState => ({
-          ...prevAccountState,
-          updateUsername: false
-        }))}
+        onRequestClose={() =>
+          setUpdateAccountInfo((prevAccountState) => ({
+            ...prevAccountState,
+            updateUsername: false,
+          }))
+        }
         id="UsernameModal"
       >
         <View style={styles.centeredView}>
@@ -276,10 +364,12 @@ const AccountScreen = (props: AccountProps) => {
               placeholder="Username"
               placeholderTextColor="gray"
               value={accountDetails.username}
-              onChangeText={(text) => setAccountDetails(prevAccountDetails => ({
-                ...prevAccountDetails,
-                username: text.replace(/\s/g, '')
-              }))}
+              onChangeText={(text) =>
+                setAccountDetails((prevAccountDetails) => ({
+                  ...prevAccountDetails,
+                  username: text.replace(/\s/g, ""),
+                }))
+              }
               style={styles.modalInput}
               maxFontSizeMultiplier={1.2}
             />
@@ -299,10 +389,12 @@ const AccountScreen = (props: AccountProps) => {
         animationType="none"
         transparent
         visible={updateAccountInfo.updatePassword}
-        onRequestClose={() => setUpdateAccountInfo(prevAccountState => ({
-          ...prevAccountState,
-          updatePassword: false
-        }))}
+        onRequestClose={() =>
+          setUpdateAccountInfo((prevAccountState) => ({
+            ...prevAccountState,
+            updatePassword: false,
+          }))
+        }
         id="PasswordModal"
       >
         <View style={styles.centeredView}>
@@ -314,10 +406,12 @@ const AccountScreen = (props: AccountProps) => {
               placeholder="Old Password"
               placeholderTextColor="gray"
               value={accountDetails.oldPassword}
-              onChangeText={(text) => setAccountDetails(prevAccountDetails => ({
-                ...prevAccountDetails,
-                oldPassword: text
-              }))}
+              onChangeText={(text) =>
+                setAccountDetails((prevAccountDetails) => ({
+                  ...prevAccountDetails,
+                  oldPassword: text,
+                }))
+              }
               style={styles.modalInput}
               secureTextEntry
               maxFontSizeMultiplier={1.2}
@@ -326,10 +420,12 @@ const AccountScreen = (props: AccountProps) => {
               placeholder="New Password"
               placeholderTextColor="gray"
               value={accountDetails.password}
-              onChangeText={(text) => setAccountDetails(prevAccountDetails => ({
-                ...prevAccountDetails,
-                password: text
-              }))}
+              onChangeText={(text) =>
+                setAccountDetails((prevAccountDetails) => ({
+                  ...prevAccountDetails,
+                  password: text,
+                }))
+              }
               style={styles.modalInput}
               secureTextEntry
               maxFontSizeMultiplier={1.2}
@@ -338,10 +434,12 @@ const AccountScreen = (props: AccountProps) => {
               placeholder="Confirm Password"
               placeholderTextColor="gray"
               value={accountDetails.confirmPassword}
-              onChangeText={(text) => setAccountDetails(prevAccountDetails => ({
-                ...prevAccountDetails,
-                confirmPassword: text
-              }))}
+              onChangeText={(text) =>
+                setAccountDetails((prevAccountDetails) => ({
+                  ...prevAccountDetails,
+                  confirmPassword: text,
+                }))
+              }
               style={styles.modalInput}
               secureTextEntry
               maxFontSizeMultiplier={1.2}

@@ -325,13 +325,13 @@ export const updateEmailInDB = async (email: string) => {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
       },
-      body: JSON.stringify({ email: email })
+      body: JSON.stringify({ email }),
     });
     const user = await response.json();
     if (user.email !== email) {
-      throw new Error('Failed to update Email in db');
+      throw new Error("Failed to update Email in db");
     }
   } catch (error) {
     console.log(error);
   }
-}
+};

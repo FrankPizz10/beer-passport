@@ -23,7 +23,7 @@ import { LoginProps } from "../props";
 import { BackgroundColor, MainHighlightColor } from "../Styles/colors";
 import { checkUserExists } from "./CreateNewAccount";
 import { checkServerConnected } from "../Models/Requests";
-import { getErrorMessage, isEmpty } from "../utils";
+import { getErrorMessage, isUser } from "../utils";
 import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
 import { logEvent } from "firebase/analytics";
 import { getUser } from "./HomeScreen";
@@ -54,23 +54,26 @@ const LoginScreen = (props: LoginProps) => {
         const userExists = userJson
           ? await checkUserExists(userJson.email!, "_")
           : undefined;
-        onAuthStateChanged(auth, async (user) => {
-          if (user && serverConnected && userExists && !isEmpty(getUser())) {
-            try {
-              analytics.then((gTag) => {
-                gTag &&
-                  logEvent(
-                    gTag,
-                    `LOGIN EMAIL: ${user.email} UID: ${user.uid}`,
-                    { method: "email" },
-                  );
-              });
-            } catch (error) {
-              console.log("Error: ", error);
+        const serverUser = await getUser();
+        if (serverConnected && userExists && serverUser && isUser(serverUser)) {
+          onAuthStateChanged(auth, (user) => {
+            if (user) {
+              try {
+                analytics.then((gTag) => {
+                  gTag &&
+                    logEvent(
+                      gTag,
+                      `LOGIN EMAIL: ${user.email} UID: ${user.uid}`,
+                      { method: "email" },
+                    );
+                });
+              } catch (error) {
+                console.log("Error: ", error);
+              }
+              navigation.replace("BottomTabNavigator");
             }
-            navigation.replace("BottomTabNavigator");
-          }
-        });
+          });
+        }
       } catch (error) {
         console.log("Error: ", error);
       }
@@ -79,23 +82,44 @@ const LoginScreen = (props: LoginProps) => {
   }, []);
 
   useEffect(() => {
-    const unsibscribe = onAuthStateChanged(auth, (user) => {
-      if (user && serverConnected && userExists && !isEmpty(getUser())) {
-        ReactNativeAsyncStorage.setItem("user", JSON.stringify(user));
-        try {
-          analytics.then((gTag) => {
-            gTag &&
-              logEvent(gTag, `LOGIN EMAIL: ${user.email} UID: ${user.uid}`, {
-                method: "email",
-              });
+    const unstoredLogin = async () => {
+      try {
+        const serverUser = await getUser();
+
+        if (serverUser && isUser(serverUser) && serverConnected && userExists) {
+          const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user) {
+              ReactNativeAsyncStorage.setItem("user", JSON.stringify(user));
+              try {
+                analytics.then((gTag) => {
+                  if (gTag) {
+                    logEvent(
+                      gTag,
+                      `LOGIN EMAIL: ${user.email} UID: ${user.uid}`,
+                      {
+                        method: "email",
+                      },
+                    );
+                  }
+                });
+              } catch (error) {
+                console.log("Error logging event: ", error);
+              }
+              navigation.replace("BottomTabNavigator");
+            }
           });
-        } catch (error) {
-          console.log("Error: ", error);
+
+          // Return the unsubscribe function to clean up the listener when the component unmounts
+          return () => unsubscribe();
         }
-        navigation.replace("BottomTabNavigator");
+      } catch (error) {
+        console.log("Error during login process: ", error);
       }
-    });
-    return unsibscribe;
+    };
+
+    if (loginPressed) {
+      unstoredLogin();
+    }
   }, [loginPressed]);
 
   const handleSignUp = async () => {
