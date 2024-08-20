@@ -1,10 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { CreateAccountProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
-import {
-  createUserWithEmailAndPassword,
-  onAuthStateChanged,
-} from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import {
   View,
   Text,
@@ -20,43 +17,17 @@ import { auth } from "../Models/firebase";
 import { EXPO_PUBLIC_API_URL } from "@env";
 import { getErrorMessage } from "../utils";
 import { MainHighlightColor } from "../Styles/colors";
-import { checkServerConnected } from "../Models/Requests";
-import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
 import {
   RegExpMatcher,
   englishDataset,
   englishRecommendedTransformers,
 } from "obscenity";
+import AuthContext, { checkUserExists } from "../Controllers/AuthContext";
 
 export const ProfanityMatcher = new RegExpMatcher({
   ...englishDataset.build(),
   ...englishRecommendedTransformers,
 });
-
-export interface UserExists {
-  exists: boolean;
-  type: "email" | "username";
-}
-
-export const checkUserExists = async (
-  email: string,
-  username: string,
-): Promise<UserExists> => {
-  const userExistsURL = `${EXPO_PUBLIC_API_URL}/userexists/`;
-  const userExists = await fetch(userExistsURL, {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      email,
-      user_name: username,
-    }),
-  });
-  const existsRes = await userExists.json();
-  return existsRes;
-};
 
 const CreateNewAccount = (props: CreateAccountProps) => {
   const [email, setEmail] = useState("");
@@ -64,28 +35,18 @@ const CreateNewAccount = (props: CreateAccountProps) => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [age, setAge] = useState("");
   const [username, setUsername] = useState("");
-  const [accountVerified, setAccountVerified] = useState(false);
-  const [deleteAccount, setDeleteAccount] = useState(false);
-  const [serverConnected, setServerConnected] = useState(false);
 
   const navigation = useNavigation<(typeof props)["navigation"]>();
 
-  useEffect(() => {
-    const createAccount = async () => {
-      const serverConnected = await checkServerConnected();
-      setServerConnected(serverConnected);
-      const unsibscribe = onAuthStateChanged(auth, (user) => {
-        ReactNativeAsyncStorage.setItem("user", JSON.stringify(user));
-        if (user && accountVerified) {
-          navigation.replace("BottomTabNavigator");
-        } else if (user && deleteAccount) {
-          user.delete();
-        }
-      });
-      return unsibscribe;
-    };
-    createAccount();
-  }, [accountVerified, deleteAccount]);
+  const authContext = useContext(AuthContext);
+
+  // Ensure that authContext is defined
+  if (!authContext) {
+    throw new Error("useContext must be used within an AuthProvider");
+  }
+
+  const { user, setCreateUser, serverConnected, setDeleteAccount } =
+    authContext;
 
   const validateInputs = () => {
     if (email.length < 1) {
@@ -166,11 +127,15 @@ const CreateNewAccount = (props: CreateAccountProps) => {
           email,
         }),
       });
-      await response.json();
+      const curUser = await response.json();
+      console.log("Create user: ", curUser);
       // await a successful response before verifying account
       if (response.status === 200) {
         //sendEmailVerification(userCredentials.user);
-        setAccountVerified(true);
+        setCreateUser(curUser);
+        if (user) {
+          navigation.replace("BottomTabNavigator");
+        }
       } else {
         alert("Account creation failed");
         console.log("FORCED DELETE");

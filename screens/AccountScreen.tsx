@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   View,
   Text,
@@ -19,9 +19,10 @@ import { auth } from "../Models/firebase";
 import { useNavigation } from "@react-navigation/core";
 import { AccountProps } from "../props";
 import { BackgroundColor, MainHighlightColor } from "../Styles/colors";
-import { ProfanityMatcher, checkUserExists } from "./CreateNewAccount";
+import { ProfanityMatcher } from "./CreateNewAccount";
 import { getErrorMessage } from "../utils";
 import { updateEmailInDB } from "../Models/Requests";
+import AuthContext, { checkUserExists } from "../Controllers/AuthContext";
 
 const AccountScreen = (props: AccountProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
@@ -51,10 +52,20 @@ const AccountScreen = (props: AccountProps) => {
     usernameUpdated: boolean;
   }>({ emailUpdated: false, passwordUpdated: false, usernameUpdated: false });
 
+  const authContext = useContext(AuthContext);
+
+  // Ensure that authContext is defined
+  if (!authContext) {
+    throw new Error("useContext must be used within an AuthProvider");
+  }
+
+  const { setUser } = authContext;
+
   const handleLogout = () => {
     auth
       .signOut()
       .then(() => {
+        setUser(null);
         navigation.replace("Login");
       })
       .catch((error) => {
