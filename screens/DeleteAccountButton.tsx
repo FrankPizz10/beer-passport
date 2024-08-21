@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   View,
   Text,
@@ -9,12 +9,23 @@ import {
 import { CommonNavButtonProps } from "../props";
 import { useNavigation } from "@react-navigation/core";
 import { deleteAccount } from "../Models/Requests";
+import AuthContext from "../Controllers/AuthContext";
 
 const DeleteAccountButton = (props: CommonNavButtonProps) => {
   const navigation = useNavigation<(typeof props)["navigation"]>();
+  const authContext = useContext(AuthContext);
+
+  // Ensure that authContext is defined
+  if (!authContext) {
+    throw new Error("useContext must be used within an AuthProvider");
+  }
+
+  const { setUser } = authContext;
 
   const handleDeleteAccount = async () => {
     await deleteAccount();
+    setUser(null);
+    navigation.replace("Login");
     navigation.navigate("Login");
   };
 

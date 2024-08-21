@@ -5,6 +5,7 @@ import {
   getReactNativePersistence,
   Auth,
   getAuth,
+  connectAuthEmulator,
 } from "firebase/auth/react-native";
 // import { getFirestore } from "firebase/firestore";
 import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
@@ -18,6 +19,7 @@ import {
   EXPO_PUBLIC_MESSAGE_SENDER_ID,
   EXPO_PUBLIC_APP_ID,
   EXPO_PUBLIC_MEASUREMENT_ID,
+  EXPO_PUBLIC_ENV,
 } from "@env";
 import { getAnalytics, isSupported } from "firebase/analytics";
 
@@ -33,11 +35,6 @@ const firebaseConfig = {
   measurementId: EXPO_PUBLIC_MEASUREMENT_ID,
 };
 
-// export const app: FirebaseApp = initializeApp(firebaseConfig);
-// export const auth: Auth = initializeAuth(app, {
-//   persistence: getReactNativePersistence(ReactNativeAsyncStorage),
-// });
-
 export let app: FirebaseApp | undefined, auth: Auth;
 
 if (!getApps().length) {
@@ -46,6 +43,11 @@ if (!getApps().length) {
     auth = initializeAuth(app, {
       persistence: getReactNativePersistence(ReactNativeAsyncStorage),
     });
+
+    // Connect to Auth Emulator
+    if (EXPO_PUBLIC_ENV === "DEV") {
+      connectAuthEmulator(auth, "http://localhost:9099");
+    }
   } catch (error) {
     console.log("Error initializing app: " + error);
   }
