@@ -31,32 +31,22 @@ const ProfileScreen = (props: ProfileProps) => {
           }}
           style={styles.button}
         >
-          <Text style={styles.buttonText} maxFontSizeMultiplier={1.5}>
+          <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>
             My Beers
           </Text>
         </TouchableOpacity>
-        {/* <TouchableOpacity
-          onPress={() => {
-            navigation.navigate("YourBadges");
-          }}
-          style={styles.button}
-        >
-          <Text style={styles.buttonText} maxFontSizeMultiplier={1.5}>
-            My Badges
-          </Text>
-        </TouchableOpacity> */}
         <TouchableOpacity
           onPress={() => {
             navigation.navigate("Friends");
           }}
           style={styles.button}
         >
-          <Text style={styles.buttonText} maxFontSizeMultiplier={1.5}>
+          <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>
             My Friends
           </Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={handleAccount} style={styles.button}>
-          <Text style={styles.buttonText} maxFontSizeMultiplier={1.5}>
+          <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>
             Account
           </Text>
         </TouchableOpacity>

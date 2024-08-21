@@ -188,7 +188,7 @@ const HomeScreen = (props: HomeProps) => {
             }}
             style={styles.button}
           >
-            <Text style={styles.buttonText} maxFontSizeMultiplier={1.5}>
+            <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>
               My Badges
             </Text>
           </TouchableOpacity>
