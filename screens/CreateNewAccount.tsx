@@ -128,7 +128,6 @@ const CreateNewAccount = (props: CreateAccountProps) => {
         }),
       });
       const curUser = await response.json();
-      console.log("Create user: ", curUser);
       // await a successful response before verifying account
       if (response.status === 200) {
         //sendEmailVerification(userCredentials.user);

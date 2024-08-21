@@ -216,7 +216,7 @@ export const fetchFriends = async (): Promise<Friend[]> => {
 export const deleteAccount = async (): Promise<void> => {
   const url = `${EXPO_PUBLIC_API_URL}/api/users/`;
   const token = await auth.currentUser?.getIdToken();
-  const del_user = await fetch(url, {
+  await fetch(url, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",

@@ -35,11 +35,6 @@ const firebaseConfig = {
   measurementId: EXPO_PUBLIC_MEASUREMENT_ID,
 };
 
-// export const app: FirebaseApp = initializeApp(firebaseConfig);
-// export const auth: Auth = initializeAuth(app, {
-//   persistence: getReactNativePersistence(ReactNativeAsyncStorage),
-// });
-
 export let app: FirebaseApp | undefined, auth: Auth;
 
 if (!getApps().length) {
