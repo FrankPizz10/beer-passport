@@ -214,8 +214,7 @@ export const fetchFriends = async (): Promise<Friend[]> => {
 };
 
 export const deleteAccount = async (): Promise<void> => {
-  const uid = auth.currentUser?.uid;
-  const url = `${EXPO_PUBLIC_API_URL}/api/users/${uid}`;
+  const url = `${EXPO_PUBLIC_API_URL}/api/users/`;
   const token = await auth.currentUser?.getIdToken();
   await fetch(url, {
     method: "DELETE",
@@ -312,5 +311,26 @@ export const checkServerConnected = async () => {
   } catch (error) {
     console.log(error);
     return false;
+  }
+};
+
+export const updateEmailInDB = async (email: string) => {
+  try {
+    const url = `${EXPO_PUBLIC_API_URL}/api/users/email`;
+    const token = await auth.currentUser?.getIdToken();
+    const response = await fetch(url, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+      body: JSON.stringify({ email }),
+    });
+    const user = await response.json();
+    if (user.email !== email) {
+      throw new Error("Failed to update Email in db");
+    }
+  } catch (error) {
+    console.log(error);
   }
 };

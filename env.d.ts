@@ -9,4 +9,5 @@ declare module "@env" {
   export const EXPO_PUBLIC_EXPO_ID: string;
   export const EXPO_PUBLIC_EXPO_PROJECT_ID: string;
   export const EXPO_PUBLIC_API_URL: string;
+  export const EXPO_PUBLIC_ENV: string;
 }

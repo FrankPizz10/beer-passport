@@ -23,3 +23,8 @@ eas.json
 .vscode/
 
 %ProgramData%
+
+# Firebase
+firepit-log.txt
+ui-debug.log
+firebase-debug.log
