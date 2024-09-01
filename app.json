@@ -3,6 +3,7 @@
     "name": "Beer Passport",
     "slug": "beerpassport",
     "version": "1.0.4",
+    "scheme": "beerpassport",
     "orientation": "portrait",
     "icon": "./assets/BeerIcon.png",
     "userInterfaceStyle": "dark",
@@ -16,7 +17,10 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.beerpassport"
+      "bundleIdentifier": "com.beerpassport",
+      "associatedDomains": [
+        "applinks:beerpassport.com"
+      ]
     },
     "android": {
       "adaptiveIcon": {

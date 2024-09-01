@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Share
 } from "react-native";
 import { EXPO_PUBLIC_API_URL } from "@env";
 import { Beer, CollectionBeer, UserBeer } from "../Models/SQLData";
@@ -23,6 +24,8 @@ import {
   TryLikeButtonColor,
 } from "../Styles/colors";
 import { Entypo, Ionicons } from "@expo/vector-icons";
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import * as Linking from 'expo-linking';
 
 const BeerScreen = (props: BeerProps) => {
   const [beer, setBeer] = useState({} as Beer | undefined);
@@ -33,6 +36,34 @@ const BeerScreen = (props: BeerProps) => {
   const [tried, setTried] = useState(false);
   const [liked, setLiked] = useState(false);
   const [collectionNames, setCollectionNames] = useState([] as string[]);
+  
+  const customShare = async () => {
+    const url = Linking.createURL('beer', {
+      queryParams: {
+        id: `${beer?.id}`
+      }
+    })
+    // const shareOptions = {
+    //   message: url,
+    //   title: 'Beerpassport',
+    //   url: `beerpassport://beers/${beer?.id}`,
+    // }
+    try {
+      const shareResponse = await Share.share({ message: url });
+      if (shareResponse.action === Share.sharedAction) {
+        if (shareResponse.activityType) {
+          console.log("Shared with activity type of: ", shareResponse.activityType)
+        }
+        else {
+          console.log("shared");
+        }
+      } else if (shareResponse.action === Share.dismissedAction) {
+        console.log("dismissed");
+      }
+    } catch (err) {
+      console.log('Error => ', err);
+    }
+  }
 
   const handleTriedPress = async () => {
     try {
@@ -169,7 +200,7 @@ const BeerScreen = (props: BeerProps) => {
               {beer?.brewery?.name}
             </Text>
           </View>
-          <View>
+          <View style={styles.interactives}>
             {!tried && (
               <TouchableOpacity
                 style={styles.button}
@@ -178,7 +209,7 @@ const BeerScreen = (props: BeerProps) => {
                 <Ionicons
                   name="checkbox-outline"
                   size={24}
-                  color={MainHighlightColor}
+                  color={'#00FFFF'}
                 />
                 <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>
                   {" "}
@@ -194,11 +225,11 @@ const BeerScreen = (props: BeerProps) => {
                 <Ionicons
                   name="checkbox"
                   size={24}
-                  color={MainHighlightColor}
+                  color={'#00FFFF'}
                 />
                 <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>
                   {" "}
-                  Un Try{" "}
+                  Try{" "}
                 </Text>
               </TouchableOpacity>
             )}
@@ -222,10 +253,20 @@ const BeerScreen = (props: BeerProps) => {
                 <Entypo name="star" size={24} color="gold" />
                 <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>
                   {" "}
-                  Un Like{" "}
+                  Like{" "}
                 </Text>
               </TouchableOpacity>
             )}
+            <TouchableOpacity
+                style={styles.button}
+                onPress={customShare}
+              >
+                <MaterialIcons name="ios-share" size={24} color="black" />
+                <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>
+                  {" "}
+                  Share{" "}
+                </Text>
+              </TouchableOpacity>
           </View>
           {beer.style && (
             <View style={styles.styleContainer}>
@@ -279,6 +320,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     textAlign: "center",
   },
+  interactives: {
+    flexDirection: 'row',       // Align children in a row
+    justifyContent: 'center',   // Center children horizontally
+    alignItems: 'center',       // Center children vertically
+    flexWrap: 'wrap',           // Allow wrapping if needed
+    margin: 10,                 // Optional: Adjust margin as needed
+  },
   breweryTitle: {
     fontSize: Dimensions.get("window").width / 15,
     alignItems: "center",
@@ -328,9 +376,6 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: TryLikeButtonColor,
-    padding: 10,
-    margin: 10,
-    borderRadius: 5,
     shadowColor: "black",
     shadowOpacity: 0.5,
     shadowRadius: 5,
@@ -338,8 +383,13 @@ const styles = StyleSheet.create({
       width: 1,
       height: 1,
     },
-    flexDirection: "row",
-    alignItems: "center",
+    width: '32%',
+    textAlign: 'center',
+    flexDirection: 'row',       // Align icon and text horizontally
+    alignItems: 'center',       // Center icon and text vertically
+    padding: 10,
+    margin: 5,                  // Space between buttons
+    borderRadius: 5,
   },
   buttonText: {
     fontSize: Dimensions.get("window").width / 18,
@@ -347,3 +397,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
+function useRoute() {
+  throw new Error("Function not implemented.");
+}
+

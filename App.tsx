@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoginScreen from "./screens/LoginScreen";
@@ -37,6 +37,16 @@ Notifications.setNotificationHandler({
     shouldSetBadge: true,
   }),
 });
+
+const linking = {
+  prefixes: ['https://beerpassport.com', 'beerpassport://'],
+  config: {
+    screens: {
+      Home: 'home',
+      Share: 'beers/:id',
+    },
+  },
+};
 
 const CustomHeader = () => {
   const screenHeight = Dimensions.get("window").height;
@@ -98,7 +108,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 export default function App() {
   return (
     <AuthProvider>
-      <NavigationContainer>
+      <NavigationContainer linking={linking}>
         <Stack.Navigator
           initialRouteName="Login"
           screenOptions={{
