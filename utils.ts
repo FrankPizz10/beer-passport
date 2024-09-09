@@ -1,4 +1,5 @@
 import { User } from "./Models/SQLData";
+import { RootStackParamList } from "./props";
 
 export function decimalToPercent(decimal: number) {
   const percent = Math.round(decimal * 100); // Multiply by 100 and round to 2 decimal places
@@ -39,4 +40,16 @@ export const isEmpty = (obj: object | undefined) => {
 
 export const isUser = (obj: object): obj is User => {
   return "user_name" in obj;
+};
+
+export const getScreenNameFromPath = (
+  path: string,
+): keyof RootStackParamList | null => {
+  switch (path) {
+    case "beer":
+      return "Beer";
+    // Add cases for other paths
+    default:
+      return null;
+  }
 };
