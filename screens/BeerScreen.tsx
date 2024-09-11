@@ -45,7 +45,6 @@ const BeerScreen = (props: BeerProps) => {
     const shareOptions = {
       title: 'Check out this beer on Beerpassport!',
       message: `I found this amazing beer on Beerpassport: ${beer?.name}. 🍻\n\nDiscover more about it here: ${beerUrl}\n\nCheers!`,
-      urls: beerUrl,
     };
     try {
       const shareResponse = await Share.share(shareOptions);
