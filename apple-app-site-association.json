@@ -1,0 +1,12 @@
+{
+    "applinks": {
+      "apps": [],
+      "details": [
+        {
+          "appID": "29QUQCCQ87.com.beerpassport",
+          "paths": ["/beers/*"]
+        }
+      ]
+    }
+  }
+  
