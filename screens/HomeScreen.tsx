@@ -150,6 +150,10 @@ const HomeScreen = (props: HomeProps) => {
     }
   };
 
+  const closeModal = () => {
+    setEmailVerified(true);
+  };
+
   return (
     <>
       <SafeAreaView style={styles.root}>
@@ -194,47 +198,48 @@ const HomeScreen = (props: HomeProps) => {
           </TouchableOpacity>
         </View>
       </SafeAreaView>
-      <Modal
-        animationType="none"
-        transparent
-        visible={!emailVerified}
-        onRequestClose={() => setEmailVerified(true)}
-      >
-        {!emailSent && (
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <TouchableOpacity
-                style={styles.closeButton}
-                onPress={() => setEmailVerified(true)}
-              >
-                <Text style={styles.closeButtonText}>x</Text>
-              </TouchableOpacity>
-              <Text style={styles.modalMessage}>
-                Please Verify your email in order to help with account recovery.
-              </Text>
-              <TouchableOpacity
-                style={styles.modalButton}
-                onPress={handleVerifyEmail}
-              >
-                <Text style={styles.modalButtonText}>Verify Email</Text>
-              </TouchableOpacity>
+      {!emailVerified && (
+        <Modal
+          animationType="none"
+          transparent
+          visible={!emailVerified}
+          onRequestClose={closeModal}
+        >
+          {!emailSent ? (
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <TouchableOpacity
+                  style={styles.closeButton}
+                  onPress={closeModal}
+                >
+                  <Text style={styles.closeButtonText}>x</Text>
+                </TouchableOpacity>
+                <Text style={styles.modalMessage}>
+                  Please verify your email to help with account recovery.
+                </Text>
+                <TouchableOpacity
+                  style={styles.modalButton}
+                  onPress={handleVerifyEmail}
+                >
+                  <Text style={styles.modalButtonText}>Verify Email</Text>
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
-        )}
-        {emailSent && (
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <TouchableOpacity
-                style={styles.closeButton}
-                onPress={() => setEmailVerified(true)}
-              >
-                <Text style={styles.closeButtonText}>x</Text>
-              </TouchableOpacity>
-              <Text style={styles.confirmationMessage}>Email Sent!</Text>
+          ) : (
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <TouchableOpacity
+                  style={styles.closeButton}
+                  onPress={closeModal}
+                >
+                  <Text style={styles.closeButtonText}>x</Text>
+                </TouchableOpacity>
+                <Text style={styles.confirmationMessage}>Email Sent!</Text>
+              </View>
             </View>
-          </View>
-        )}
-      </Modal>
+          )}
+        </Modal>
+      )}
     </>
   );
 };
@@ -353,7 +358,7 @@ const styles = StyleSheet.create({
     padding: 15,
   },
   modalMessage: {
-    fontSize: Dimensions.get("window").width / 30,
+    fontSize: Dimensions.get("window").width / 20,
     padding: 15,
   },
 });
