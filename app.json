@@ -2,7 +2,7 @@
   "expo": {
     "name": "Beer Passport",
     "slug": "beerpassport",
-    "version": "1.0.4",
+    "version": "1.0.8",
     "scheme": "beerpassport",
     "orientation": "portrait",
     "icon": "./assets/BeerIcon.png",
