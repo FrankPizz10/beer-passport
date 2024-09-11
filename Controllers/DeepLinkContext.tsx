@@ -45,7 +45,6 @@ export const DeepLinkProvider = ({ children }: DeepLinkProviderProps) => {
         const beerId = parseInt(queryParams.id);
 
         if (screenName === "Beer") {
-          console.log("Navigating to BeerScreen");
           navigation.navigate(screenName, {
             beer_id: beerId,
           });

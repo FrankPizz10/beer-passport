@@ -43,23 +43,11 @@ const BeerScreen = (props: BeerProps) => {
     });
     const beerImageUri = Image.resolveAssetSource(images.BeerIcon).uri;
     const shareOptions = {
-      title: 'Check out this beer on Beerpassport!',
+      title: "Check out this beer on Beerpassport!",
       message: `I found this amazing beer on Beerpassport: ${beer?.name}. 🍻\n\nDiscover more about it here: ${beerUrl}\n\nCheers!`,
     };
     try {
-      const shareResponse = await Share.share(shareOptions);
-      if (shareResponse.action === Share.sharedAction) {
-        if (shareResponse.activityType) {
-          console.log(
-            "Shared with activity type of: ",
-            shareResponse.activityType,
-          );
-        } else {
-          console.log("shared");
-        }
-      } else if (shareResponse.action === Share.dismissedAction) {
-        console.log("dismissed");
-      }
+      await Share.share(shareOptions);
     } catch (err) {
       console.log("Error => ", err);
     }

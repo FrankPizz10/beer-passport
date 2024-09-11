@@ -1,4 +1,4 @@
-import BeerIcon from '../assets/BeerIcon.png';
+import BeerIcon from "../assets/BeerIcon.png";
 
 const images = { BeerIcon };
 
