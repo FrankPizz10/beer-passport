@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
   Share,
+  Image,
 } from "react-native";
 import { EXPO_PUBLIC_API_URL } from "@env";
 import { Beer, CollectionBeer, UserBeer } from "../Models/SQLData";
@@ -22,6 +23,7 @@ import { BackgroundColor, TryLikeButtonColor } from "../Styles/colors";
 import { Entypo, Ionicons } from "@expo/vector-icons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import * as Linking from "expo-linking";
+import { images } from "../Constants";
 
 const BeerScreen = (props: BeerProps) => {
   const [beer, setBeer] = useState({} as Beer | undefined);
@@ -34,18 +36,19 @@ const BeerScreen = (props: BeerProps) => {
   const [collectionNames, setCollectionNames] = useState([] as string[]);
 
   const customShare = async () => {
-    const url = Linking.createURL("beer", {
+    const beerUrl = Linking.createURL("beer", {
       queryParams: {
         id: `${beer?.id}`,
       },
     });
-    // const shareOptions = {
-    //   message: url,
-    //   title: 'Beerpassport',
-    //   url: `beerpassport://beers/${beer?.id}`,
-    // }
+    const beerImageUri = Image.resolveAssetSource(images.BeerIcon).uri;
+    const shareOptions = {
+      title: 'Check out this beer on Beerpassport!',
+      message: `I found this amazing beer on Beerpassport: ${beer?.name}. 🍻\n\nDiscover more about it here: ${beerUrl}\n\nCheers!`,
+      urls: beerUrl,
+    };
     try {
-      const shareResponse = await Share.share({ message: url });
+      const shareResponse = await Share.share(shareOptions);
       if (shareResponse.action === Share.sharedAction) {
         if (shareResponse.activityType) {
           console.log(

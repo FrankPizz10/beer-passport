@@ -5,7 +5,6 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../props";
 import { getScreenNameFromPath } from "../utils";
 import AuthContext from "./AuthContext";
-import { auth } from "../Models/firebase";
 
 interface DeepLinkContextType {
   deepLink: string | null;
@@ -24,13 +23,18 @@ export const DeepLinkProvider = ({ children }: DeepLinkProviderProps) => {
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
+  const authContext = useContext(AuthContext);
+
+  // Ensure that authContext is defined
+  if (!authContext) {
+    throw new Error("useContext must be used within an AuthProvider");
+  }
+
+  const { user } = authContext;
+
   const handleLink = async (url: string | null) => {
-    console.log("Url: ", url);
-    console.log("User: ", auth.currentUser?.displayName);
-    if (url && auth.currentUser) {
+    if (url && user) {
       const { path, queryParams } = Linking.parse(url);
-      console.log("path: ", path);
-      console.log("queryParams: ", queryParams);
       if (
         path &&
         queryParams &&
@@ -53,14 +57,15 @@ export const DeepLinkProvider = ({ children }: DeepLinkProviderProps) => {
   };
 
   useEffect(() => {
-    handleLink(deepLink);
+    handleLink(deepLink); // Handle links when the app is opened
+    // Adds a listener to allow app to check for reopens with link
     const linkingSubscription = Linking.addEventListener("url", ({ url }) =>
       handleLink(url),
     );
     return () => {
       linkingSubscription.remove();
     };
-  }, []);
+  }, [deepLink, user]);
 
   return (
     <DeepLinkContext.Provider
