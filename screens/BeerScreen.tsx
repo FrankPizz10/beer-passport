@@ -40,6 +40,7 @@ const BeerScreen = (props: BeerProps) => {
       queryParams: {
         id: `${beer?.id}`,
       },
+      isTripleSlashed: true
     });
     const beerImageUri = Image.resolveAssetSource(images.BeerIcon).uri;
     const shareOptions = {
