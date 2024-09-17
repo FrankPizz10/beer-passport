@@ -29,6 +29,7 @@ import {
 } from "react-native";
 import BreweryScreen from "./screens/BreweryScreen";
 import { AuthProvider } from "./Controllers/AuthContext";
+import { DeepLinkProvider } from "./Controllers/DeepLinkContext";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -37,6 +38,15 @@ Notifications.setNotificationHandler({
     shouldSetBadge: true,
   }),
 });
+
+const linking = {
+  prefixes: ["beerpassport://", "https://beerpassport.com"],
+  config: {
+    screens: {
+      Beer: "beer/:id",
+    },
+  },
+};
 
 const CustomHeader = () => {
   const screenHeight = Dimensions.get("window").height;
@@ -98,44 +108,46 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 export default function App() {
   return (
     <AuthProvider>
-      <NavigationContainer>
-        <Stack.Navigator
-          initialRouteName="Login"
-          screenOptions={{
-            header: () => <CustomHeaderWithBack />,
-          }}
-        >
-          <Stack.Screen
-            name="Login"
-            component={LoginScreen}
-            options={{
-              header: () => <CustomHeader />,
+      <NavigationContainer linking={linking}>
+        <DeepLinkProvider>
+          <Stack.Navigator
+            initialRouteName="Login"
+            screenOptions={{
+              header: () => <CustomHeaderWithBack />,
             }}
-          />
-          <Stack.Screen name="CreateNewAccount" component={CreatNewAccount} />
-          <Stack.Screen name="Category" component={CategoryScreen} />
-          <Stack.Screen name="Beer" component={BeerScreen} />
-          <Stack.Screen name="Brewery" component={BreweryScreen} />
-          <Stack.Screen name="YourBeers" component={YourBeersScreen} />
-          <Stack.Screen name="YourBadges" component={YourBadgesScreen} />
-          <Stack.Screen name="Collection" component={CollectionScreen} />
-          <Stack.Screen name="Friends" component={FriendScreen} />
-          <Stack.Screen name="SearchUsers" component={SearchUsersScreen} />
-          <Stack.Screen name="FriendProfile" component={OtherUserScreen} />
-          <Stack.Screen name="Profile" component={ProfileScreen} />
-          <Stack.Screen
-            name="AllCollections"
-            component={AllCollectionsScreen}
-          />
-          <Stack.Screen name="Account" component={AccountScreen} />
-          <Stack.Screen
-            name="BottomTabNavigator"
-            component={BottomTabNavigator}
-            options={{
-              header: () => <CustomHeader />,
-            }}
-          />
-        </Stack.Navigator>
+          >
+            <Stack.Screen
+              name="Login"
+              component={LoginScreen}
+              options={{
+                header: () => <CustomHeader />,
+              }}
+            />
+            <Stack.Screen name="CreateNewAccount" component={CreatNewAccount} />
+            <Stack.Screen name="Category" component={CategoryScreen} />
+            <Stack.Screen name="Beer" component={BeerScreen} />
+            <Stack.Screen name="Brewery" component={BreweryScreen} />
+            <Stack.Screen name="YourBeers" component={YourBeersScreen} />
+            <Stack.Screen name="YourBadges" component={YourBadgesScreen} />
+            <Stack.Screen name="Collection" component={CollectionScreen} />
+            <Stack.Screen name="Friends" component={FriendScreen} />
+            <Stack.Screen name="SearchUsers" component={SearchUsersScreen} />
+            <Stack.Screen name="FriendProfile" component={OtherUserScreen} />
+            <Stack.Screen name="Profile" component={ProfileScreen} />
+            <Stack.Screen
+              name="AllCollections"
+              component={AllCollectionsScreen}
+            />
+            <Stack.Screen name="Account" component={AccountScreen} />
+            <Stack.Screen
+              name="BottomTabNavigator"
+              component={BottomTabNavigator}
+              options={{
+                header: () => <CustomHeader />,
+              }}
+            />
+          </Stack.Navigator>
+        </DeepLinkProvider>
       </NavigationContainer>
     </AuthProvider>
   );
