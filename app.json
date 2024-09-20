@@ -19,7 +19,7 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.beerpassport",
       "associatedDomains": [
-        "applinks:beerpassport.com"
+        "applinks:web.beer-passport.com/"
       ]
     },
     "android": {
