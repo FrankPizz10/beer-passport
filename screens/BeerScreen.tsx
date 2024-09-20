@@ -42,10 +42,11 @@ const BeerScreen = (props: BeerProps) => {
       },
       isTripleSlashed: true
     });
+    const universalBeerUrl = `https://web.beer-passport.com/beers?id=${beer?.id}`
     const beerImageUri = Image.resolveAssetSource(images.BeerIcon).uri;
     const shareOptions = {
       title: "Check out this beer on Beerpassport!",
-      message: `I found this amazing beer on Beerpassport: ${beer?.name}. 🍻\n\nDiscover more about it here: ${beerUrl}\n\nCheers!`,
+      message: `I found this amazing beer on Beerpassport: ${beer?.name}. 🍻\n\nDiscover more about it here: ${universalBeerUrl}\n\nCheers!`,
     };
     try {
       await Share.share(shareOptions);
