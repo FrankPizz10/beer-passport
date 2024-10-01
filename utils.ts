@@ -47,6 +47,7 @@ export const getScreenNameFromPath = (
 ): keyof RootStackParamList | null => {
   switch (path) {
     case "beer":
+    case "beers":
       return "Beer";
     // Add cases for other paths
     default:
