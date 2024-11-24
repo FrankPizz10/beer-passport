@@ -40,10 +40,10 @@ Notifications.setNotificationHandler({
 });
 
 const linking = {
-  prefixes: ["beerpassport://", "https://beerpassport.com"],
+  prefixes: ["beerpassport://", "https://web.beer-passport.com/"],
   config: {
     screens: {
-      Beer: "beer/:id",
+      Beer: "beers/:id",
     },
   },
 };
