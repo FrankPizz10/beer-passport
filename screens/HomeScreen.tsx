@@ -187,8 +187,8 @@ const HomeScreen = (props: HomeProps) => {
               Collections
             </Text>
           </TouchableOpacity> */}
-          <Button onPress={handleCollectionsScreen} size="lg" variant="solid" action="secondary">
-            <ButtonText>Collections</ButtonText>
+          <Button className="bg-sky-500 w-full my-2 p-2" onPress={handleCollectionsScreen}>
+            <ButtonText className="text-white font-bold text-center">Collections</ButtonText>
           </Button>
           <TouchableOpacity
             onPress={() => {
@@ -303,7 +303,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "black",
-    fontSize: Dimensions.get("window").width / 18,
+    fontSize: Dimensions.get("window").width / 20,
     fontWeight: "bold",
   },
   centeredView: {

@@ -110,7 +110,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 export default function App() {
   return (
     <AuthProvider>
-      <GluestackUIProvider>
+      <GluestackUIProvider mode={"light"}>
         <NavigationContainer linking={linking}>
           <DeepLinkProvider>
             <Stack.Navigator
