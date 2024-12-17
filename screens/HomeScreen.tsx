@@ -24,6 +24,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import * as Notifications from "expo-notifications";
 import { isUser } from "../utils";
 import { sendEmailVerification } from "firebase/auth";
+import { Button, ButtonText } from "@/components/ui/button";
 
 export const getUser = async (): Promise<User | undefined> => {
   try {
@@ -178,14 +179,17 @@ const HomeScreen = (props: HomeProps) => {
           </Text>
         </View>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={handleCollectionsScreen}
             style={styles.button}
           >
             <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>
               Collections
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
+          <Button onPress={handleCollectionsScreen} size="lg" variant="solid" action="secondary">
+            <ButtonText>Collections</ButtonText>
+          </Button>
           <TouchableOpacity
             onPress={() => {
               navigation.navigate("YourBadges");
