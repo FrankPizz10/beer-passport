@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoginScreen from "./screens/LoginScreen";
@@ -32,6 +32,8 @@ import { AuthProvider } from "./Controllers/AuthContext";
 import { DeepLinkProvider } from "./Controllers/DeepLinkContext";
 import { GluestackUIProvider } from "./components/ui/gluestack-ui-provider";
 import "@/global.css";
+import { Appearance } from "react-native";
+import { useColorScheme } from "react-native";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -107,10 +109,24 @@ const styles = StyleSheet.create({
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-export default function App() {
+export default function App() {  
+  const [colorMode, setColorMode] = useState<"light" | "dark">(
+    Appearance.getColorScheme() || "light"
+  );
+
+  useEffect(() => {
+    const subscription = Appearance.addChangeListener(({ colorScheme }) => {
+      console.log("Running in the " + colorScheme);
+    });
+    return () => subscription.remove();
+  });
+  console.log("Running in " + Appearance.getColorScheme());
+
+  const color = useColorScheme();
+  console.log("Color Scheme " + color);
   return (
     <AuthProvider>
-      <GluestackUIProvider mode={"light"}>
+      <GluestackUIProvider mode={"system"}>
         <NavigationContainer linking={linking}>
           <DeepLinkProvider>
             <Stack.Navigator

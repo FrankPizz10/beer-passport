@@ -25,6 +25,7 @@ import * as Notifications from "expo-notifications";
 import { isUser } from "../utils";
 import { sendEmailVerification } from "firebase/auth";
 import { Button, ButtonText } from "@/components/ui/button";
+import { Center } from "@/components/ui/center";
 
 export const getUser = async (): Promise<User | undefined> => {
   try {
@@ -157,7 +158,7 @@ const HomeScreen = (props: HomeProps) => {
 
   return (
     <>
-      <SafeAreaView style={styles.root}>
+      <SafeAreaView>
         <View style={styles.titleContainer}>
           <Text style={styles.welcome} maxFontSizeMultiplier={1.1}>
             Welcome {user?.user_name}
@@ -178,28 +179,15 @@ const HomeScreen = (props: HomeProps) => {
             You have liked {likedCount} {likedCount === 1 ? "beer" : "beers"}!
           </Text>
         </View>
-        <View style={styles.buttonContainer}>
-          {/* <TouchableOpacity
-            onPress={handleCollectionsScreen}
-            style={styles.button}
-          >
-            <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>
-              Collections
-            </Text>
-          </TouchableOpacity> */}
-          <Button className="bg-sky-500 w-full my-2 p-2" onPress={handleCollectionsScreen}>
-            <ButtonText className="text-white font-bold text-center">Collections</ButtonText>
-          </Button>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("YourBadges");
-            }}
-            style={styles.button}
-          >
-            <Text style={styles.buttonText} maxFontSizeMultiplier={1.2}>
-              My Badges
-            </Text>
-          </TouchableOpacity>
+        <View>
+          <Center className="bg-primary-0">
+            <Button className="bg-primary-500 p-2 m-2 w-3/4 h-16 rounded-md" onPress={handleCollectionsScreen}>
+              <ButtonText className="text-white text-2xl font-bold text-center">Collections</ButtonText>
+            </Button>
+            <Button className="bg-blue-500 p-2 m-2 w-3/4 h-16 rounded-md" onPress={() => navigation.navigate("YourBadges")}>
+              <ButtonText className="text-white text-2xl font-bold text-center">My Badges</ButtonText>
+            </Button>
+          </Center>
         </View>
       </SafeAreaView>
       {!emailVerified && (
