@@ -8,11 +8,6 @@
     "icon": "./assets/BeerIcon.png",
     "userInterfaceStyle": "dark",
     "newArchEnabled": true,
-    "splash": {
-      "image": "./assets/CampfireSplash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -44,6 +39,19 @@
     },
     "updates": {
       "url": "https://u.expo.dev/451c62c3-bd28-4fc1-8724-1571c640478c"
-    }
+    },
+    "plugins": [
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#232323",
+          "image": "./assets/CampfireSplash.png",
+          "dark": {
+            "image": "./assets/CampfireSplash.png",
+            "backgroundColor": "#000000"
+          }
+        }
+      ]
+    ]
   }
 }
